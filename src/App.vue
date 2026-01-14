@@ -6,8 +6,7 @@
 					:src="windowIcon"
 					class="component__WindowBar-icon"
 					alt=""
-					v-if="displayFluentIcon"
-				/>
+					v-if="displayFluentIcon" />
 				<div class="component__WindowBar-buttons">
 					<v-btn
 						prepend-icon="mdi-arrow-left"
@@ -15,7 +14,7 @@
 						:disabled="!this.routerStore.canGoBack"
 						variant="text"
 						class="component__WindowBar-buttons-btn component__WindowBar-btn__back"
-					></v-btn>
+						v-if="useNavigator"></v-btn>
 					<v-btn
 						prepend-icon="$menu"
 						variant="text"
@@ -24,7 +23,7 @@
 							this.routerStore.navigatorOpened =
 								!this.routerStore.navigatorOpened
 						"
-					></v-btn>
+						v-if="useNavigator"></v-btn>
 				</div>
 				<MainMenu />
 			</template>
@@ -35,11 +34,10 @@
 				v-model="navigatorOpened"
 				floating
 				:mobile-breakpoint="800"
-			>
+				v-if="useNavigator">
 				<v-list
 					v-model:selected="navigatorSelectedItem"
-					@update:selected="setnavigatorSelectedItem"
-				>
+					@update:selected="setnavigatorSelectedItem">
 					<v-list-item
 						v-for="(item, i) in navigatorMenuItems"
 						:key="i"
@@ -49,8 +47,7 @@
 						:active="
 							this.$router.currentRoute.value.path.toLowerCase() ===
 							item.routePath.toLowerCase()
-						"
-					>
+						">
 					</v-list-item>
 				</v-list>
 			</v-navigation-drawer>
@@ -86,10 +83,15 @@ export default {
 		return {
 			windowIcon: document.querySelector("link[rel*='icon']").href,
 			routerStore: useRouterStore(),
-			displayFluentIcon: windowExtraProperties.displayFluentIcon
 		};
 	},
 	computed: {
+		displayFluentIcon() {
+			return windowExtraProperties.displayFluentIcon;
+		},
+		useNavigator() {
+			return windowExtraProperties.useNavigator;
+		},
 		displayAboutModal() {
 			const mainStore = useMainStore();
 			return mainStore.activeAboutModal;

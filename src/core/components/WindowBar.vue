@@ -13,8 +13,25 @@
 export default {
 	data() {
 		return {
-			windowTitle: document.title
+			windowTitle: document.title,
+			_titleObserver: null
 		};
 	},
+	
+	mounted() {
+		//observer for document title
+		const that = this;
+		const titleElement = document.querySelector("title");
+
+		if(titleElement) {
+			this._titleObserver = new MutationObserver(() => {
+				that.windowTitle = document.title;
+			});
+
+			this._titleObserver.observe(titleElement, {
+				childList: true
+			});
+		}
+	}
 };
 </script>
