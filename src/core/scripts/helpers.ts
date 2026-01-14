@@ -1,12 +1,12 @@
 import { BrowserWindow, nativeTheme } from "electron";
 import { DarkMode, LightMode } from "./themes";
-import { windowMaterialType } from "../../electron/main";
+import { windowExtraProperties } from "../../electron/windowExtraProperties";
 
 export function setCurrentThemeMode(mode: string = "system") {
 	const windows = BrowserWindow.getAllWindows();
 
 	function setDarkMode(win: BrowserWindow, changeThemeSource: boolean = true) {
-		if (windowMaterialType == "fluent") {
+		if (windowExtraProperties.windowMaterialType == "fluent") {
 			win.setTitleBarOverlay({
 				color: "#ffffff00",
 				symbolColor: DarkMode.colors["text"],
@@ -22,7 +22,7 @@ export function setCurrentThemeMode(mode: string = "system") {
 	}
 
 	function setLightMode(win: BrowserWindow, changeThemeSource: boolean = false) {
-		if (windowMaterialType == "fluent") {
+		if (windowExtraProperties.windowMaterialType == "fluent") {
 			win.setTitleBarOverlay({
 				color: "#ffffff00",
 				symbolColor: LightMode.colors["text"],

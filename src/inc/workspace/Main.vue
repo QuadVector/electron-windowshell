@@ -2,7 +2,7 @@
 	<div class="workspace-content inner-padding text-center content-center overflow-hidden">
 		<div>
 			<h1>Welcome to the main page of the fluent app!</h1>
-			<h2>Simple app template</h2>
+			<h2>Navigator paged app template</h2>
 
 			<div class="logos">
 				<img src="../../public/img/electron.svg" />
@@ -26,7 +26,18 @@
 					on <i>Vuetify</i>.
 				</p>
 				<p>
-					This app supports navigation through routes, similar to the navigator app template. However, it features only a main menu at the top.
+					In this window you can see two menus: one horizontal menu on
+					the title bar of the window, and one vertical menu on the
+					left side of the window. You can move between pages by
+					clicking on the menu items on the left navigation menu.
+					Click on the "back" button with the arrow icon to return to
+					the previous page.
+				</p>
+				<p>
+					On the "Components" page you can see basic examples of UI.
+				</p>
+				<p>
+					The "Grid" page contains an example of the data grid component.
 				</p>
 			</div>
 		</div>

@@ -47,6 +47,14 @@ const router = createRouter({
 	routes,
 });
 
+routerStore.canGoBack = window.history.state.back !== null;
+router.afterEach(() => {
+	routerStore.canGoBack = window.history.state.back !== null;
+	if (window.innerWidth < 800) {
+		routerStore.navigatorOpened = false;
+	}
+});
+
 app.use(router);
 app.use(vuetify);
 app.use(contextmenu);

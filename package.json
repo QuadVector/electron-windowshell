@@ -1,9 +1,9 @@
 {
-	"name": "electron-fluent-boilerplate-no-navigator",
+	"name": "electron-fluent-boilerplate-navigator",
 	"icon": "./src/public/favicon.ico",
-	"product_name": "Electron Fluent Boilerplate (Without navigator)",
+	"product_name": "Electron Fluent Boilerplate (With navigator)",
 	"version": "1.0.0",
-	"description": "Electron + Vite + Vue3 + Pinia + Typescript boilerplate project, inspired by Windows Fluent UI. With built-in Vuetify UI, and other custom components. Without navigator.",
+	"description": "Electron + Vite + Vue3 + Pinia + Typescript boilerplate project, inspired by Windows Fluent UI. With built-in Vuetify UI, and other custom components. With navigator.",
 	"main": "dist/electron/main.js",
 	"author": "QuadVector",
 	"copyright": "Copyright © QuadVector Software",

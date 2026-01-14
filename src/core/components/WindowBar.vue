@@ -13,7 +13,7 @@
 export default {
 	data() {
 		return {
-			windowTitle: document.title,
+			windowTitle: document.title
 		};
 	},
 };
