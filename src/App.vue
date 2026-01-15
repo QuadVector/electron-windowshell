@@ -71,7 +71,6 @@ import AboutModal from "./core/components/AboutModal.vue";
 import { useRouterStore } from "./inc/store/routerStore";
 import { useMainStore } from "./inc/store/mainStore";
 import { windowExtraProperties } from "./electron/windowExtraProperties";
-import "./core/styles/app.css";
 
 export default {
 	components: {

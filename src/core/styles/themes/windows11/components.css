@@ -11,6 +11,10 @@
 	border-radius: var(--base-radius) !important;
 }
 
+.v-btn {
+	transition: none;
+}
+
 .v-btn:active {
 	opacity: 0.8;
 }
@@ -29,13 +33,13 @@
 }
 
 .v-list-item__overlay {
-	transition: 0.0s;
+	transition: none;
 }
 
 .v-overlay__content .v-list-item {
 	cursor: default !important;
 	font-size: 14px;
-	transition: 0.0s;
+	transition: none;
 	border-radius: calc(var(--base-radius) - 3px);
 	text-transform: none;
 	color: rgba(var(--v-theme-text), 1) !important;
@@ -65,6 +69,10 @@
 .v-navigation-drawer .v-list-item {
 	min-height: 30px !important;
 	padding: 10px !important;
+}
+
+.v-navigation-drawer .v-list-item:active {
+	opacity: 0.8;
 }
 
 .v-navigation-drawer {
@@ -172,7 +180,7 @@
 }
 
 .component__WindowBar-menu .menu-wrapper li:not(.divider) {
-	transition: 0.0s;
+	transition: none;
 	color: rgba(var(--v-theme-text), 1);
 	border-radius: calc(var(--base-radius) - 3px);
 	text-transform: none;
@@ -183,7 +191,7 @@
 }
 
 .component__WindowBar-menu .menu-item-icon svg {
-	transition: 0.0s;
+	transition: none;
 	fill: rgba(var(--v-theme-text), 1);
 	position: relative;
 	top: 2px;
@@ -256,7 +264,7 @@
 .component__WindowBar-menu .menu-bar-item-container {
 	border-radius: calc(var(--base-radius));
 	border: 0px;
-	transition: 0.0s;
+	transition: none;
 	outline: transparent 2px solid !important;
 	cursor: default !important;
 }
@@ -269,6 +277,10 @@
 
 .v-theme--LightMode .component__WindowBar-menu .menu-bar-item-container.active {
 	background: rgba(0, 0, 0, 0.06) !important;
+}
+
+.component__WindowBar-menu .menu-bar-item-container:active .name-container {
+	opacity: 0.8;
 }
 
 .component__WindowBar-menu .name-container {
@@ -296,7 +308,7 @@
 .v-contextmenu-item {
 	cursor: default !important;
 	font-size: 14px;
-	transition: 0.0s;
+	transition: none;
 	border-radius: calc(var(--base-radius) - 3px);
 	text-transform: none;
 	color: rgba(var(--v-theme-text), 1) !important;

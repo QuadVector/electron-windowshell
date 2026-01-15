@@ -5,20 +5,32 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import contextmenu from "v-contextmenu";
-import { useRouterStore } from './inc/store/routerStore';
+import { useRouterStore } from "./inc/store/routerStore";
 import { DarkMode, LightMode } from "./core/scripts/themes";
+import { windowExtraProperties } from "./electron/windowExtraProperties";
 import App from "./App.vue";
 
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
+
+//подключение стилей текущей темы приложения
+const theme = windowExtraProperties.uiTheme;
+const cssLoaders = import.meta.glob("./core/styles/themes/*/*.css");
+await cssLoaders[`./core/styles/themes/${theme}/variables.css`]?.();
+await cssLoaders[`./core/styles/themes/${theme}/animations.css`]?.();
+await cssLoaders[`./core/styles/themes/${theme}/components.css`]?.();
+await cssLoaders[`./core/styles/themes/${theme}/app.css`]?.();
+
+//подключение остальных стилей
 import "v-contextmenu/dist/themes/default.css";
 import "./core/fonts/segoe-ui/stylesheet.css";
-import "./core/styles/variables.css";
-import "./core/styles/animations.css";
+import "./core/styles/themes/windows11/variables.css";
+import "./core/styles/themes/windows11/animations.css";
 import "./core/styles/base.css";
 import "./core/styles/backgrounds.css";
 import "./core/styles/helpers.css";
-import "./core/styles/components.css";
+import "./core/styles/themes/windows11/components.css";
+import "./core/styles/themes/windows11/app.css";
 import "./public/style.css";
 
 const app = createApp(App);
@@ -27,7 +39,10 @@ const vuetify = createVuetify({
 	components,
 	directives,
 	theme: {
-		defaultTheme: localStorage.getItem('current_theme_mode') === 'dark' ? 'DarkMode' : 'LightMode',
+		defaultTheme:
+			localStorage.getItem("current_theme_mode") === "dark"
+				? "DarkMode"
+				: "LightMode",
 		themes: { DarkMode, LightMode },
 	},
 });
@@ -37,7 +52,7 @@ app.use(pinia);
 
 const routerStore = useRouterStore();
 //@ts-ignore
-const routes: RouteRecordRaw[] = routerStore.routes.map(route => ({
+const routes: RouteRecordRaw[] = routerStore.routes.map((route) => ({
 	path: route.path,
 	component: () => import(`./inc/workspace/${route.component}.vue`),
 }));
@@ -85,11 +100,13 @@ window.setCurrentThemeAppMode = function (mode: string = "system") {
 };
 
 //os color theme change trigger
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-	if (localStorage.getItem("current_theme_mode") === "system") {
-		window.setCurrentThemeAppMode("system");
-	}
-});
+window
+	.matchMedia("(prefers-color-scheme: dark)")
+	.addEventListener("change", () => {
+		if (localStorage.getItem("current_theme_mode") === "system") {
+			window.setCurrentThemeAppMode("system");
+		}
+	});
 
 window.setCurrentThemeAppMode(
 	localStorage.getItem("current_theme_mode") || "system"

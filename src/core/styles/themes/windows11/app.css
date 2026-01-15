@@ -1,4 +1,5 @@
-body.loading, body.loading * {
+body.loading,
+body.loading * {
 	transition: none !important;
 	animation: none !important;
 }
@@ -69,14 +70,18 @@ body.unfocused .workspace-content .workspace__title {
 	height: calc(100% - var(--windowbar-height));
 }
 
-#app:has(.app__content > .v-navigation-drawer:not(.v-navigation-drawer--rail)) .scale-slide-enter-active,
-#app:has(.app__content > .v-navigation-drawer:not(.v-navigation-drawer--rail)) .scale-slide-leave-active {
+#app:has(.app__content > .v-navigation-drawer:not(.v-navigation-drawer--rail))
+	.scale-slide-enter-active,
+#app:has(.app__content > .v-navigation-drawer:not(.v-navigation-drawer--rail))
+	.scale-slide-leave-active {
 	width: calc(100% - 256px);
 	height: calc(100% - var(--windowbar-height));
 }
 
-#app:has(.app__content > .v-navigation-drawer.v-navigation-drawer--rail) .scale-slide-enter-active,
-#app:has(.app__content > .v-navigation-drawer.v-navigation-drawer--rail) .scale-slide-leave-active {
+#app:has(.app__content > .v-navigation-drawer.v-navigation-drawer--rail)
+	.scale-slide-enter-active,
+#app:has(.app__content > .v-navigation-drawer.v-navigation-drawer--rail)
+	.scale-slide-leave-active {
 	width: calc(100% - 51px);
 	height: calc(100% - var(--windowbar-height));
 }
@@ -99,12 +104,12 @@ body.unfocused .workspace-content .workspace__title {
 	max-width: 51px;
 }
 
-#app:has(.app__content > .v-navigation-drawer.v-navigation-drawer--rail) .v-main {
+#app:has(.app__content > .v-navigation-drawer.v-navigation-drawer--rail)
+	.v-main {
 	--v-layout-left: 51px !important;
 }
 
 @media screen and (max-width: 799px) {
-
 	.scale-slide-enter-active,
 	.scale-slide-leave-active {
 		position: absolute;
