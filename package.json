@@ -24,7 +24,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vue-tsc --noEmit --allowJs && vite build",
-		"release": "npm run build && electron-builder"
+		"release": "npm run build && electron-builder",
+		"update-core": "node scripts/updateCore.js"
 	},
 	"build": {
 		"appId": "electron-fluent-boilerplate",
@@ -62,8 +63,7 @@
 			"allowElevation": true,
 			"runAfterFinish": false,
 			"installerLanguages": "ru_RU"
-		},
-		"afterPack": "./removeLocales.js"
+		}
 	},
 	"env": {
 		"VITE_DEV_SERVER_HOST": "127.0.0.1",
