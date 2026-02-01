@@ -73,7 +73,8 @@
 		"@electron/remote": "^2.0.8",
 		"@simolation/vue-hotkey": "^2.0.1",
 		"vue-router": "^4.3.0",
-		"vue-tinykeys": "^0.2.1"
+		"vue-tinykeys": "^0.2.1",
+		"yauzl": "^3.2.0"
 	},
 	"devDependencies": {
 		"@mdi/font": "5.9.55",
