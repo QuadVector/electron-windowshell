@@ -1,22 +1,26 @@
 /* default background */
-body {
+body.vibrancy-window {
+	background: none !important;
+}
+
+body:not(.vibrancy-window) {
 	background: rgb(var(--v-theme-background)) !important;
 }
 
-body.unfocused {
+body:not(.vibrancy-window).unfocused {
 	background: rgb(var(--v-theme-unfocused)) !important;
 }
 
-body.fullscreen {
+body:not(.vibrancy-window).fullscreen {
 	transition: none;
 	background: rgb(var(--v-theme-background));
 }
 
-body.unfocused .bg-adaptive {
+body:not(.vibrancy-window).unfocused .bg-adaptive {
 	background: rgb(var(--v-theme-unfocused)) !important;
 }
 
-body .bg-adaptive {
+body:not(.vibrancy-window) .bg-adaptive {
 	background: rgb(var(--v-theme-background)) !important;
 	transition: all 0.3s ease-in-out;
 }

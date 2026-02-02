@@ -1,59 +1,61 @@
 import { BrowserWindow, nativeTheme } from "electron";
 import { DarkMode, LightMode } from "./themes";
 import { windowExtraProperties } from "../../electron/windowExtraProperties";
+import { windowProperties } from "../../electron/windowProperties";
 
 export function setCurrentThemeMode(mode: string = "system") {
-	const windows = BrowserWindow.getAllWindows();
+    const windows = BrowserWindow.getAllWindows();
 
-	function setDarkMode(win: BrowserWindow, changeThemeSource: boolean = true) {
-		if (windowExtraProperties.windowMaterialType == "fluent") {
-			win.setTitleBarOverlay({
-				color: "#ffffff00",
-				symbolColor: DarkMode.colors["text"],
-				height: 32,
-			});
+    type ThemeMode = "dark" | "light";
 
-			win.setBackgroundColor(DarkMode.colors["background"]);
-		}
+    const themes = {
+        dark: DarkMode,
+        light: LightMode,
+    };
 
-		if (changeThemeSource) {
-			nativeTheme.themeSource = "dark";
-		}
-	}
+    function setThemeMode(
+        win: BrowserWindow,
+        mode: ThemeMode,
+        changeThemeSource: boolean = mode === "dark",
+    ) {
+        const theme = themes[mode];
 
-	function setLightMode(win: BrowserWindow, changeThemeSource: boolean = false) {
-		if (windowExtraProperties.windowMaterialType == "fluent") {
-			win.setTitleBarOverlay({
-				color: "#ffffff00",
-				symbolColor: LightMode.colors["text"],
-				height: 32,
-			});
+        if (windowExtraProperties.windowMaterialType === "fluent") {
+            if (windowProperties.titleBarOverlay) {
+                win.setTitleBarOverlay({
+                    color: "#ffffff00",
+                    symbolColor: theme.colors.text,
+                    height: 32,
+                });
+            }
 
-			win.setBackgroundColor(LightMode.colors["background"]);
-		}
+            if (windowProperties.backgroundColor !== undefined) {
+                win.setBackgroundColor(theme.colors.background);
+            }
+        }
 
-		if (changeThemeSource) {
-			nativeTheme.themeSource = "light";
-		}
-	}
+        if (changeThemeSource) {
+            nativeTheme.themeSource = mode;
+        }
+    }
 
-	windows.forEach((win) => {
-		switch (mode) {
-			case "dark":
-				setDarkMode(win, true);
-				break;
-			case "light":
-				setLightMode(win, true);
-				break;
+    windows.forEach((win) => {
+        switch (mode) {
+            case "dark":
+                setThemeMode(win, "dark", true);
+                break;
+            case "light":
+                setThemeMode(win, "light", true);
+                break;
 
-			case "system":
-				nativeTheme.themeSource = "system";
-				if (nativeTheme.shouldUseDarkColors) {
-					setDarkMode(win, false);
-				} else {
-					setLightMode(win, false);
-				}
-				break;
-		}
-	});
+            case "system":
+                nativeTheme.themeSource = "system";
+                if (nativeTheme.shouldUseDarkColors) {
+                    setThemeMode(win, "dark", false);
+                } else {
+                    setThemeMode(win, "light", false);
+                }
+                break;
+        }
+    });
 }

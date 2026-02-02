@@ -9,6 +9,8 @@ import { initBrowserWindowEvents } from "../core/scripts/browserWindowEvents";
 import { initElectronAPIEvents } from "../core/scripts/electronAPIEvents";
 import { initDarkModeEvents } from "../core/scripts/darkModeEvents";
 import { initAppEvents } from "./appEvents";
+import { nativeTheme } from "electron";
+import { DarkMode, LightMode } from "../core/scripts/themes";
 const remoteMain = require("@electron/remote/main");
 
 //global variables
@@ -19,8 +21,8 @@ globalThis.__dirname = dirname(__filename);
 process.env.DIST_ELECTRON = join(__dirname, "..");
 process.env.DIST = join(process.env.DIST_ELECTRON, "../dist");
 process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL
-	? join(process.env.DIST_ELECTRON, "../src/public")
-	: process.env.DIST;
+    ? join(process.env.DIST_ELECTRON, "../src/public")
+    : process.env.DIST;
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
@@ -29,8 +31,8 @@ if (release().startsWith("6.1")) app.disableHardwareAcceleration();
 if (process.platform === "win32") app.setAppUserModelId(app.getName());
 
 if (!app.requestSingleInstanceLock()) {
-	app.quit();
-	process.exit(0);
+    app.quit();
+    process.exit(0);
 }
 
 let win: BrowserWindow;
@@ -38,49 +40,53 @@ const url: string = String(process.env.VITE_DEV_SERVER_URL);
 const indexHtml = join(process.env.DIST, "index.html");
 
 async function createWindow() {
-	if (windowExtraProperties.windowMaterialType == "fluent") {
-		windowProperties.titleBarStyle = "hidden";
-		windowProperties.frame = false;
-	} else {
-		windowProperties.titleBarStyle = "default";
-		windowProperties.frame = true;
-	}
+    const isFluent = windowExtraProperties.windowMaterialType === "fluent";
 
-	//@ts-ignore
-	win = new BrowserWindow(windowProperties);
-	if (process.env.VITE_DEV_SERVER_URL) {
-		win.loadURL(url);
-	} else {
-		win.loadFile(indexHtml);
-	}
+    windowProperties.titleBarStyle = isFluent ? "hidden" : "default";
+    windowProperties.frame = !isFluent;
 
-	remoteMain.initialize();
-	initBrowserWindowEvents(win, windowExtraProperties.windowMaterialType);
-	initElectronWindowEvents(app, win);
-	initAppEvents(app, win);
-	initElectronAPIEvents(app, win);
-	initDarkModeEvents(app, win);
+    windowProperties.backgroundColor = windowProperties.backgroundMaterial
+        ? undefined
+        : (windowProperties.backgroundColor ??
+          (nativeTheme.shouldUseDarkColors
+              ? DarkMode.colors["background"]
+              : LightMode.colors["background"]));
 
-	app.on("activate", () => {
-		const allWindows = BrowserWindow.getAllWindows();
-		if (allWindows.length) {
-			allWindows[0].focus();
-		} else {
-			createWindow();
-		}
-	});
+    //@ts-ignore
+    win = new BrowserWindow(windowProperties);
+    if (process.env.VITE_DEV_SERVER_URL) {
+        win.loadURL(url);
+    } else {
+        win.loadFile(indexHtml);
+    }
 
-	remoteMain.enable(win.webContents);
+    remoteMain.initialize();
+    initBrowserWindowEvents(win, windowExtraProperties.windowMaterialType);
+    initElectronWindowEvents(app, win);
+    initAppEvents(app, win);
+    initElectronAPIEvents(app, win);
+    initDarkModeEvents(app, win);
+
+    app.on("activate", () => {
+        const allWindows = BrowserWindow.getAllWindows();
+        if (allWindows.length) {
+            allWindows[0].focus();
+        } else {
+            createWindow();
+        }
+    });
+
+    remoteMain.enable(win.webContents);
 }
 
 //disable second instance
 app.on("second-instance", () => {
-	if (win) {
-		if (win.isMinimized()) win.restore();
-		win.focus();
-	}
+    if (win) {
+        if (win.isMinimized()) win.restore();
+        win.focus();
+    }
 });
 
 app.whenReady().then(() => {
-	createWindow();
+    createWindow();
 });

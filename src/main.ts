@@ -23,7 +23,6 @@ await cssLoaders[`./core/styles/themes/${theme}/app.css`]?.();
 
 //подключение остальных стилей
 import "v-contextmenu/dist/themes/default.css";
-import "./core/fonts/segoe-ui/stylesheet.css";
 import "./core/styles/themes/windows11/variables.css";
 import "./core/styles/themes/windows11/animations.css";
 import "./core/styles/base.css";
