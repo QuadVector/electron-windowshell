@@ -7,8 +7,7 @@ export const windowProperties: any = {
     height: 800,
     minWidth: 600,
     minHeight: 750,
-    fullscreenable: true,
-    offscreen: false,
+    offscreen: true,
     webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
@@ -16,13 +15,9 @@ export const windowProperties: any = {
         webSecurity: true,
         preload: join(__dirname, "preload.js"),
     },
-    maximizable: true,
-    resizable: true,
-    autoHideMenuBar: true,
     show: false,
     titleBarOverlay: {
         height: 32,
     },
-    frame: true,
     backgroundMaterial: "mica",
 };

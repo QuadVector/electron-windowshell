@@ -7,14 +7,14 @@ export function initBrowserWindowEvents(
 ) {
     console.log("[browserWindowEvents] Init browser window events");
 
-    //focus event
+    // Focus event
     win.on("focus", function () {
         win.webContents.executeJavaScript(
             `document.querySelector("body").classList.remove("unfocused");`,
         );
     });
 
-    //blur event
+    // Blur event
     win.on("blur", function () {
         win.webContents.executeJavaScript(
             `document.querySelector("body").classList.add("unfocused");`,
@@ -26,13 +26,14 @@ export function initBrowserWindowEvents(
         );
     });
 
-    //fullscreen mode body class
+    // Fullscreen mode body class
     win.on("enter-full-screen", () => {
         win.webContents.executeJavaScript(
             `document.querySelector("body").classList.add("fullscreen");`,
         );
     });
 
+    // Fullscreen mode body class
     win.on("leave-full-screen", () => {
         win.webContents.executeJavaScript(
             `document.querySelector("body").classList.remove("fullscreen");`,
@@ -53,8 +54,8 @@ export function initBrowserWindowEvents(
         return { action: "deny" };
     });
 
+    // Execute a script for window properties
     win.once("ready-to-show", () => {
-        //execute an extra script for getting theme mode for reducing flickering
         let isVibrancyWindow =
             windowProperties.backgroundMaterial !== undefined;
         win.webContents

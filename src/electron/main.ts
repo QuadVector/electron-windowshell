@@ -42,9 +42,11 @@ const indexHtml = join(process.env.DIST, "index.html");
 async function createWindow() {
     const isFluent = windowExtraProperties.windowMaterialType === "fluent";
 
+    //window properties depending on windowMaterialType
     windowProperties.titleBarStyle = isFluent ? "hidden" : "default";
     windowProperties.frame = !isFluent;
 
+    //default background color (only if backgroundMaterial is not set)
     windowProperties.backgroundColor = windowProperties.backgroundMaterial
         ? undefined
         : (windowProperties.backgroundColor ??
@@ -60,6 +62,7 @@ async function createWindow() {
         win.loadFile(indexHtml);
     }
 
+    //initialize
     remoteMain.initialize();
     initBrowserWindowEvents(win, windowExtraProperties.windowMaterialType);
     initElectronWindowEvents(app, win);
@@ -80,12 +83,14 @@ async function createWindow() {
 }
 
 //disable second instance
-app.on("second-instance", () => {
-    if (win) {
-        if (win.isMinimized()) win.restore();
-        win.focus();
-    }
-});
+if (windowExtraProperties.disableSecondInstance) {
+    app.on("second-instance", () => {
+        if (win) {
+            if (win.isMinimized()) win.restore();
+            win.focus();
+        }
+    });
+}
 
 app.whenReady().then(() => {
     createWindow();
