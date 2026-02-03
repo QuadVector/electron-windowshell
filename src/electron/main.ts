@@ -35,11 +35,11 @@ if (!app.requestSingleInstanceLock()) {
     process.exit(0);
 }
 
-let win: BrowserWindow;
+let mainWindow: BrowserWindow;
 const url: string = String(process.env.VITE_DEV_SERVER_URL);
 const indexHtml = join(process.env.DIST, "index.html");
 
-async function createWindow() {
+async function createMainWindow() {
     const isFluent = windowExtraProperties.windowMaterialType === "fluent";
 
     //window properties depending on windowMaterialType
@@ -55,43 +55,46 @@ async function createWindow() {
               : LightMode.colors["background"]));
 
     //@ts-ignore
-    win = new BrowserWindow(windowProperties);
+    mainWindow = new BrowserWindow(windowProperties);
     if (process.env.VITE_DEV_SERVER_URL) {
-        win.loadURL(url);
+        mainWindow.loadURL(url);
     } else {
-        win.loadFile(indexHtml);
+        mainWindow.loadFile(indexHtml);
     }
 
     //initialize
     remoteMain.initialize();
-    initBrowserWindowEvents(win, windowExtraProperties.windowMaterialType);
-    initElectronWindowEvents(app, win);
-    initAppEvents(app, win);
-    initElectronAPIEvents(app, win);
-    initDarkModeEvents(app, win);
+    initBrowserWindowEvents(
+        mainWindow,
+        windowExtraProperties.windowMaterialType,
+    );
+    initElectronWindowEvents(app, mainWindow);
+    initAppEvents(app, mainWindow);
+    initElectronAPIEvents(app, mainWindow);
+    initDarkModeEvents(app, mainWindow);
 
     app.on("activate", () => {
         const allWindows = BrowserWindow.getAllWindows();
         if (allWindows.length) {
             allWindows[0].focus();
         } else {
-            createWindow();
+            createMainWindow();
         }
     });
 
-    remoteMain.enable(win.webContents);
+    remoteMain.enable(mainWindow.webContents);
 }
 
 //disable second instance
 if (windowExtraProperties.disableSecondInstance) {
     app.on("second-instance", () => {
-        if (win) {
-            if (win.isMinimized()) win.restore();
-            win.focus();
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore();
+            mainWindow.focus();
         }
     });
 }
 
 app.whenReady().then(() => {
-    createWindow();
+    createMainWindow();
 });

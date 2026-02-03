@@ -6,13 +6,21 @@ import { windowProperties } from "../../electron/windowProperties";
 export function setCurrentThemeMode(mode: string = "system") {
     const windows = BrowserWindow.getAllWindows();
 
+    // Define the available themes
     type ThemeMode = "dark" | "light";
-
     const themes = {
         dark: DarkMode,
         light: LightMode,
     };
 
+    /**
+     * Sets the theme mode for the given window.
+     *
+     * @param {BrowserWindow} win - The window for which to set the theme mode.
+     * @param {ThemeMode} mode - The theme mode to set. One of "dark" or "light".
+     * @param {boolean} [changeThemeSource=true] - Whether to change the theme source of the native theme.
+     * @returns {void}
+     */
     function setThemeMode(
         win: BrowserWindow,
         mode: ThemeMode,
@@ -39,6 +47,7 @@ export function setCurrentThemeMode(mode: string = "system") {
         }
     }
 
+    // Set the theme mode for each window
     windows.forEach((win) => {
         switch (mode) {
             case "dark":

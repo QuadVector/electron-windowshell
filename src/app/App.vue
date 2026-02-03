@@ -66,11 +66,11 @@
 
 <script>
 import MainMenu from "/src/core/components/MainMenu.vue";
-import WindowBar from "./core/components/WindowBar.vue";
-import AboutModal from "./core/components/AboutModal.vue";
-import { useRouterStore } from "./inc/store/routerStore";
-import { useMainStore } from "./inc/store/mainStore";
-import { windowExtraProperties } from "./electron/windowExtraProperties";
+import WindowBar from "../core/components/WindowBar.vue";
+import AboutModal from "../core/components/AboutModal.vue";
+import { useRouterStore } from "../inc/store/routerStore";
+import { useMainStore } from "../inc/store/mainStore";
+import { windowExtraProperties } from "../electron/windowExtraProperties";
 
 export default {
 	components: {

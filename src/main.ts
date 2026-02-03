@@ -8,7 +8,7 @@ import contextmenu from "v-contextmenu";
 import { useRouterStore } from "./inc/store/routerStore";
 import { DarkMode, LightMode } from "./core/scripts/themes";
 import { windowExtraProperties } from "./electron/windowExtraProperties";
-import App from "./App.vue";
+import App from "./app/App.vue";
 
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";

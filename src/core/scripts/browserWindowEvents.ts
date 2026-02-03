@@ -7,6 +7,8 @@ export function initBrowserWindowEvents(
 ) {
     console.log("[browserWindowEvents] Init browser window events");
 
+    if (windowMaterialType === undefined) windowMaterialType = "default";
+
     // Focus event
     win.on("focus", function () {
         win.webContents.executeJavaScript(
@@ -56,15 +58,18 @@ export function initBrowserWindowEvents(
 
     // Execute a script for window properties
     win.once("ready-to-show", () => {
-        let isVibrancyWindow =
-            windowProperties.backgroundMaterial !== undefined;
+        let backgroundMaterial = windowProperties.backgroundMaterial;
+        let doesHaveBackgroundMaterial = backgroundMaterial !== undefined;
         win.webContents
             .executeJavaScript(
                 `
 				localStorage.getItem("current_theme_mode");
 				document.querySelector("body").classList.remove("loading");
 				document.querySelector("body").classList.add("window-material-type-${windowMaterialType}");
-				if(${isVibrancyWindow}) document.querySelector("body").classList.add("vibrancy-window");
+				if(${doesHaveBackgroundMaterial}) {
+                    document.querySelector("body").classList.add("vibrancy-window");
+                    document.querySelector("body").classList.add("vibrancy-window-${backgroundMaterial}");
+                }
 			`,
                 true,
             )
