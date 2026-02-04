@@ -50,27 +50,6 @@ contextBridge.exposeInMainWorld("application", {
         return ipcRenderer.invoke("open-file-data", filePath);
     },
 
-    /**
-     * Opens a new window with the provided file from /src/app/ folder and window properties.
-     * This method will send a message to the main process to open a new window with the provided file name and window properties.
-     * The main process will then open a new window with the provided file name and window properties.
-     * @param {string} fileName The file name of the new window. The file is from /src/app/ folder.
-     * @param {any} windowProperties The window properties of the new window.
-     * @param {any} windowExtraProperties The window extra properties of the new window.
-     */
-    openNewWindow(
-        fileName: string,
-        windowProperties: any,
-        windowExtraProperties: any,
-    ) {
-        ipcRenderer.send(
-            "open-new-window",
-            fileName,
-            windowProperties,
-            windowExtraProperties,
-        );
-    },
-
     openNewURLWindow(url: string, windowProperties: any) {
         ipcRenderer.send("open-new-url-window", url, windowProperties);
     },

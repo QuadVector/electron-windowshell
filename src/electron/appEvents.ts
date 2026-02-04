@@ -7,6 +7,7 @@ import {
 } from "electron";
 import { nativeTheme } from "electron";
 import fs from "fs";
+import { join, dirname } from "path";
 import { initElectronWindowEvents } from "../core/scripts/electronWindowEvents";
 import { initBrowserWindowEvents } from "../core/scripts/browserWindowEvents";
 import { initElectronAPIEvents } from "../core/scripts/electronAPIEvents";
@@ -65,53 +66,9 @@ export function initAppEvents(app: Electron.App, win: BrowserWindow) {
         },
     );
 
-    // Create new parent window with the specified file from /src/app/ folder
-    ipcMain.on(
-        "open-new-window",
-        (
-            event: any,
-            fileName: string,
-            windowProperties: any,
-            windowExtraProperties: any,
-        ) => {
-            if (fileName === "") return;
-
-            //set main window as parent
-            windowProperties.parent = win;
-
-            const isFluent =
-                windowExtraProperties.windowMaterialType === "fluent";
-
-            //window properties depending on windowMaterialType
-            windowProperties.titleBarStyle = isFluent ? "hidden" : "default";
-            windowProperties.frame = !isFluent;
-
-            //default background color (only if backgroundMaterial is not set)
-            windowProperties.backgroundColor =
-                windowProperties.backgroundMaterial
-                    ? undefined
-                    : (windowProperties.backgroundColor ??
-                      (nativeTheme.shouldUseDarkColors
-                          ? DarkMode.colors["background"]
-                          : LightMode.colors["background"]));
-
-            initBrowserWindowEvents(
-                win,
-                windowExtraProperties.windowMaterialType,
-            );
-            initElectronWindowEvents(app, win);
-            initAppEvents(app, win);
-            initElectronAPIEvents(app, win);
-            initDarkModeEvents(app, win);
-
-            const childWindow = new BrowserWindow(windowProperties);
-            childWindow.loadFile(fileName);
-        },
-    );
-
     ipcMain.on(
         "open-new-url-window",
-        (event: any, url: string, windowProperties: any) => {
+        (event: any, url: string, windowProperties: any = {}) => {
             //set main window as parent
             windowProperties.parent = win;
 

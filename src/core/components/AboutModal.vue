@@ -128,7 +128,7 @@ export default {
 };
 </script>
 <style scoped>
-.about__dialog .v-avatar {
+:deep(.about__dialog .v-avatar) {
     border-radius: 0px;
 }
 

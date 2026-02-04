@@ -8,12 +8,12 @@ import contextmenu from "v-contextmenu";
 import { useRouterStore } from "./inc/store/routerStore";
 import { DarkMode, LightMode } from "./core/scripts/themes";
 import { windowExtraProperties } from "./electron/windowExtraProperties";
-import App from "./inc/app/App.vue";
+import App from "./inc/App.vue";
 
 import "@mdi/font/css/materialdesignicons.css";
-import "vuetify/styles";
+import "vuetify/styles/main.css";
 
-//подключение стилей текущей темы приложения
+//include styles of the current theme of the application
 const theme = windowExtraProperties.uiTheme;
 const cssLoaders = import.meta.glob("./core/styles/themes/*/*.css");
 await cssLoaders[`./core/styles/themes/${theme}/variables.css`]?.();
@@ -21,7 +21,7 @@ await cssLoaders[`./core/styles/themes/${theme}/animations.css`]?.();
 await cssLoaders[`./core/styles/themes/${theme}/components.css`]?.();
 await cssLoaders[`./core/styles/themes/${theme}/app.css`]?.();
 
-//подключение остальных стилей
+//include the rest of the styles
 import "v-contextmenu/dist/themes/default.css";
 import "./core/styles/themes/windows11/variables.css";
 import "./core/styles/themes/windows11/animations.css";
