@@ -4,6 +4,8 @@ import { windowExtraProperties } from "../../electron/windowExtraProperties";
 import { windowProperties } from "../../electron/windowProperties";
 
 export function setCurrentThemeMode(mode: string = "system") {
+    console.log(`[helpers] Setting theme mode to ${mode}`);
+
     const windows = BrowserWindow.getAllWindows();
 
     // Define the available themes

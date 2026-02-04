@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-interface IMenuItem {
+export interface IMenuItem {
 	anchor: string;
 	name?: string;
 	extra?: any;

@@ -1,5 +1,5 @@
 <template>
-	<div class="workspace-content inner-padding text-center content-center overflow-hidden">
+	<div class="page-content inner-padding text-center content-center overflow-hidden">
 		<div>
 			<h1>Welcome to the main page of the fluent app!</h1>
 			<h2>Navigator paged app template</h2>

@@ -9,7 +9,7 @@ export const useRouterStore = defineStore("routerStore", {
 			{ path: '/components', component: "Components" },
 			{ path: '/grid', component: "Grid" },
 		],
-		//dock menu items (navigator menu) (works only if useNavigator in windowProperties.ts is true)
+		//dock menu items (navigator menu) (works only if useNavigator in windowExtraProperties.ts is true)
 		navigatorMenuItems: [
 			{ title: "Welcome", routePath: "/", icon: "mdi-home" },
 			{ title: "Components", routePath: "/components", icon: "mdi-wrench" },

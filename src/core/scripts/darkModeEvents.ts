@@ -2,7 +2,7 @@ import { ipcMain, systemPreferences, BrowserWindow } from "electron";
 import { setCurrentThemeMode } from "./helpers";
 
 export function initDarkModeEvents(app: Electron.App, win: BrowserWindow) {
-	console.log("[darkModeEvents] Init dark mode events");
+	console.log("[darkModeEvents] Init core dark mode events");
 
 	systemPreferences.on("accent-color-changed", (event, mode) => {
 		setCurrentThemeMode(mode);

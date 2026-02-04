@@ -8,7 +8,7 @@ import contextmenu from "v-contextmenu";
 import { useRouterStore } from "./inc/store/routerStore";
 import { DarkMode, LightMode } from "./core/scripts/themes";
 import { windowExtraProperties } from "./electron/windowExtraProperties";
-import App from "./app/App.vue";
+import App from "./inc/app/App.vue";
 
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
@@ -53,7 +53,7 @@ const routerStore = useRouterStore();
 //@ts-ignore
 const routes: RouteRecordRaw[] = routerStore.routes.map((route) => ({
     path: route.path,
-    component: () => import(`./inc/workspace/${route.component}.vue`),
+    component: () => import(`./inc/page/${route.component}.vue`),
 }));
 
 const router = createRouter({

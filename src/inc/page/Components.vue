@@ -1,8 +1,8 @@
 <template>
-	<div class="workspace-content vertical-scroll inner-padding-horizontal inner-padding-bottom">
-		<div class="workspace__title">
-			<div class="workspace__title__text">Components</div>
-			<div class="workspace__title__actions">
+	<div class="page-content vertical-scroll inner-padding-horizontal inner-padding-bottom">
+		<div class="page__title">
+			<div class="page__title__text">Components</div>
+			<div class="page__title__actions">
 				<v-btn variant="tonal" @click="$router.go(-1)">Back</v-btn>
 			</div>
 		</div>

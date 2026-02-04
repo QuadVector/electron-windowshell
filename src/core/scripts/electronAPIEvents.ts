@@ -1,17 +1,11 @@
-import {
-    ipcMain,
-    dialog,
-    BrowserWindow,
-    SaveDialogReturnValue,
-    OpenDialogReturnValue,
-} from "electron";
+import { ipcMain, BrowserWindow } from "electron";
 import { exec } from "child_process";
 import os from "os";
 import iconv from "iconv-lite";
 const fs = require("fs");
 
 export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
-    console.log("[electronAPIEvents] Init electron API events");
+    console.log("[electronAPIEvents] Init core electron API events");
 
     // Get the versions of Electron, Chromium, Node.js, and V8
     ipcMain.handle("get-versions", (event: any) => {
@@ -64,54 +58,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
         return win.webContents.getZoomFactor();
     });
 
-    // Show save file dialog
-    ipcMain.handle(
-        "show-save-file-dialog",
-        (event: any, options: object): Promise<SaveDialogReturnValue> => {
-            const totalOptions = { ...options };
-            const win =
-                BrowserWindow.getFocusedWindow() ||
-                BrowserWindow.getAllWindows()[0];
-            return dialog.showSaveDialog(win, totalOptions);
-        },
-    );
-
-    // Save file data
-    ipcMain.handle(
-        "save-file-data",
-        async (event, filePath: string, data: string): Promise<void> => {
-            try {
-                await fs.promises.writeFile(filePath, data);
-            } catch (error) {
-                throw error;
-            }
-        },
-    );
-
-    // Show open file dialog
-    ipcMain.handle(
-        "show-open-file-dialog",
-        (event: any, options: object): Promise<OpenDialogReturnValue> => {
-            const totalOptions = { ...options };
-            const win =
-                BrowserWindow.getFocusedWindow() ||
-                BrowserWindow.getAllWindows()[0];
-            return dialog.showOpenDialog(win, totalOptions);
-        },
-    );
-
-    // Open file data
-    ipcMain.handle(
-        "open-file-data",
-        (event, filePath: string): Promise<any> => {
-            try {
-                return fs.promises.readFile(filePath, "utf-8");
-            } catch (error) {
-                throw error;
-            }
-        },
-    );
-
+    // Get the current wallpaper
     ipcMain.handle("get-current-wallpaper", (): Promise<string> => {
         return new Promise((resolve, reject) => {
             if (os.platform() === "win32") {

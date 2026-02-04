@@ -24,5 +24,5 @@ export const windowProperties: any = {
     displayFluentIcon: true, // display window icon, when windowMaterialType is fluent
     windowMaterialType: "fluent", // fluent or default,
     uiTheme: "windows11",
-    disableSecondeInstance: true,
+    disableSecondInstance: true,
 };

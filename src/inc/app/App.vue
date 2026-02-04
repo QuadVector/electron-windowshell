@@ -51,7 +51,7 @@
 					</v-list-item>
 				</v-list>
 			</v-navigation-drawer>
-			<div class="app__workspace">
+			<div class="app__page">
 				<router-view v-slot="{ Component, route }">
 					<transition name="scale-slide">
 						<keep-alive>
@@ -65,12 +65,12 @@
 </template>
 
 <script>
-import MainMenu from "/src/core/components/MainMenu.vue";
-import WindowBar from "../core/components/WindowBar.vue";
-import AboutModal from "../core/components/AboutModal.vue";
-import { useRouterStore } from "../inc/store/routerStore";
-import { useMainStore } from "../inc/store/mainStore";
-import { windowExtraProperties } from "../electron/windowExtraProperties";
+import MainMenu from "../../core/components/MainMenu.vue";
+import WindowBar from "../../core/components/WindowBar.vue";
+import AboutModal from "../../core/components/AboutModal.vue";
+import { useRouterStore } from "../../inc/store/routerStore";
+import { useMainStore } from "../../inc/store/mainStore";
+import { windowExtraProperties } from "../../electron/windowExtraProperties";
 
 export default {
 	components: {

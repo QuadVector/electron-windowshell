@@ -5,7 +5,7 @@ export function initBrowserWindowEvents(
     win: BrowserWindow,
     windowMaterialType: string,
 ) {
-    console.log("[browserWindowEvents] Init browser window events");
+    console.log("[browserWindowEvents] Init core browser window events");
 
     if (windowMaterialType === undefined) windowMaterialType = "default";
 
