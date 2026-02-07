@@ -1,37 +1,45 @@
 <template>
-	<div class="component__WindowBar">
-		<v-app-bar class="component__WindowBar__bar" density="compact">
-			<slot name="prepend"></slot>
-			<v-app-bar-title class="component__WindowBar-title text-center">
-				{{ windowTitle }}
-			</v-app-bar-title>
-		</v-app-bar>
-	</div>
+    <div class="component__WindowBar">
+        <v-app-bar class="component__WindowBar__bar" density="compact">
+            <slot name="prepend"></slot>
+            <v-app-bar-title class="component__WindowBar-title text-center">
+                {{ windowTitle }}
+            </v-app-bar-title>
+        </v-app-bar>
+    </div>
 </template>
 
 <script>
 export default {
-	data() {
-		return {
-			windowTitle: document.title,
-			_titleObserver: null
-		};
-	},
-	
-	mounted() {
-		//observer for document title
-		const that = this;
-		const titleElement = document.querySelector("title");
+    /**
+     * Component state.
+     *
+     * - windowTitle: Mirrors the current document title for display/binding.
+     * - _titleObserver: MutationObserver instance used to track title changes.
+     */
+    data() {
+        return {
+            windowTitle: document.title,
+            _titleObserver: null,
+        };
+    },
 
-		if(titleElement) {
-			this._titleObserver = new MutationObserver(() => {
-				that.windowTitle = document.title;
-			});
+    mounted() {
+        /**
+         * Observes changes to the <title> element and keeps windowTitle in sync.
+         */
+        const that = this;
+        const titleElement = document.querySelector("title");
 
-			this._titleObserver.observe(titleElement, {
-				childList: true
-			});
-		}
-	}
+        if (titleElement) {
+            this._titleObserver = new MutationObserver(() => {
+                that.windowTitle = document.title;
+            });
+
+            this._titleObserver.observe(titleElement, {
+                childList: true,
+            });
+        }
+    },
 };
 </script>

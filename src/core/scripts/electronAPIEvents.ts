@@ -4,10 +4,21 @@ import os from "os";
 import iconv from "iconv-lite";
 const fs = require("fs");
 
+/**
+ * Registers core IPC handlers/events exposed by the main process.
+ *
+ * Sets up commands for retrieving runtime versions, controlling app/window state,
+ * managing zoom level, and reading OS-specific values (e.g., wallpaper on Windows).
+ *
+ * @param app Electron application instance.
+ * @param win Main application window reference.
+ */
 export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
     console.log("[electronAPIEvents] Init core electron API events");
 
-    // Get the versions of Electron, Chromium, Node.js, and V8
+    /**
+     * Returns runtime versions (Electron, Chromium, Node.js, V8) and basic OS info.
+     */
     ipcMain.handle("get-versions", (event: any) => {
         return {
             electronVersion: process.versions.electron,
@@ -18,12 +29,16 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
         };
     });
 
-    // Close the application
+    /**
+     * Quits the application.
+     */
     ipcMain.on("close-application", (event: any) => {
         app.quit();
     });
 
-    // Toggle the full screen mode
+    /**
+     * Toggles fullscreen mode for the focused window (or the first available one).
+     */
     ipcMain.on("toggle-fullscreen", (event: any) => {
         const win =
             BrowserWindow.getFocusedWindow() ||
@@ -33,7 +48,12 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
         }
     });
 
-    // Set the zoom factor
+    /**
+     * Sets the zoom factor for the focused window (or the first available one),
+     * clamped to a safe range.
+     *
+     * @param zoomFactor Target zoom factor.
+     */
     ipcMain.on("set-zoom-factor", (event: any, zoomFactor: number) => {
         const minZoomFactor = 0.5;
         const maxZoomFactor = 1.5;
@@ -50,7 +70,9 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
         win.webContents.setZoomFactor(zoomFactor);
     });
 
-    // Get the zoom factor
+    /**
+     * Returns the current zoom factor for the focused window (or the first available one).
+     */
     ipcMain.handle("get-zoom-factor", (event: any) => {
         const win =
             BrowserWindow.getFocusedWindow() ||
@@ -58,7 +80,11 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
         return win.webContents.getZoomFactor();
     });
 
-    // Get the current wallpaper
+    /**
+     * Returns the current desktop wallpaper path (Windows only).
+     *
+     * Resolves with an empty string when unavailable or on unsupported platforms.
+     */
     ipcMain.handle("get-current-wallpaper", (): Promise<string> => {
         return new Promise((resolve, reject) => {
             if (os.platform() === "win32") {

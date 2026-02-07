@@ -1,56 +1,84 @@
-import { initPreloadElectronAPIMethods } from "../core/scripts/preloadExpose";
 import { contextBridge, ipcRenderer } from "electron";
+import {
+    BrowserWindowConstructorOptions,
+    OpenDialogOptions,
+    OpenDialogReturnValue,
+    SaveDialogOptions,
+    SaveDialogReturnValue,
+} from "electron";
+
+import { initPreloadElectronAPIMethods } from "../core/scripts/preloadExpose";
 
 initPreloadElectronAPIMethods();
 
-//your methods here
-contextBridge.exposeInMainWorld("application", {
+/**
+ * Renderer-facing API exposed via Electron `contextBridge`.
+ *
+ * @remarks
+ * This object is available as `window.application` in the renderer process.
+ * All methods are backed by IPC calls to the main process.
+ */
+const applicationAPI = {
     /**
-     * Show a save file dialog to the user.
-     * This method will send a message to the main process to show a save file dialog.
-     * The main process will then show a save file dialog to the user based on the provided options.
-     * @param {object} options The options to pass to the save file dialog.
-     * @returns {Promise<SaveDialogReturnValue>} A promise that resolves with the result of the save file dialog.
+     * Opens the native "Save File" dialog.
+     *
+     * @param options - Save dialog options.
+     * @returns Promise with the dialog result.
      */
-    showSaveFileDialog(options: object) {
+    showSaveFileDialog(
+        options: SaveDialogOptions,
+    ): Promise<SaveDialogReturnValue> {
         return ipcRenderer.invoke("show-save-file-dialog", options);
     },
 
     /**
-     * Save the provided data to the provided file path.
-     * This method will send a message to the main process to save the provided data to the provided file path.
-     * The main process will then save the provided data to the provided file path.
-     * @param {string} filePath The file path to save the data to.
-     * @param {string} data The data to save.
-     * @returns {Promise<boolean>} A promise that resolves with true if the data was saved successfully, false otherwise.
+     * Writes UTF-8 text data to disk.
+     *
+     * @param filePath - Destination path.
+     * @param data - Text to write.
+     * @returns Promise that resolves when the write completes.
+     *
+     * @remarks
+     * The main-process handler returns `void`, so this resolves to `void`.
      */
-    saveFileData(filePath: string, data: string) {
+    saveFileData(filePath: string, data: string): Promise<void> {
         return ipcRenderer.invoke("save-file-data", filePath, data);
     },
 
     /**
-     * Show an open file dialog to the user.
-     * This method will send a message to the main process to show an open file dialog.
-     * The main process will then show an open file dialog to the user based on the provided options.
-     * @param {object} options The options to pass to the open file dialog.
-     * @returns {Promise<OpenDialogReturnValue>} A promise that resolves with the result of the open file dialog.
+     * Opens the native "Open File" dialog.
+     *
+     * @param options - Open dialog options.
+     * @returns Promise with the dialog result.
      */
-    showOpenFileDialog(options: object) {
+    showOpenFileDialog(
+        options: OpenDialogOptions,
+    ): Promise<OpenDialogReturnValue> {
         return ipcRenderer.invoke("show-open-file-dialog", options);
     },
 
     /**
-     * Opens the provided file path and reads its contents.
-     * This method will send a message to the main process to open the provided file path and read its contents.
-     * The main process will then open the provided file path, read its contents and return the result to the renderer process.
-     * @param {string} filePath The file path to open and read.
-     * @returns {Promise<string>} A promise that resolves with the contents of the file.
+     * Reads a file as UTF-8 text.
+     *
+     * @param filePath - Source file path.
+     * @returns Promise with file contents.
      */
-    openFileData(filePath: string) {
+    openFileData(filePath: string): Promise<string> {
         return ipcRenderer.invoke("open-file-data", filePath);
     },
 
-    openNewURLWindow(url: string, windowProperties: any) {
+    /**
+     * Opens a child window and loads the given URL.
+     *
+     * @param url - URL to load.
+     * @param windowProperties - Optional BrowserWindow constructor options.
+     */
+    openNewURLWindow(
+        url: string,
+        windowProperties?: BrowserWindowConstructorOptions,
+    ): void {
         ipcRenderer.send("open-new-url-window", url, windowProperties);
     },
-});
+} as const;
+
+contextBridge.exposeInMainWorld("application", applicationAPI);

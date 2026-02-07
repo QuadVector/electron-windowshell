@@ -1,3 +1,9 @@
+/**
+ * @file Renderer entrypoint.
+ * Bootstraps Vue app (Pinia, Router, Vuetify, context menu), loads theme CSS,
+ * and syncs theme mode with localStorage + OS + Electron.
+ */
+
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
@@ -13,7 +19,10 @@ import App from "./inc/App.vue";
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles/main.css";
 
-//include styles of the current theme of the application
+/**
+ * Loads CSS chunks for the currently selected UI theme.
+ * @remarks Uses Vite dynamic imports to include only the active theme styles.
+ */
 const theme = windowExtraProperties.uiTheme;
 const cssLoaders = import.meta.glob("./core/styles/themes/*/*.css");
 await cssLoaders[`./core/styles/themes/${theme}/variables.css`]?.();
@@ -32,8 +41,13 @@ import "./core/styles/themes/windows11/components.css";
 import "./core/styles/themes/windows11/app.css";
 import "./public/style.css";
 
+/** Vue application instance. */
 const app = createApp(App);
 
+/**
+ * Vuetify plugin instance.
+ * @remarks Default theme is derived from `localStorage.current_theme_mode`.
+ */
 const vuetify = createVuetify({
     components,
     directives,
@@ -46,9 +60,14 @@ const vuetify = createVuetify({
     },
 });
 
+/** Pinia store manager. */
 const pinia = createPinia();
 app.use(pinia);
 
+/**
+ * Router configuration.
+ * @remarks Routes are generated from {@link useRouterStore} definitions with lazy-loaded pages.
+ */
 const routerStore = useRouterStore();
 //@ts-ignore
 const routes: RouteRecordRaw[] = routerStore.routes.map((route) => ({
@@ -56,11 +75,15 @@ const routes: RouteRecordRaw[] = routerStore.routes.map((route) => ({
     component: () => import(`./inc/page/${route.component}.vue`),
 }));
 
+/** Vue Router instance using hash-based navigation. */
 const router = createRouter({
     history: createWebHashHistory(),
     routes,
 });
 
+/**
+ * Updates navigation state after route changes and auto-closes navigator on small screens.
+ */
 routerStore.canGoBack = window.history.state.back !== null;
 router.afterEach(() => {
     routerStore.canGoBack = window.history.state.back !== null;
@@ -74,6 +97,14 @@ app.use(vuetify);
 app.use(contextmenu);
 app.mount("#app");
 
+/**
+ * Sets application theme mode and propagates the change:
+ * - persists to localStorage
+ * - updates Vuetify theme
+ * - notifies Electron main process via `window.electronAPI`
+ *
+ * @param mode Theme mode: `"dark" | "light" | "system"`.
+ */
 window.setCurrentThemeAppMode = function (mode: string = "system") {
     localStorage.setItem("current_theme_mode", mode);
     window.dispatchEvent(new Event("current_theme_mode_changed"));
@@ -98,7 +129,10 @@ window.setCurrentThemeAppMode = function (mode: string = "system") {
     }
 };
 
-//os color theme change trigger
+/**
+ * OS theme change handler.
+ * @remarks Applied only when the app theme mode is set to `"system"`.
+ */
 window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", () => {
@@ -107,6 +141,7 @@ window
         }
     });
 
+/** Apply saved theme mode on startup (defaults to `"system"`). */
 window.setCurrentThemeAppMode(
     localStorage.getItem("current_theme_mode") || "system",
 );

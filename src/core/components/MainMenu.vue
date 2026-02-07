@@ -1,5 +1,8 @@
 <template>
-	<DockMenu :items="mainMenuItems" :on-selected="menuSelect" class="no-drag component__WindowBar-menu"></DockMenu>
+    <DockMenu
+        :items="mainMenuItems"
+        :on-selected="menuSelect"
+        class="no-drag component__WindowBar-menu"></DockMenu>
 </template>
 
 <script>
@@ -7,94 +10,130 @@ import DockMenu from "../../core/components/vue-router-menu/components/MenuBar.v
 import { useMenuStore } from "../../inc/store/menuStore";
 import { menuSelectEvent } from "../../inc/menuEvents";
 
-import { useTinykeys } from 'vue-tinykeys';
+import { useTinykeys } from "vue-tinykeys";
+
 export default {
-	data() {
-		return {};
-	},
-	components: {
-		DockMenu,
-	},
-	props: {},
-	methods: {
-		menuSelect(e) {
-			console.info("[Selected menu item]", e);
-			menuSelectEvent(e, this.$router);
-		},
-	},
-	computed: {
-		mainMenuItems() {
-			const menuStore = useMenuStore();
-			if (menuStore.mainMenuItems) {
-				return menuStore.mainMenuItems;
-			}
-			return [];
-		},
-	},
-	created() {
-		useMenuStore().AnchorExecutableShortcuts.forEach((value) => {
-			useTinykeys(value.shortcut, () => {
-				menuSelectEvent({ anchor: value.anchor }, this.$router);
-			});
-		});
+    /**
+     * Component state.
+     */
+    data() {
+        return {};
+    },
 
-		//context-menu / window menu switching when one of them is opening
-		setTimeout(function () {
-			document
-				.querySelector(".menu-bar-items")
-				.addEventListener("mouseup", function (event) {
-					if (event.which == 1) {
-						try {
-							let contextMenu =
-								document.querySelector(".v-contextmenu");
-							if (contextMenu) {
-								contextMenu.style.display = "none";
-							}
+    components: {
+        /** Main menu bar component. */
+        DockMenu,
+    },
 
-							let openedMenus =
-								document.querySelectorAll(".menu-container");
-							if (openedMenus) {
-								openedMenus.forEach(function (value) {
-									value.style.display = "block";
-								});
-							}
-						} catch { }
-					}
-				});
+    /**
+     * Component props.
+     */
+    props: {},
 
-			window.oncontextmenu = function (event) {
-				//prevent context menu event inside menu container
-				let bounds = event
-					.composedPath()
-					.includes(
-						document.querySelector(".component__WindowBar-menu")
-					);
+    methods: {
+        /**
+         * Handles menu item selection and forwards it to the central menu handler.
+         *
+         * @param e Selected menu item payload.
+         */
+        menuSelect(e) {
+            console.info("[Selected menu item]", e);
+            menuSelectEvent(e, this.$router);
+        },
+    },
 
-				if (!bounds) {
-					try {
-						let contextMenu =
-							document.querySelector(".v-contextmenu");
-						if (contextMenu) {
-							contextMenu.style.display = "block";
-						}
+    computed: {
+        /**
+         * Returns menu items from the menu store.
+         */
+        mainMenuItems() {
+            const menuStore = useMenuStore();
+            if (menuStore.mainMenuItems) {
+                return menuStore.mainMenuItems;
+            }
+            return [];
+        },
+    },
 
-						let openedMenus =
-							document.querySelectorAll(".menu-container");
-						if (openedMenus) {
-							openedMenus.forEach(function (value) {
-								value.style.display = "none";
-							});
-						}
+    created() {
+        /**
+         * Registers keyboard shortcuts that trigger menu navigation/actions.
+         */
+        useMenuStore().AnchorExecutableShortcuts.forEach((value) => {
+            useTinykeys(value.shortcut, () => {
+                menuSelectEvent({ anchor: value.anchor }, this.$router);
+            });
+        });
 
-						document
-							.querySelector(
-								".menu-bar-item-container:has(.menu-items) .name-container"
-							)
-							.click();
-					} catch { }
-				}
-			};
-		}, 1);
-	},
+        /**
+         * Synchronizes visibility of the context menu and the window menu.
+         *
+         * Uses a delayed setup to ensure the menu DOM is mounted before attaching listeners.
+         */
+        setTimeout(function () {
+            document
+                .querySelector(".menu-bar-items")
+                .addEventListener("mouseup", function (event) {
+                    /**
+                     * On left click, hides the context menu and restores window menus.
+                     */
+                    if (event.which == 1) {
+                        try {
+                            let contextMenu =
+                                document.querySelector(".v-contextmenu");
+                            if (contextMenu) {
+                                contextMenu.style.display = "none";
+                            }
+
+                            let openedMenus =
+                                document.querySelectorAll(".menu-container");
+                            if (openedMenus) {
+                                openedMenus.forEach(function (value) {
+                                    value.style.display = "block";
+                                });
+                            }
+                        } catch {}
+                    }
+                });
+
+            /**
+             * Global context menu handler used to switch between context menu and window menus.
+             */
+            window.oncontextmenu = function (event) {
+                /**
+                 * Prevents context menu switching for events originating inside the menu container.
+                 */
+                let bounds = event
+                    .composedPath()
+                    .includes(
+                        document.querySelector(".component__WindowBar-menu"),
+                    );
+
+                if (!bounds) {
+                    try {
+                        let contextMenu =
+                            document.querySelector(".v-contextmenu");
+                        if (contextMenu) {
+                            contextMenu.style.display = "block";
+                        }
+
+                        let openedMenus =
+                            document.querySelectorAll(".menu-container");
+                        if (openedMenus) {
+                            openedMenus.forEach(function (value) {
+                                value.style.display = "none";
+                            });
+                        }
+
+                        document
+                            .querySelector(
+                                ".menu-bar-item-container:has(.menu-items) .name-container",
+                            )
+                            .click();
+                    } catch {}
+                }
+            };
+        }, 1);
+    },
 };
 </script>

@@ -3,25 +3,41 @@ import { DarkMode, LightMode } from "./themes";
 import { windowExtraProperties } from "../../electron/windowExtraProperties";
 import { windowProperties } from "../../electron/windowProperties";
 
+/**
+ * Applies the requested theme mode to all open windows.
+ *
+ * Updates window appearance (title bar overlay/background) for supported window
+ * material types and optionally synchronizes Electron's nativeTheme source.
+ *
+ * @param mode Theme mode to apply: "dark", "light", or "system".
+ */
 export function setCurrentThemeMode(mode: string = "system") {
     console.log(`[helpers] Setting theme mode to ${mode}`);
 
     const windows = BrowserWindow.getAllWindows();
 
-    // Define the available themes
+    /**
+     * Supported explicit theme variants.
+     */
     type ThemeMode = "dark" | "light";
+
+    /**
+     * Theme definitions mapped by mode.
+     */
     const themes = {
         dark: DarkMode,
         light: LightMode,
     };
 
     /**
-     * Sets the theme mode for the given window.
+     * Applies a theme variant to a single window.
      *
-     * @param {BrowserWindow} win - The window for which to set the theme mode.
-     * @param {ThemeMode} mode - The theme mode to set. One of "dark" or "light".
-     * @param {boolean} [changeThemeSource=true] - Whether to change the theme source of the native theme.
-     * @returns {void}
+     * Updates title bar overlay and background color when enabled by window
+     * configuration, and optionally sets the global nativeTheme source.
+     *
+     * @param win Target BrowserWindow.
+     * @param mode Theme variant to apply.
+     * @param changeThemeSource Whether to update nativeTheme.themeSource.
      */
     function setThemeMode(
         win: BrowserWindow,
@@ -49,7 +65,10 @@ export function setCurrentThemeMode(mode: string = "system") {
         }
     }
 
-    // Set the theme mode for each window
+    /**
+     * Applies the requested mode to each open window, resolving "system" to the
+     * current OS preference.
+     */
     windows.forEach((win) => {
         switch (mode) {
             case "dark":

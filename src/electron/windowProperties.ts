@@ -1,5 +1,8 @@
 import { join } from "path";
 
+/**
+ * Main BrowserWindow configuration object.
+ */
 export const windowProperties: any = {
     title: "Electron Fluent template",
     icon: join(__dirname, "/favicon.ico"),

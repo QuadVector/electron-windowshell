@@ -2,77 +2,113 @@ import {
     ipcMain,
     dialog,
     BrowserWindow,
-    SaveDialogReturnValue,
+    OpenDialogOptions,
     OpenDialogReturnValue,
+    SaveDialogOptions,
+    SaveDialogReturnValue,
+    BrowserWindowConstructorOptions,
+    App,
 } from "electron";
-import { nativeTheme } from "electron";
-import fs from "fs";
-import { join, dirname } from "path";
-import { initElectronWindowEvents } from "../core/scripts/electronWindowEvents";
-import { initBrowserWindowEvents } from "../core/scripts/browserWindowEvents";
-import { initElectronAPIEvents } from "../core/scripts/electronAPIEvents";
-import { initDarkModeEvents } from "../core/scripts/darkModeEvents";
-import { DarkMode, LightMode } from "../core/scripts/themes";
+import fs from "node:fs";
 
-export function initAppEvents(app: Electron.App, win: BrowserWindow) {
-    /*
-		Example methods. You can delete or keep one of these if you don't need them
-	*/
-    // Show save file dialog
+/**
+ * Registers IPC handlers/listeners used by the app.
+ *
+ * @param app - Electron App instance (currently unused, kept for future extension).
+ * @param win - Main application window used as parent for child windows.
+ */
+export function initAppEvents(app: App, win: BrowserWindow): void {
+    /**
+     * Returns the currently focused window or the first available window.
+     *
+     * @returns Active BrowserWindow instance.
+     */
+    const getActiveWindow = (): BrowserWindow => {
+        return BrowserWindow.getFocusedWindow() ?? win;
+    };
+
+    /**
+     * Opens a native "Save File" dialog.
+     *
+     * @param _event - IPC invoke event (not used).
+     * @param options - Save dialog options.
+     * @returns Promise with the save dialog result.
+     */
     ipcMain.handle(
         "show-save-file-dialog",
-        (event: any, options: object): Promise<SaveDialogReturnValue> => {
-            const totalOptions = { ...options };
-            const win =
-                BrowserWindow.getFocusedWindow() ||
-                BrowserWindow.getAllWindows()[0];
-            return dialog.showSaveDialog(win, totalOptions);
+        (
+            _event,
+            options: SaveDialogOptions,
+        ): Promise<SaveDialogReturnValue> => {
+            return dialog.showSaveDialog(getActiveWindow(), { ...options });
         },
     );
 
-    // Save file data
+    /**
+     * Writes data to disk at the given path (UTF-8).
+     *
+     * @param _event - IPC invoke event (not used).
+     * @param filePath - Destination path.
+     * @param data - Text content to write.
+     * @returns Promise that resolves when the file is written.
+     */
     ipcMain.handle(
         "save-file-data",
-        async (event, filePath: string, data: string): Promise<void> => {
-            try {
-                await fs.promises.writeFile(filePath, data);
-            } catch (error) {
-                throw error;
-            }
+        async (_event, filePath: string, data: string): Promise<void> => {
+            await fs.promises.writeFile(filePath, data, "utf-8");
         },
     );
 
-    // Show open file dialog
+    /**
+     * Opens a native "Open File" dialog.
+     *
+     * @param _event - IPC invoke event (not used).
+     * @param options - Open dialog options.
+     * @returns Promise with the open dialog result.
+     */
     ipcMain.handle(
         "show-open-file-dialog",
-        (event: any, options: object): Promise<OpenDialogReturnValue> => {
-            const totalOptions = { ...options };
-            const win =
-                BrowserWindow.getFocusedWindow() ||
-                BrowserWindow.getAllWindows()[0];
-            return dialog.showOpenDialog(win, totalOptions);
+        (
+            _event,
+            options: OpenDialogOptions,
+        ): Promise<OpenDialogReturnValue> => {
+            return dialog.showOpenDialog(getActiveWindow(), { ...options });
         },
     );
 
-    // Open file data
+    /**
+     * Reads file contents as UTF-8 text.
+     *
+     * @param _event - IPC invoke event (not used).
+     * @param filePath - Source path.
+     * @returns Promise with file content.
+     */
     ipcMain.handle(
         "open-file-data",
-        (event, filePath: string): Promise<any> => {
-            try {
-                return fs.promises.readFile(filePath, "utf-8");
-            } catch (error) {
-                throw error;
-            }
+        (_event, filePath: string): Promise<string> => {
+            return fs.promises.readFile(filePath, "utf-8");
         },
     );
 
+    /**
+     * Opens a new child BrowserWindow and loads the given URL.
+     *
+     * @param _event - IPC event (not used).
+     * @param url - URL to load in the new window.
+     * @param windowProperties - Optional BrowserWindow constructor options.
+     */
     ipcMain.on(
         "open-new-url-window",
-        (event: any, url: string, windowProperties: any = {}) => {
-            //set main window as parent
-            windowProperties.parent = win;
+        (
+            _event,
+            url: string,
+            windowProperties: BrowserWindowConstructorOptions = {},
+        ) => {
+            const childWindow = new BrowserWindow({
+                ...windowProperties,
+                parent: win,
+            });
 
-            const childWindow = new BrowserWindow(windowProperties);
             childWindow.loadURL(url);
         },
     );

@@ -50,26 +50,51 @@ import packageJson from "../../../package.json";
 import { useMainStore } from "../../inc/store/mainStore";
 
 export default {
+    /**
+     * Controls visibility of the modal from the parent component.
+     */
     props: {
         isActive: {
             type: Boolean,
             default: false,
         },
     },
+
     data() {
         return {
+            /**
+             * Current page favicon URL, used as the modal/app icon.
+             */
             windowIcon: document.querySelector("link[rel*='icon']").href,
         };
     },
+
     setup(props) {
+        /**
+         * Local mirror of the active state to allow internal close actions.
+         */
         const localIsActive = ref(props.isActive);
+
+        /**
+         * Runtime/version information displayed in the UI.
+         */
         const listItems = ref([]);
+
+        /**
+         * Application metadata loaded from package.json.
+         */
         const programName = ref("");
         const version = ref("");
         const description = ref("");
 
+        /**
+         * Global store used to synchronize modal visibility with app state.
+         */
         const mainStore = useMainStore();
 
+        /**
+         * Fetches runtime versions from the Electron preload API and builds the UI list.
+         */
         const getListItems = async () => {
             const {
                 electronVersion,
@@ -78,6 +103,7 @@ export default {
                 v8Version,
                 osInfo,
             } = await window.electronAPI.getVersions();
+
             listItems.value = [
                 { title: "Electron", subtitle: electronVersion },
                 { title: "Chromium", subtitle: chromiumVersion },
@@ -87,16 +113,25 @@ export default {
             ];
         };
 
+        /**
+         * Loads app name/version/description from the packaged metadata.
+         */
         const loadPackageJson = () => {
             programName.value = packageJson.name;
             version.value = packageJson.version;
             description.value = packageJson.description;
         };
 
+        /**
+         * Closes the modal locally (parent/store sync happens via watchers).
+         */
         const closeModal = () => {
             localIsActive.value = false;
         };
 
+        /**
+         * Keeps localIsActive in sync when the parent updates isActive.
+         */
         watch(
             () => props.isActive,
             (newVal) => {
@@ -104,6 +139,9 @@ export default {
             },
         );
 
+        /**
+         * Propagates local active state changes into the global store.
+         */
         watch(
             () => localIsActive.value,
             (newVal) => {
@@ -112,6 +150,9 @@ export default {
         );
 
         onMounted(() => {
+            /**
+             * Initializes modal content after mount.
+             */
             getListItems();
             loadPackageJson();
         });
