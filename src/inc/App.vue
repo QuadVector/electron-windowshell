@@ -33,6 +33,7 @@
             <v-navigation-drawer
                 v-model="navigatorOpened"
                 floating
+                temporary
                 :mobile-breakpoint="800"
                 v-if="useNavigator">
                 <v-list
@@ -90,6 +91,11 @@ export default {
              * Router store instance cached for template usage.
              */
             routerStore: useRouterStore(),
+
+            /**
+             * Main application store instance cached for template usage.
+             */
+            mainStore: useMainStore(),
         };
     },
 
@@ -112,17 +118,15 @@ export default {
          * Controls visibility of the "About" modal.
          */
         displayAboutModal() {
-            const mainStore = useMainStore();
-            return mainStore.activeAboutModal;
+            return this.mainStore.activeAboutModal;
         },
 
         /**
          * Navigator menu entries (dock menu). Returns an empty array if not present.
          */
         navigatorMenuItems() {
-            const routerStore = useRouterStore();
-            if (routerStore.navigatorMenuItems) {
-                return routerStore.navigatorMenuItems;
+            if (this.routerStore.navigatorMenuItems) {
+                return this.routerStore.navigatorMenuItems;
             }
             return [];
         },
@@ -131,9 +135,8 @@ export default {
          * Currently selected navigator item(s). Returns an empty array if not present.
          */
         navigatorSelectedItem() {
-            const routerStore = useRouterStore();
-            if (routerStore.navigatorSelectedItem) {
-                return routerStore.navigatorSelectedItem;
+            if (this.routerStore.navigatorSelectedItem) {
+                return this.routerStore.navigatorSelectedItem;
             }
             return [];
         },
@@ -141,12 +144,13 @@ export default {
         /**
          * Whether the navigator panel is currently opened.
          */
-        navigatorOpened() {
-            const routerStore = useRouterStore();
-            if (routerStore.navigatorOpened) {
-                return routerStore.navigatorOpened;
-            }
-            return false;
+        navigatorOpened: {
+            get() {
+                return this.routerStore.navigatorOpened;
+            },
+            set(value) {
+                this.routerStore.navigatorOpened = value;
+            },
         },
     },
 
@@ -166,11 +170,10 @@ export default {
          * Toggles navigator visibility based on viewport width threshold.
          */
         appResize() {
-            const routerStore = useRouterStore();
             if (window.innerWidth > 799) {
-                routerStore.navigatorOpened = true;
+                this.routerStore.navigatorOpened = true;
             } else {
-                routerStore.navigatorOpened = false;
+                this.routerStore.navigatorOpened = false;
             }
         },
     },
