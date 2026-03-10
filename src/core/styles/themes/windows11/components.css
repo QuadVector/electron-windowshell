@@ -139,11 +139,6 @@
 	margin-bottom: 10px;
 }
 
-.v-table {
-	border-radius: var(--base-radius) !important;
-	border: 1px solid rgb(var(--v-theme-border)) !important;
-}
-
 .v-table,
 .v-card-text {
 	font-size: 14px;
@@ -154,6 +149,10 @@
 .v-slider,
 .v-slider * {
 	cursor: default !important;
+}
+
+.v-sheet > .v-divider {
+	display: none;
 }
 
 /* windowbar menu */
