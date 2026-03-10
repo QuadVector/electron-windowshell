@@ -4,7 +4,7 @@
             :headers="headers"
             :items="plants"
             density="compact"
-            class="w-full h-full"
+            class="w-full h-full no-background"
             items-per-page="25"
             item-key="name"></v-data-table>
     </div>

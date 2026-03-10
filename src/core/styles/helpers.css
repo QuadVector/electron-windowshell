@@ -81,3 +81,7 @@ body:has(.v-overlay--active.v-dialog) .page-content.vertical-scroll::-webkit-scr
 	padding: 0px;
 	max-width: 100%;
 }
+
+.no-background {
+	background: none !important;
+}
