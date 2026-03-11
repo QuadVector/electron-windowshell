@@ -22,5 +22,5 @@ export const windowProperties: any = {
     titleBarOverlay: {
         height: 32,
     },
-    backgroundMaterial: "mica"
+    backgroundMaterial: "mica",
 };

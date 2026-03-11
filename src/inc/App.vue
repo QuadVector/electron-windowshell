@@ -33,7 +33,6 @@
             <v-navigation-drawer
                 v-model="navigatorOpened"
                 floating
-                temporary
                 :mobile-breakpoint="800"
                 v-if="useNavigator">
                 <v-list
