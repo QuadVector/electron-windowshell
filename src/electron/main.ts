@@ -74,6 +74,7 @@ async function createMainWindow() {
 
     //@ts-ignore
     mainWindow = new BrowserWindow(windowProperties);
+    mainWindow.setMenuBarVisibility(false); //remove electron window menu
 
     if (process.env.VITE_DEV_SERVER_URL) {
         mainWindow.loadURL(url);
