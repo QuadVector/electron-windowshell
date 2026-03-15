@@ -2,7 +2,7 @@
 	"name": "electron-windowshell",
 	"icon": "./src/public/favicon.ico",
 	"product_name": "Electron WindowShell",
-	"version": "0.9.3.1",
+	"version": "0.9.4",
 	"description": "Electron + Vite + Vue3 + Pinia + Typescript boilerplate project with built-in Vuetify UI, and other custom components.",
 	"main": "dist/electron/main.js",
 	"author": "QuadVector",
@@ -62,8 +62,9 @@
 			"deleteAppDataOnUninstall": true,
 			"allowElevation": true,
 			"runAfterFinish": false,
-			"installerLanguages": "ru_RU"
-		}
+			"installerLanguages": "en_US"
+		},
+		"afterPack": "./scripts/removeLocales.js"
 	},
 	"env": {
 		"VITE_DEV_SERVER_HOST": "127.0.0.1",
