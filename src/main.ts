@@ -4,6 +4,9 @@
  * and syncs theme mode with localStorage + OS + Electron.
  */
 
+import { ThemeMode } from "./core/types/ThemeMode";
+import { SoundEffect } from "./core/types/SoundEffect";
+
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
@@ -13,7 +16,7 @@ import * as directives from "vuetify/directives";
 import contextmenu from "v-contextmenu";
 import { useRouterStore } from "./inc/store/routerStore";
 import { DarkMode, LightMode } from "./core/scripts/themes";
-import { windowExtraProperties } from "./electron/windowExtraProperties";
+import { windowExtraProperties } from "./electron/properties/windowExtraProperties";
 import App from "./inc/App.vue";
 
 import "@mdi/font/css/materialdesignicons.css";
@@ -32,13 +35,9 @@ await cssLoaders[`./core/styles/themes/${theme}/app.css`]?.();
 
 //include the rest of the styles
 import "v-contextmenu/dist/themes/default.css";
-import "./core/styles/themes/windows11/variables.css";
-import "./core/styles/themes/windows11/animations.css";
 import "./core/styles/base.css";
 import "./core/styles/backgrounds.css";
 import "./core/styles/helpers.css";
-import "./core/styles/themes/windows11/components.css";
-import "./core/styles/themes/windows11/app.css";
 import "./public/style.css";
 
 /** Vue application instance. */
@@ -97,36 +96,64 @@ app.use(vuetify);
 app.use(contextmenu);
 app.mount("#app");
 
-/**
- * Sets application theme mode and propagates the change:
- * - persists to localStorage
- * - updates Vuetify theme
- * - notifies Electron main process via `window.electronAPI`
- *
- * @param mode Theme mode: `"dark" | "light" | "system"`.
- */
-window.setCurrentThemeAppMode = function (mode: string = "system") {
-    localStorage.setItem("current_theme_mode", mode);
-    window.dispatchEvent(new Event("current_theme_mode_changed"));
+//@todo move to PreloadExpose.ts
+window.coreAPI = {
+    /**
+     * Sets application theme mode and propagates the change:
+     * - persists to localStorage
+     * - updates Vuetify theme
+     * - notifies Electron main process via `window.electronAPI`
+     *
+     * @param mode Theme mode: `"dark" | "light" | "system"`.
+     */
+    setCurrentThemeAppMode: (mode: ThemeMode = "system") => {
+        console.log("[coreAPI] setCurrentThemeAppMode: ", mode);
+        localStorage.setItem("current_theme_mode", mode);
+        window.dispatchEvent(new Event("current_theme_mode_changed"));
 
-    switch (mode) {
-        case "dark":
-            vuetify.theme.global.name.value = "DarkMode";
-            window.electronAPI.setCurrentThemeMode("dark");
-            break;
-        case "light":
-            vuetify.theme.global.name.value = "LightMode";
-            window.electronAPI.setCurrentThemeMode("light");
-            break;
-        case "system":
-            window.electronAPI.setCurrentThemeMode("system");
-            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        switch (mode) {
+            case "dark":
                 vuetify.theme.global.name.value = "DarkMode";
-            } else {
+                window.electronAPI.setCurrentThemeMode("dark");
+                break;
+            case "light":
                 vuetify.theme.global.name.value = "LightMode";
-            }
-            break;
-    }
+                window.electronAPI.setCurrentThemeMode("light");
+                break;
+            case "system":
+                window.electronAPI.setCurrentThemeMode("system");
+                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    vuetify.theme.global.name.value = "DarkMode";
+                } else {
+                    vuetify.theme.global.name.value = "LightMode";
+                }
+                break;
+        }
+    },
+
+    /**
+     *
+     * @param name Sound name. Sound files must be placed in `/public/sound/ui/[sound_pack_name]`.
+     * All available sound names declared in `src/core/types/SoundEffect.ts`.
+     * @returns
+     */
+    playSound(name: SoundEffect) {
+        console.log("[coreAPI] playSound:", name);
+        if (windowExtraProperties.soundPack === undefined) {
+            console.log("[coreAPI] playSound: sound pack not loaded");
+            return;
+        }
+
+        const src = `/src/public/sound/ui/${windowExtraProperties.soundPack}/${name}.wav`;
+        let audio = new Audio(src);
+
+        //clean memory
+        audio.addEventListener("ended", () => {
+            audio.remove();
+        });
+
+        audio.play();
+    },
 };
 
 /**
@@ -137,11 +164,11 @@ window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", () => {
         if (localStorage.getItem("current_theme_mode") === "system") {
-            window.setCurrentThemeAppMode("system");
+            window.coreAPI.setCurrentThemeAppMode("system");
         }
     });
 
 /** Apply saved theme mode on startup (defaults to `"system"`). */
-window.setCurrentThemeAppMode(
-    localStorage.getItem("current_theme_mode") || "system",
+window.coreAPI.setCurrentThemeAppMode(
+    (localStorage.getItem("current_theme_mode") || "system") as ThemeMode,
 );

@@ -24,7 +24,7 @@ export const menuSelectEvent = (e: any, router: any) => {
             });
             break;
         case "color-theme-light":
-            window.setCurrentThemeAppMode("light");
+            window.coreAPI.setCurrentThemeAppMode("light");
             useMenuStore().ChangeElementState("color-theme-light", {
                 checked: true,
             });
@@ -36,7 +36,7 @@ export const menuSelectEvent = (e: any, router: any) => {
             });
             break;
         case "color-theme-dark":
-            window.setCurrentThemeAppMode("dark");
+            window.coreAPI.setCurrentThemeAppMode("dark");
             useMenuStore().ChangeElementState("color-theme-light", {
                 checked: false,
             });
@@ -48,7 +48,7 @@ export const menuSelectEvent = (e: any, router: any) => {
             });
             break;
         case "color-theme-system":
-            window.setCurrentThemeAppMode("system");
+            window.coreAPI.setCurrentThemeAppMode("system");
             useMenuStore().ChangeElementState("color-theme-light", {
                 checked: false,
             });

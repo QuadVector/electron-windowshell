@@ -20,6 +20,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * Returns runtime versions (Electron, Chromium, Node.js, V8) and basic OS info.
      */
     ipcMain.handle("get-versions", (event: any) => {
+        console.log("[electronAPI] getVersions");
         return {
             electronVersion: process.versions.electron,
             chromiumVersion: process.versions.chrome,
@@ -33,6 +34,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * Quits the application.
      */
     ipcMain.on("close-application", (event: any) => {
+        console.log("[electronAPI] closeApplication");
         app.quit();
     });
 
@@ -40,6 +42,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * Toggles fullscreen mode for the focused window (or the first available one).
      */
     ipcMain.on("toggle-fullscreen", (event: any) => {
+        console.log("[electronAPI] toggleFullScreen");
         const win =
             BrowserWindow.getFocusedWindow() ||
             BrowserWindow.getAllWindows()[0];
@@ -55,6 +58,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * @param zoomFactor Target zoom factor.
      */
     ipcMain.on("set-zoom-factor", (event: any, zoomFactor: number) => {
+        console.log(`[electronAPI] setZoomFactor: ${zoomFactor}`);
         const minZoomFactor = 0.5;
         const maxZoomFactor = 1.5;
 
@@ -74,6 +78,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * Returns the current zoom factor for the focused window (or the first available one).
      */
     ipcMain.handle("get-zoom-factor", (event: any) => {
+        console.log("[electronAPI] getZoomFactor");
         const win =
             BrowserWindow.getFocusedWindow() ||
             BrowserWindow.getAllWindows()[0];
@@ -86,6 +91,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * Resolves with an empty string when unavailable or on unsupported platforms.
      */
     ipcMain.handle("get-current-wallpaper", (): Promise<string> => {
+        console.log("[electronAPI] getCurrentWallpaper");
         return new Promise((resolve, reject) => {
             if (os.platform() === "win32") {
                 const command =

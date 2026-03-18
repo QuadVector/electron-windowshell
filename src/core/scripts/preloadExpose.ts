@@ -16,6 +16,7 @@ export function initPreloadElectronAPIMethods() {
          * Sends the "close-application" IPC event.
          */
         closeApplication: () => {
+            console.log("[electronAPI] closeApplication");
             ipcRenderer.send("close-application");
         },
 
@@ -27,6 +28,7 @@ export function initPreloadElectronAPIMethods() {
          * @returns A promise resolving to the versions payload provided by the main process.
          */
         getVersions: () => {
+            console.log("[electronAPI] getVersions");
             return ipcRenderer.invoke("get-versions");
         },
 
@@ -38,6 +40,7 @@ export function initPreloadElectronAPIMethods() {
          * @param mode Theme mode to apply: "dark", "light", or "system".
          */
         setCurrentThemeMode: (mode: string = "system") => {
+            console.log(`[electronAPI] setCurrentThemeMode: ${mode}`);
             ipcRenderer.send("update-native-colors", mode);
         },
 
@@ -47,6 +50,7 @@ export function initPreloadElectronAPIMethods() {
          * Sends the "toggle-fullscreen" IPC event.
          */
         toggleFullScreen() {
+            console.log("[electronAPI] toggleFullScreen");
             ipcRenderer.send("toggle-fullscreen");
         },
 
@@ -58,6 +62,7 @@ export function initPreloadElectronAPIMethods() {
          * @param zoomFactor Zoom factor where 1.0 is default, > 1 zooms in, and < 1 zooms out.
          */
         setZoomFactor(zoomFactor: number) {
+            console.log(`[electronAPI] setZoomFactor: ${zoomFactor}`);
             ipcRenderer.send("set-zoom-factor", zoomFactor);
         },
 
@@ -69,6 +74,7 @@ export function initPreloadElectronAPIMethods() {
          * @returns A promise resolving to the current zoom factor.
          */
         getZoomFactor(): Promise<number> {
+            console.log("[electronAPI] getZoomFactor");
             return ipcRenderer.invoke("get-zoom-factor");
         },
 
@@ -80,6 +86,7 @@ export function initPreloadElectronAPIMethods() {
          * @returns A promise resolving to the current wallpaper value.
          */
         getCurrentWallpaper(): Promise<string> {
+            console.log("[electronAPI] getCurrentWallpaper");
             return ipcRenderer.invoke("get-current-wallpaper");
         },
     });

@@ -70,7 +70,7 @@ import WindowBar from "../core/components/WindowBar.vue";
 import AboutModal from "../core/components/AboutModal.vue";
 import { useRouterStore } from "./store/routerStore";
 import { useMainStore } from "./store/mainStore";
-import { windowExtraProperties } from "../electron/windowExtraProperties";
+import { windowExtraProperties } from "../electron/properties/windowExtraProperties";
 
 export default {
     components: {
