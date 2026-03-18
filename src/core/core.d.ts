@@ -1,4 +1,3 @@
-import { SoundEffect } from "./types/SoundEffect";
 import { ThemeMode } from "./types/ThemeMode";
 
 // core.d.ts
@@ -7,29 +6,28 @@ export {};
 declare global {
     interface Window {
         /**
-         * Core APIs exposed from preload via contextBridge.
+         * Sets application theme mode and propagates the change:
+         * - persists to localStorage
+         * - updates Vuetify theme
+         * - notifies Electron main process via `CoreAPI`
+         * 
+         * Implementation of this method is located in main.ts, i.e. it directly accesses vuetify
+         *
+         * @param mode Theme mode: `"dark" | "light" | "system"`.
          */
-        coreAPI: {
-            /**
-             * Sets the current application theme mode (renderer-level helper).
-             *
-             * @param mode Theme mode to set (e.g. "dark", "light", "system").
-             */
-            setCurrentThemeAppMode: (mode: ThemeMode) => void;
-
-            /**
-             *
-             * @param name Sound name. Sound files must be placed in `/public/sound/ui/[sound_pack_name]`.
-             * All available sound names declared in `src/core/types/SoundEffect.ts`.
-             * @returns
-             */
-            playSound: (name: SoundEffect) => void;
-        };
+        setCurrentThemeAppMode: (mode: ThemeMode = "system") => void;
 
         /**
          * Electron APIs exposed from preload via contextBridge.
          */
-        electronAPI: {
+        CoreAPI: {
+            /**
+             *
+             * @param name Sound name. Sound files must be placed in `/public/sound/ui/[sound_pack_name]`.
+             * @returns
+             */
+            playSound: (name: string) => void;
+
             /**
              * Requests the main process to close the application.
              */

@@ -17,7 +17,7 @@ import fs from "node:fs";
  * @param app - Electron App instance (currently unused, kept for future extension).
  * @param win - Main application window used as parent for child windows.
  */
-export function initAppEvents(app: App, win: BrowserWindow): void {
+export function initApplicationAPIEvents(app: App, win: BrowserWindow): void {
     /**
      * Returns the currently focused window or the first available window.
      *

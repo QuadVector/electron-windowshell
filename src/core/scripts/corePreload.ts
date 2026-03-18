@@ -1,22 +1,25 @@
+import { ThemeMode } from "../types/ThemeMode";
+
 import { contextBridge, ipcRenderer } from "electron";
+import { windowExtraProperties } from "../../electron/properties/windowExtraProperties";
 
 /**
  * Exposes a minimal, safe Electron API to the renderer process via contextBridge.
  *
- * This registers `window.electronAPI` and maps each method to an IPC message or
+ * This registers `CoreAPI` and maps each method to an IPC message or
  * invocation handled by the main process.
  */
-export function initPreloadElectronAPIMethods() {
-    console.log("[preloadExpose] Init core preload electron API methods");
+export function initPreloadCoreAPIMethods() {
+    console.log("[corePreload] Init core preload Electron API methods");
 
-    contextBridge.exposeInMainWorld("electronAPI", {
+    contextBridge.exposeInMainWorld("CoreAPI", {
         /**
          * Requests the main process to close the application.
          *
          * Sends the "close-application" IPC event.
          */
         closeApplication: () => {
-            console.log("[electronAPI] closeApplication");
+            console.log("[CoreAPI] closeApplication");
             ipcRenderer.send("close-application");
         },
 
@@ -28,7 +31,7 @@ export function initPreloadElectronAPIMethods() {
          * @returns A promise resolving to the versions payload provided by the main process.
          */
         getVersions: () => {
-            console.log("[electronAPI] getVersions");
+            console.log("[CoreAPI] getVersions");
             return ipcRenderer.invoke("get-versions");
         },
 
@@ -39,8 +42,8 @@ export function initPreloadElectronAPIMethods() {
          *
          * @param mode Theme mode to apply: "dark", "light", or "system".
          */
-        setCurrentThemeMode: (mode: string = "system") => {
-            console.log(`[electronAPI] setCurrentThemeMode: ${mode}`);
+        setCurrentThemeMode: (mode: ThemeMode = "system") => {
+            console.log(`[CoreAPI] setCurrentThemeMode: ${mode}`);
             ipcRenderer.send("update-native-colors", mode);
         },
 
@@ -50,7 +53,7 @@ export function initPreloadElectronAPIMethods() {
          * Sends the "toggle-fullscreen" IPC event.
          */
         toggleFullScreen() {
-            console.log("[electronAPI] toggleFullScreen");
+            console.log("[CoreAPI] toggleFullScreen");
             ipcRenderer.send("toggle-fullscreen");
         },
 
@@ -62,7 +65,7 @@ export function initPreloadElectronAPIMethods() {
          * @param zoomFactor Zoom factor where 1.0 is default, > 1 zooms in, and < 1 zooms out.
          */
         setZoomFactor(zoomFactor: number) {
-            console.log(`[electronAPI] setZoomFactor: ${zoomFactor}`);
+            console.log(`[CoreAPI] setZoomFactor: ${zoomFactor}`);
             ipcRenderer.send("set-zoom-factor", zoomFactor);
         },
 
@@ -74,7 +77,7 @@ export function initPreloadElectronAPIMethods() {
          * @returns A promise resolving to the current zoom factor.
          */
         getZoomFactor(): Promise<number> {
-            console.log("[electronAPI] getZoomFactor");
+            console.log("[CoreAPI] getZoomFactor");
             return ipcRenderer.invoke("get-zoom-factor");
         },
 
@@ -86,8 +89,31 @@ export function initPreloadElectronAPIMethods() {
          * @returns A promise resolving to the current wallpaper value.
          */
         getCurrentWallpaper(): Promise<string> {
-            console.log("[electronAPI] getCurrentWallpaper");
+            console.log("[CoreAPI] getCurrentWallpaper");
             return ipcRenderer.invoke("get-current-wallpaper");
+        },
+
+        /**
+         *
+         * @param name Sound name. Sound files must be placed in `/public/sound/ui/[sound_pack_name]`.
+         * @returns
+         */
+        playSound(name: string): void {
+            console.log("[CoreAPI] playSound:", name);
+            if (windowExtraProperties.soundPack === undefined) {
+                console.log("[CoreAPI] playSound: sound pack not loaded");
+                return;
+            }
+
+            const src = `/src/public/sound/ui/${windowExtraProperties.soundPack}/${name}.wav`;
+            let audio = new Audio(src);
+
+            //clean memory
+            audio.addEventListener("ended", () => {
+                audio.remove();
+            });
+
+            audio.play();
         },
     });
 }

@@ -8,23 +8,23 @@ export const menuSelectEvent = (e: any, router: any) => {
             alert("New file");
             break;
         case "app-close":
-            window.electronAPI.closeApplication();
+            CoreAPI.closeApplication();
             break;
         case "full-screen":
-            window.electronAPI.toggleFullScreen();
+            CoreAPI.toggleFullScreen();
             break;
         case "zoom-in":
-            window.electronAPI.getZoomFactor().then((zoomFactor) => {
-                window.electronAPI.setZoomFactor(zoomFactor + 0.25);
+            CoreAPI.getZoomFactor().then((zoomFactor) => {
+                CoreAPI.setZoomFactor(zoomFactor + 0.25);
             });
             break;
         case "zoom-out":
-            window.electronAPI.getZoomFactor().then((zoomFactor) => {
-                window.electronAPI.setZoomFactor(zoomFactor - 0.25);
+            CoreAPI.getZoomFactor().then((zoomFactor) => {
+                CoreAPI.setZoomFactor(zoomFactor - 0.25);
             });
             break;
         case "color-theme-light":
-            window.coreAPI.setCurrentThemeAppMode("light");
+            window.setCurrentThemeAppMode("light");
             useMenuStore().ChangeElementState("color-theme-light", {
                 checked: true,
             });
@@ -36,7 +36,7 @@ export const menuSelectEvent = (e: any, router: any) => {
             });
             break;
         case "color-theme-dark":
-            window.coreAPI.setCurrentThemeAppMode("dark");
+            window.setCurrentThemeAppMode("dark");
             useMenuStore().ChangeElementState("color-theme-light", {
                 checked: false,
             });
@@ -48,7 +48,7 @@ export const menuSelectEvent = (e: any, router: any) => {
             });
             break;
         case "color-theme-system":
-            window.coreAPI.setCurrentThemeAppMode("system");
+            window.setCurrentThemeAppMode("system");
             useMenuStore().ChangeElementState("color-theme-light", {
                 checked: false,
             });

@@ -12,9 +12,9 @@ import { windowProperties } from "./properties/windowProperties";
 import { windowExtraProperties } from "./properties/windowExtraProperties";
 import { initElectronWindowEvents } from "../core/scripts/electronWindowEvents";
 import { initBrowserWindowEvents } from "../core/scripts/browserWindowEvents";
-import { initElectronAPIEvents } from "../core/scripts/electronAPIEvents";
+import { initCoreAPIEvents } from "../core/scripts/coreAPIEvents";
 import { initDarkModeEvents } from "../core/scripts/darkModeEvents";
-import { initAppEvents } from "./app/appEvents";
+import { initApplicationAPIEvents } from "./applicationAPIEvents";
 import { nativeTheme } from "electron";
 import { DarkMode, LightMode } from "../core/scripts/themes";
 
@@ -87,8 +87,8 @@ async function createMainWindow() {
         windowExtraProperties.windowMaterialType,
     );
     initElectronWindowEvents(app, mainWindow);
-    initAppEvents(app, mainWindow);
-    initElectronAPIEvents(app, mainWindow);
+    initApplicationAPIEvents(app, mainWindow);
+    initCoreAPIEvents(app, mainWindow);
     initDarkModeEvents(app, mainWindow);
 
     /** macOS-style re-activate: focus existing window or recreate. */

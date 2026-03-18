@@ -16,7 +16,7 @@ export const windowProperties: any = {
         contextIsolation: true,
         devTools: true,
         webSecurity: true,
-        preload: join(__dirname, "preload.js"),
+        preload: join(__dirname, "applicationPreload.js"),
     },
     show: false,
     titleBarOverlay: {

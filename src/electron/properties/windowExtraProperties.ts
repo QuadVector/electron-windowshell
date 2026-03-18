@@ -1,6 +1,4 @@
 import { WindowMaterialType } from "../../core/types/WindowMaterialType";
-import { ThemeMode } from "../../core/types/ThemeMode";
-import { SoundEffect } from "../../core/types/SoundEffect";
 import { uiTheme } from "../../core/types/uiTheme";
 
 /**

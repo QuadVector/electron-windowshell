@@ -13,14 +13,14 @@ const fs = require("fs");
  * @param app Electron application instance.
  * @param win Main application window reference.
  */
-export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
-    console.log("[electronAPIEvents] Init core electron API events");
+export function initCoreAPIEvents(app: Electron.App, win: BrowserWindow) {
+    console.log("[CoreAPIEvents] Init core Electron API events");
 
     /**
      * Returns runtime versions (Electron, Chromium, Node.js, V8) and basic OS info.
      */
     ipcMain.handle("get-versions", (event: any) => {
-        console.log("[electronAPI] getVersions");
+        console.log("[CoreAPI] getVersions");
         return {
             electronVersion: process.versions.electron,
             chromiumVersion: process.versions.chrome,
@@ -34,7 +34,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * Quits the application.
      */
     ipcMain.on("close-application", (event: any) => {
-        console.log("[electronAPI] closeApplication");
+        console.log("[CoreAPI] closeApplication");
         app.quit();
     });
 
@@ -42,7 +42,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * Toggles fullscreen mode for the focused window (or the first available one).
      */
     ipcMain.on("toggle-fullscreen", (event: any) => {
-        console.log("[electronAPI] toggleFullScreen");
+        console.log("[CoreAPI] toggleFullScreen");
         const win =
             BrowserWindow.getFocusedWindow() ||
             BrowserWindow.getAllWindows()[0];
@@ -58,7 +58,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * @param zoomFactor Target zoom factor.
      */
     ipcMain.on("set-zoom-factor", (event: any, zoomFactor: number) => {
-        console.log(`[electronAPI] setZoomFactor: ${zoomFactor}`);
+        console.log(`[CoreAPI] setZoomFactor: ${zoomFactor}`);
         const minZoomFactor = 0.5;
         const maxZoomFactor = 1.5;
 
@@ -78,7 +78,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * Returns the current zoom factor for the focused window (or the first available one).
      */
     ipcMain.handle("get-zoom-factor", (event: any) => {
-        console.log("[electronAPI] getZoomFactor");
+        console.log("[CoreAPI] getZoomFactor");
         const win =
             BrowserWindow.getFocusedWindow() ||
             BrowserWindow.getAllWindows()[0];
@@ -91,7 +91,7 @@ export function initElectronAPIEvents(app: Electron.App, win: BrowserWindow) {
      * Resolves with an empty string when unavailable or on unsupported platforms.
      */
     ipcMain.handle("get-current-wallpaper", (): Promise<string> => {
-        console.log("[electronAPI] getCurrentWallpaper");
+        console.log("[CoreAPI] getCurrentWallpaper");
         return new Promise((resolve, reject) => {
             if (os.platform() === "win32") {
                 const command =

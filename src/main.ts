@@ -5,7 +5,6 @@
  */
 
 import { ThemeMode } from "./core/types/ThemeMode";
-import { SoundEffect } from "./core/types/SoundEffect";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -96,64 +95,39 @@ app.use(vuetify);
 app.use(contextmenu);
 app.mount("#app");
 
-//@todo move to PreloadExpose.ts
-window.coreAPI = {
-    /**
-     * Sets application theme mode and propagates the change:
-     * - persists to localStorage
-     * - updates Vuetify theme
-     * - notifies Electron main process via `window.electronAPI`
-     *
-     * @param mode Theme mode: `"dark" | "light" | "system"`.
-     */
-    setCurrentThemeAppMode: (mode: ThemeMode = "system") => {
-        console.log("[coreAPI] setCurrentThemeAppMode: ", mode);
-        localStorage.setItem("current_theme_mode", mode);
-        window.dispatchEvent(new Event("current_theme_mode_changed"));
+/**
+ * Sets application theme mode and propagates the change:
+ * - persists to localStorage
+ * - updates Vuetify theme
+ * - notifies Electron main process via `window.CoreAPI`
+ *
+ * Implementation of this method is located in main.ts, i.e. it directly accesses vuetify
+ *
+ * @param mode Theme mode: `"dark" | "light" | "system"`.
+ */
+window.setCurrentThemeAppMode = (mode: ThemeMode = "system") => {
+    console.log("[Main] setCurrentThemeAppMode: ", mode);
+    localStorage.setItem("current_theme_mode", mode);
+    window.dispatchEvent(new Event("current_theme_mode_changed"));
 
-        switch (mode) {
-            case "dark":
+    switch (mode) {
+        case "dark":
+            //vuetify.theme.global.name.value = "DarkMode";
+            window.CoreAPI.setCurrentThemeMode("dark");
+            break;
+        case "light":
+            vuetify.theme.global.name.value = "LightMode";
+            window.CoreAPI.setCurrentThemeMode("light");
+            break;
+        case "system":
+            window.CoreAPI.setCurrentThemeMode("system");
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
                 vuetify.theme.global.name.value = "DarkMode";
-                window.electronAPI.setCurrentThemeMode("dark");
-                break;
-            case "light":
+            } else {
                 vuetify.theme.global.name.value = "LightMode";
-                window.electronAPI.setCurrentThemeMode("light");
-                break;
-            case "system":
-                window.electronAPI.setCurrentThemeMode("system");
-                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-                    vuetify.theme.global.name.value = "DarkMode";
-                } else {
-                    vuetify.theme.global.name.value = "LightMode";
-                }
-                break;
-        }
-    },
-
-    /**
-     *
-     * @param name Sound name. Sound files must be placed in `/public/sound/ui/[sound_pack_name]`.
-     * All available sound names declared in `src/core/types/SoundEffect.ts`.
-     * @returns
-     */
-    playSound(name: SoundEffect) {
-        console.log("[coreAPI] playSound:", name);
-        if (windowExtraProperties.soundPack === undefined) {
-            console.log("[coreAPI] playSound: sound pack not loaded");
-            return;
-        }
-
-        const src = `/src/public/sound/ui/${windowExtraProperties.soundPack}/${name}.wav`;
-        let audio = new Audio(src);
-
-        //clean memory
-        audio.addEventListener("ended", () => {
-            audio.remove();
-        });
-
-        audio.play();
-    },
+            }
+            break;
+    }
 };
 
 /**
@@ -164,11 +138,11 @@ window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", () => {
         if (localStorage.getItem("current_theme_mode") === "system") {
-            window.coreAPI.setCurrentThemeAppMode("system");
+            window.setCurrentThemeAppMode("system");
         }
     });
 
 /** Apply saved theme mode on startup (defaults to `"system"`). */
-window.coreAPI.setCurrentThemeAppMode(
+window.setCurrentThemeAppMode(
     (localStorage.getItem("current_theme_mode") || "system") as ThemeMode,
 );

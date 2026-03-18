@@ -43,7 +43,7 @@ export default defineConfig(({ command }) => {
                     },
                 },
                 preload: {
-                    input: "src/electron/preload.ts",
+                    input: "src/electron/applicationPreload.ts",
                     vite: {
                         build: {
                             sourcemap: sourcemap,
