@@ -8,16 +8,15 @@ import { app, BrowserWindow } from "electron";
 import { release } from "node:os";
 import { join, dirname } from "path";
 import { fileURLToPath } from "node:url";
-import { windowProperties } from "../electron/windowProperties";
-import { windowExtraProperties } from "../electron/windowExtraProperties";
+import { windowProperties } from "./properties/windowProperties";
+import { windowExtraProperties } from "./properties/windowExtraProperties";
 import { initElectronWindowEvents } from "../core/scripts/electronWindowEvents";
 import { initBrowserWindowEvents } from "../core/scripts/browserWindowEvents";
-import { initElectronAPIEvents } from "../core/scripts/electronAPIEvents";
+import { initCoreAPIEvents } from "../core/scripts/coreAPIEvents";
 import { initDarkModeEvents } from "../core/scripts/darkModeEvents";
-import { initAppEvents } from "./appEvents";
+import { initApplicationAPIEvents } from "./applicationAPIEvents";
 import { nativeTheme } from "electron";
 import { DarkMode, LightMode } from "../core/scripts/themes";
-const remoteMain = require("@electron/remote/main");
 
 /** ESM-compatible `__filename` used across the main process. */
 globalThis.__filename = fileURLToPath(import.meta.url);
@@ -83,14 +82,13 @@ async function createMainWindow() {
     }
 
     //initialize
-    remoteMain.initialize();
     initBrowserWindowEvents(
         mainWindow,
         windowExtraProperties.windowMaterialType,
     );
     initElectronWindowEvents(app, mainWindow);
-    initAppEvents(app, mainWindow);
-    initElectronAPIEvents(app, mainWindow);
+    initApplicationAPIEvents(app, mainWindow);
+    initCoreAPIEvents(app, mainWindow);
     initDarkModeEvents(app, mainWindow);
 
     /** macOS-style re-activate: focus existing window or recreate. */
@@ -102,8 +100,6 @@ async function createMainWindow() {
             createMainWindow();
         }
     });
-
-    remoteMain.enable(mainWindow.webContents);
 }
 
 /** Focus/restore the existing window on a second instance (optional). */

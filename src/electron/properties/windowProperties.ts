@@ -1,0 +1,26 @@
+import { join } from "path";
+
+/**
+ * Main BrowserWindow configuration object.
+ */
+export const windowProperties: any = {
+    title: "Electron Fluent template",
+    icon: join(__dirname, "/favicon.ico"),
+    width: 1280,
+    height: 800,
+    minWidth: 600,
+    minHeight: 750,
+    offscreen: true,
+    webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
+        devTools: true,
+        webSecurity: true,
+        preload: join(__dirname, "applicationPreload.js"),
+    },
+    show: false,
+    titleBarOverlay: {
+        height: 32,
+    },
+    backgroundMaterial: "mica",
+};

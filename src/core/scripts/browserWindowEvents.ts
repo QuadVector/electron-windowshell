@@ -1,5 +1,5 @@
 import { BrowserWindow, shell } from "electron";
-import { windowProperties } from "../../electron/windowProperties";
+import { windowProperties } from "../../electron/properties/windowProperties";
 
 /**
  * Initializes core browser window events for an Electron application window.
@@ -17,7 +17,7 @@ import { windowProperties } from "../../electron/windowProperties";
  */
 export function initBrowserWindowEvents(
     win: BrowserWindow,
-    windowMaterialType: string,
+    windowMaterialType: string | undefined,
 ) {
     console.log("[browserWindowEvents] Init core browser window events");
 

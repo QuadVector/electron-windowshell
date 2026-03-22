@@ -19,10 +19,7 @@
                         prepend-icon="$menu"
                         variant="text"
                         class="component__WindowBar-buttons-btn component__WindowBar-btn__menu"
-                        @click="
-                            this.routerStore.navigatorOpened =
-                                !this.routerStore.navigatorOpened
-                        "
+                        @click="toggleNavigator"
                         v-if="useNavigator"></v-btn>
                 </div>
                 <MainMenu />
@@ -70,7 +67,7 @@ import WindowBar from "../core/components/WindowBar.vue";
 import AboutModal from "../core/components/AboutModal.vue";
 import { useRouterStore } from "./store/routerStore";
 import { useMainStore } from "./store/mainStore";
-import { windowExtraProperties } from "../electron/windowExtraProperties";
+import { windowExtraProperties } from "../electron/properties/windowExtraProperties";
 
 export default {
     components: {
@@ -174,6 +171,14 @@ export default {
             } else {
                 this.routerStore.navigatorOpened = false;
             }
+        },
+
+        /**
+         * Toggles navigator visibility.
+         */
+        toggleNavigator() {
+            this.routerStore.navigatorOpened =
+                !this.routerStore.navigatorOpened;
         },
     },
 
