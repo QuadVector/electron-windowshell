@@ -100,12 +100,8 @@ export function initPreloadCoreAPIMethods() {
          */
         playSound(name: string): void {
             console.log("[CoreAPI] playSound:", name);
-            if (windowExtraProperties.soundPack === undefined) {
-                console.log("[CoreAPI] playSound: sound pack not loaded");
-                return;
-            }
 
-            const src = `/src/public/sound/ui/${windowExtraProperties.soundPack}/${name}.wav`;
+            const src = `/src/public/sound/ui/${name}.wav`;
             let audio = new Audio(src);
 
             //clean memory

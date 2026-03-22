@@ -310,24 +310,24 @@
                         <v-card-text>
                             <v-row dense>
                                 <v-col cols="auto">
-                                    <v-btn @click="playSound('click')" flat
-                                        >click</v-btn
-                                    >
-                                    <v-btn @click="playSound('focus')" flat
-                                        >focus</v-btn
-                                    >
-                                    <v-btn @click="playSound('modal_open')" flat
-                                        >modal_open</v-btn
-                                    >
-                                    <v-btn @click="playSound('modal_close')" flat
-                                        >modal_close</v-btn
-                                    >
-                                    <v-btn @click="playSound('navigator_open')" flat
-                                        >navigator_open</v-btn
-                                    >
-                                    <v-btn @click="playSound('navigator_close')" flat
-                                        >navigator_close</v-btn
-                                    >
+                                    <v-btn @click="playSound('click')" flat>
+                                        Click
+                                    </v-btn>
+                                    <v-btn @click="playSound('success')" flat>
+                                        Success
+                                    </v-btn>
+                                    <v-btn @click="playSound('error')" flat>
+                                        Error
+                                    </v-btn>
+                                    <v-btn @click="playSound('warning')" flat>
+                                        Warning
+                                    </v-btn>
+                                    <v-btn @click="playSound('notify')" flat>
+                                        Notify
+                                    </v-btn>
+                                    <v-btn @click="playSound('toggle')" flat>
+                                        Toggle
+                                    </v-btn>
                                 </v-col>
                             </v-row>
                         </v-card-text>

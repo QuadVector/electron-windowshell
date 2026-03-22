@@ -21,9 +21,6 @@ export interface WindowExtraProperties {
 
     /** UI theme. */
     uiTheme: uiTheme | undefined;
-
-    /** Sound pack. Leave undefined for disable sound effects. Sound packs must be placed in `/public/sound/ui/[sound_pack_name]`. */
-    soundPack: string | undefined
 }
 
 /**
@@ -37,5 +34,4 @@ export const windowExtraProperties: WindowExtraProperties = {
     windowMaterialType: "fluent",
     disableSecondInstance: true,
     uiTheme: "windows11",
-    soundPack: "default"
 };
