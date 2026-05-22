@@ -10,8 +10,6 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { createVuetify } from "vuetify";
-import * as components from "vuetify/components";
-import * as directives from "vuetify/directives";
 import contextmenu from "v-contextmenu";
 import { useRouterStore } from "./inc/store/routerStore";
 import { DarkMode, LightMode } from "./core/scripts/themes";
@@ -47,8 +45,6 @@ const app = createApp(App);
  * @remarks Default theme is derived from `localStorage.current_theme_mode`.
  */
 const vuetify = createVuetify({
-    components,
-    directives,
     theme: {
         defaultTheme:
             localStorage.getItem("current_theme_mode") === "dark"

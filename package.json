@@ -28,6 +28,7 @@
 	},
 	"build": {
 		"appId": "electron-windowshell",
+		"compression": "maximum",
 		"asar": true,
 		"directories": {
 			"buildResources": "assets",
@@ -73,7 +74,6 @@
 		"VITE_DEV_SERVER_PORT": 3344
 	},
 	"devDependencies": {
-		"@mdi/font": "^7.4.47",
 		"@simolation/vue-hotkey": "^2.0.1",
 		"@types/webfontloader": "^1.0.0",
 		"@vitejs/plugin-vue": "^6.0.3",
@@ -95,6 +95,7 @@
 		"vue-router": "^4.3.0",
 		"vue-tinykeys": "^0.2.1",
 		"vue-tsc": "^2.1.2",
-		"vuetify": "^3.0.0-beta.5"
+		"vuetify": "^3.0.0-beta.5",
+		"@mdi/font": "^7.4.47"
 	}
 }
