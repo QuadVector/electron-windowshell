@@ -306,35 +306,6 @@
                 </v-col>
                 <v-col cols="12">
                     <v-card flat>
-                        <v-card-title>Sounds</v-card-title>
-                        <v-card-text>
-                            <v-row dense>
-                                <v-col cols="auto">
-                                    <v-btn @click="playSound('click')" flat>
-                                        Click
-                                    </v-btn>
-                                    <v-btn @click="playSound('success')" flat>
-                                        Success
-                                    </v-btn>
-                                    <v-btn @click="playSound('error')" flat>
-                                        Error
-                                    </v-btn>
-                                    <v-btn @click="playSound('warning')" flat>
-                                        Warning
-                                    </v-btn>
-                                    <v-btn @click="playSound('notify')" flat>
-                                        Notify
-                                    </v-btn>
-                                    <v-btn @click="playSound('toggle')" flat>
-                                        Toggle
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12">
-                    <v-card flat>
                         <v-card-text>
                             Other UI examples you can find in the
                             <a

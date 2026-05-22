@@ -112,7 +112,7 @@ window.setCurrentThemeAppMode = (mode: ThemeMode = "system") => {
 
     switch (mode) {
         case "dark":
-            //vuetify.theme.global.name.value = "DarkMode";
+            vuetify.theme.global.name.value = "DarkMode";
             window.CoreAPI.setCurrentThemeMode("dark");
             break;
         case "light":
