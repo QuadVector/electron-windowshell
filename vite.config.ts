@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import vuetify from 'vite-plugin-vuetify';
 import electron from "vite-plugin-electron/simple";
 import pkg from "./package.json";
 
@@ -15,6 +16,7 @@ export default defineConfig(({ command }) => {
     return {
         plugins: [
             vue(),
+            vuetify({ autoImport: true }), // optimized for production
             electron({
                 main: {
                     entry: "src/electron/main.ts",
@@ -41,7 +43,7 @@ export default defineConfig(({ command }) => {
                     },
                 },
                 preload: {
-                    input: "src/electron/preload.ts",
+                    input: "src/electron/applicationPreload.ts",
                     vite: {
                         build: {
                             sourcemap: sourcemap,

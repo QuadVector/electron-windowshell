@@ -16,7 +16,8 @@
 		"skipLibCheck": true,
 		"noEmit": true,
 		"outDir": "electron-dist",
-		"sourceMap": true
+		"sourceMap": false,
+		"inlineSources": false,
 	},
 	"include": [
 		"src",

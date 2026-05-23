@@ -4,16 +4,16 @@
  * and syncs theme mode with localStorage + OS + Electron.
  */
 
+import { ThemeMode } from "./core/types/ThemeMode";
+
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { createVuetify } from "vuetify";
-import * as components from "vuetify/components";
-import * as directives from "vuetify/directives";
 import contextmenu from "v-contextmenu";
 import { useRouterStore } from "./inc/store/routerStore";
 import { DarkMode, LightMode } from "./core/scripts/themes";
-import { windowExtraProperties } from "./electron/windowExtraProperties";
+import { windowExtraProperties } from "./electron/properties/windowExtraProperties";
 import App from "./inc/App.vue";
 
 import "@mdi/font/css/materialdesignicons.css";
@@ -32,13 +32,9 @@ await cssLoaders[`./core/styles/themes/${theme}/app.css`]?.();
 
 //include the rest of the styles
 import "v-contextmenu/dist/themes/default.css";
-import "./core/styles/themes/windows11/variables.css";
-import "./core/styles/themes/windows11/animations.css";
 import "./core/styles/base.css";
 import "./core/styles/backgrounds.css";
 import "./core/styles/helpers.css";
-import "./core/styles/themes/windows11/components.css";
-import "./core/styles/themes/windows11/app.css";
 import "./public/style.css";
 
 /** Vue application instance. */
@@ -49,8 +45,6 @@ const app = createApp(App);
  * @remarks Default theme is derived from `localStorage.current_theme_mode`.
  */
 const vuetify = createVuetify({
-    components,
-    directives,
     theme: {
         defaultTheme:
             localStorage.getItem("current_theme_mode") === "dark"
@@ -101,25 +95,28 @@ app.mount("#app");
  * Sets application theme mode and propagates the change:
  * - persists to localStorage
  * - updates Vuetify theme
- * - notifies Electron main process via `window.electronAPI`
+ * - notifies Electron main process via `window.CoreAPI`
+ *
+ * Implementation of this method is located in main.ts, i.e. it directly accesses vuetify
  *
  * @param mode Theme mode: `"dark" | "light" | "system"`.
  */
-window.setCurrentThemeAppMode = function (mode: string = "system") {
+window.setCurrentThemeAppMode = (mode: ThemeMode = "system") => {
+    console.log("[Main] setCurrentThemeAppMode: ", mode);
     localStorage.setItem("current_theme_mode", mode);
     window.dispatchEvent(new Event("current_theme_mode_changed"));
 
     switch (mode) {
         case "dark":
             vuetify.theme.global.name.value = "DarkMode";
-            window.electronAPI.setCurrentThemeMode("dark");
+            window.CoreAPI.setCurrentThemeMode("dark");
             break;
         case "light":
             vuetify.theme.global.name.value = "LightMode";
-            window.electronAPI.setCurrentThemeMode("light");
+            window.CoreAPI.setCurrentThemeMode("light");
             break;
         case "system":
-            window.electronAPI.setCurrentThemeMode("system");
+            window.CoreAPI.setCurrentThemeMode("system");
             if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
                 vuetify.theme.global.name.value = "DarkMode";
             } else {
@@ -143,5 +140,5 @@ window
 
 /** Apply saved theme mode on startup (defaults to `"system"`). */
 window.setCurrentThemeAppMode(
-    localStorage.getItem("current_theme_mode") || "system",
+    (localStorage.getItem("current_theme_mode") || "system") as ThemeMode,
 );

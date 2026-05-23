@@ -8,19 +8,19 @@ export const menuSelectEvent = (e: any, router: any) => {
             alert("New file");
             break;
         case "app-close":
-            window.electronAPI.closeApplication();
+            window.CoreAPI.closeApplication();
             break;
         case "full-screen":
-            window.electronAPI.toggleFullScreen();
+            window.CoreAPI.toggleFullScreen();
             break;
         case "zoom-in":
-            window.electronAPI.getZoomFactor().then((zoomFactor) => {
-                window.electronAPI.setZoomFactor(zoomFactor + 0.25);
+            window.CoreAPI.getZoomFactor().then((zoomFactor) => {
+                window.CoreAPI.setZoomFactor(zoomFactor + 0.25);
             });
             break;
         case "zoom-out":
-            window.electronAPI.getZoomFactor().then((zoomFactor) => {
-                window.electronAPI.setZoomFactor(zoomFactor - 0.25);
+            window.CoreAPI.getZoomFactor().then((zoomFactor) => {
+                window.CoreAPI.setZoomFactor(zoomFactor - 0.25);
             });
             break;
         case "color-theme-light":

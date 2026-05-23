@@ -102,7 +102,7 @@ export default {
                 nodejsVersion,
                 v8Version,
                 osInfo,
-            } = await window.electronAPI.getVersions();
+            } = await CoreAPI.getVersions();
 
             listItems.value = [
                 { title: "Electron", subtitle: electronVersion },

@@ -330,6 +330,9 @@ export default {
         contextMenuTest() {
             alert("Test");
         },
+        playSound(name) {
+            window.CoreAPI.playSound(name);
+        },
     },
 };
 </script>
