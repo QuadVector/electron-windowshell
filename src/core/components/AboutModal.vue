@@ -1,211 +1,188 @@
 <template>
-    <v-dialog
-        content-class="about__dialog"
-        v-model="localIsActive"
-        max-width="400">
-        <v-card
-            class="mx-auto"
-            :prepend-avatar="windowIcon"
-            :subtitle="description"
-            width="100%">
-            <template v-slot:title>
-                <div class="font-weight-black about__title">
-                    <div class="about__title__name">
-                        {{ programName }}
-                    </div>
-                    <v-chip class="about__title__version">
-                        {{ version }}
-                    </v-chip>
-                </div>
-            </template>
+	<v-dialog
+		content-class="about__dialog"
+		v-model="localIsActive"
+		max-width="400">
+		<v-card
+			class="mx-auto"
+			:prepend-avatar="windowIcon"
+			:subtitle="description"
+			width="100%">
+			<template v-slot:title>
+				<div class="font-weight-black about__title">
+					<div class="about__title__name">
+						{{ programName }}
+					</div>
+					<v-chip class="about__title__version">
+						{{ version }}
+					</v-chip>
+				</div>
+			</template>
 
-            <v-card-text class="bg-surface-light pt-4">
-                <div class="about__list" lines="one">
-                    <v-list-item
-                        v-for="(item, index) in listItems"
-                        :key="index">
-                        <v-list-item-content>
-                            <v-list-item-title>{{
-                                item.title
-                            }}</v-list-item-title>
-                            <v-list-item-subtitle>{{
-                                item.subtitle
-                            }}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                </div>
-            </v-card-text>
+			<v-card-text class="bg-surface-light pt-4">
+				<div class="about__list" lines="one">
+					<v-list-item
+						v-for="(item, index) in listItems"
+						:key="index">
+						<v-list-item-content>
+							<v-list-item-title>{{
+								item.title
+							}}</v-list-item-title>
+							<v-list-item-subtitle>{{
+								item.subtitle
+							}}</v-list-item-subtitle>
+						</v-list-item-content>
+					</v-list-item>
+				</div>
+			</v-card-text>
 
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn flat @click="localIsActive = false">Close</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+			<v-card-actions>
+				<v-spacer></v-spacer>
+				<v-btn flat @click="localIsActive = false">Close</v-btn>
+			</v-card-actions>
+		</v-card>
+	</v-dialog>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted, watch } from "vue";
 import packageJson from "../../../package.json";
 import { useMainStore } from "../../inc/store/mainStore";
 
-export default {
-    /**
-     * Controls visibility of the modal from the parent component.
-     */
-    props: {
-        isActive: {
-            type: Boolean,
-            default: false,
-        },
-    },
+/**
+ * Component props
+ */
+const props = defineProps({
+	isActive: {
+		type: Boolean,
+		default: false,
+	},
+});
 
-    data() {
-        return {
-            /**
-             * Current page favicon URL, used as the modal/app icon.
-             */
-            windowIcon: document.querySelector("link[rel*='icon']").href,
-        };
-    },
+/**
+ * Current page favicon URL, used as the modal/app icon.
+ */
+const windowIcon = ref(document.querySelector("link[rel*='icon']")?.href || ""); // Current page favicon URL, used as the modal/app icon.
 
-    setup(props) {
-        /**
-         * Local mirror of the active state to allow internal close actions.
-         */
-        const localIsActive = ref(props.isActive);
+/**
+ * Local mirror of the active state to allow internal close actions.
+ */
+const localIsActive = ref(props.isActive);
 
-        /**
-         * Runtime/version information displayed in the UI.
-         */
-        const listItems = ref([]);
+/**
+ * Runtime/version information displayed in the UI.
+ */
+const listItems = ref([]);
 
-        /**
-         * Application metadata loaded from package.json.
-         */
-        const programName = ref("");
-        const version = ref("");
-        const description = ref("");
+/**
+ * Application metadata loaded from package.json.
+ */
+const programName = ref("");
+const version = ref("");
+const description = ref("");
 
-        /**
-         * Global store used to synchronize modal visibility with app state.
-         */
-        const mainStore = useMainStore();
+/**
+ * Global store used to synchronize modal visibility with app state.
+ */
+const mainStore = useMainStore();
 
-        /**
-         * Fetches runtime versions from the Electron preload API and builds the UI list.
-         */
-        const getListItems = async () => {
-            const {
-                electronVersion,
-                chromiumVersion,
-                nodejsVersion,
-                v8Version,
-                osInfo,
-            } = await CoreAPI.getVersions();
+/**
+ * Fetches runtime versions from the Electron preload API and builds the UI list.
+ */
+const getListItems = async function () {
+	const {
+		electronVersion,
+		chromiumVersion,
+		nodejsVersion,
+		v8Version,
+		osInfo,
+	} = await CoreAPI.getVersions();
 
-            listItems.value = [
-                { title: "Electron", subtitle: electronVersion },
-                { title: "Chromium", subtitle: chromiumVersion },
-                { title: "Node.js", subtitle: nodejsVersion },
-                { title: "V8", subtitle: v8Version },
-                { title: "OS", subtitle: osInfo },
-            ];
-        };
-
-        /**
-         * Loads app name/version/description from the packaged metadata.
-         */
-        const loadPackageJson = () => {
-            programName.value = packageJson.name;
-            version.value = packageJson.version;
-            description.value = packageJson.description;
-        };
-
-        /**
-         * Closes the modal locally (parent/store sync happens via watchers).
-         */
-        const closeModal = () => {
-            localIsActive.value = false;
-        };
-
-        /**
-         * Keeps localIsActive in sync when the parent updates isActive.
-         */
-        watch(
-            () => props.isActive,
-            (newVal) => {
-                localIsActive.value = newVal;
-            },
-        );
-
-        /**
-         * Propagates local active state changes into the global store.
-         */
-        watch(
-            () => localIsActive.value,
-            (newVal) => {
-                mainStore.activeAboutModal = newVal;
-            },
-        );
-
-        onMounted(() => {
-            /**
-             * Initializes modal content after mount.
-             */
-            getListItems();
-            loadPackageJson();
-        });
-
-        return {
-            localIsActive,
-            listItems,
-            programName,
-            version,
-            description,
-            closeModal,
-        };
-    },
+	listItems.value = [
+		{ title: "Electron", subtitle: electronVersion },
+		{ title: "Chromium", subtitle: chromiumVersion },
+		{ title: "Node.js", subtitle: nodejsVersion },
+		{ title: "V8", subtitle: v8Version },
+		{ title: "OS", subtitle: osInfo },
+	];
 };
+
+/**
+ * Loads app name/version/description from the packaged metadata.
+ */
+const loadPackageJson = function () {
+	programName.value = packageJson.name;
+	version.value = packageJson.version;
+	description.value = packageJson.description;
+};
+
+/**
+ * Closes the modal locally.
+ */
+const closeModal = function () {
+	localIsActive.value = false;
+};
+
+/**
+ * Keeps localIsActive in sync when the parent updates isActive.
+ */
+watch(
+	() => props.isActive,
+	(newVal) => {
+		localIsActive.value = newVal;
+	},
+);
+
+/**
+ * Propagates local active state changes into the global store.
+ */
+watch(localIsActive, (newVal) => {
+	mainStore.activeAboutModal = newVal;
+});
+
+onMounted(function () {
+	getListItems();
+	loadPackageJson();
+});
 </script>
 <style scoped>
 :deep(.about__dialog .v-avatar) {
-    border-radius: 0px;
+	border-radius: 0px;
 }
 
 .about__dialog .about__list {
-    background: none !important;
-    padding: 0px;
-    border: 0px;
-    box-shadow: none;
+	background: none !important;
+	padding: 0px;
+	border: 0px;
+	box-shadow: none;
 }
 
 .about__dialog .about__list .v-list-item {
-    padding: 0px !important;
+	padding: 0px !important;
 }
 
 .about__dialog .about__list .v-list-item-title {
-    margin-bottom: 5px;
+	margin-bottom: 5px;
 }
 
 .about__dialog .about__list {
-    display: flex;
-    gap: 20px;
-    flex-direction: column;
+	display: flex;
+	gap: 20px;
+	flex-direction: column;
 }
 
 .about__dialog .about__title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 15px;
+	margin-bottom: 5px;
 }
 
 .about__dialog .about__title__name {
-    display: block;
-    max-width: 230px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+	display: block;
+	max-width: 230px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 </style>

@@ -1,45 +1,32 @@
 <template>
-    <div class="component__WindowBar">
-        <v-app-bar class="component__WindowBar__bar" density="compact">
-            <slot name="prepend"></slot>
-            <v-app-bar-title class="component__WindowBar-title text-center">
-                {{ windowTitle }}
-            </v-app-bar-title>
-        </v-app-bar>
-    </div>
+	<div class="component__WindowBar">
+		<v-app-bar class="component__WindowBar__bar" density="compact">
+			<slot name="prepend"></slot>
+			<v-app-bar-title class="component__WindowBar-title text-center">
+				{{ windowTitle }}
+			</v-app-bar-title>
+		</v-app-bar>
+	</div>
 </template>
 
-<script>
-export default {
-    /**
-     * Component state.
-     *
-     * - windowTitle: Mirrors the current document title for display/binding.
-     * - _titleObserver: MutationObserver instance used to track title changes.
-     */
-    data() {
-        return {
-            windowTitle: document.title,
-            _titleObserver: null,
-        };
-    },
+<script setup>
+import { ref, onMounted } from "vue";
 
-    mounted() {
-        /**
-         * Observes changes to the <title> element and keeps windowTitle in sync.
-         */
-        const that = this;
-        const titleElement = document.querySelector("title");
+const windowTitle = ref(document.title); // Current window title (based on document title in the DOM)
 
-        if (titleElement) {
-            this._titleObserver = new MutationObserver(() => {
-                that.windowTitle = document.title;
-            });
+// create a title observer for the DOM
+let titleObserver = null; // Observes title changes in the DOM
+onMounted(function () {
+	const titleElement = document.querySelector("title");
 
-            this._titleObserver.observe(titleElement, {
-                childList: true,
-            });
-        }
-    },
-};
+	if (titleElement) {
+		titleObserver = new MutationObserver(() => {
+			windowTitle.value = document.title;
+		});
+
+		titleObserver.observe(titleElement, {
+			childList: true,
+		});
+	}
+});
 </script>
