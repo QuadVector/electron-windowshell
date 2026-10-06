@@ -168,6 +168,7 @@ export default {
     },
 };
 </script>
+
 <style scoped>
 :deep(.about__dialog .v-avatar) {
     border-radius: 0px;
