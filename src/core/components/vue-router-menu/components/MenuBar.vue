@@ -1,16 +1,45 @@
 <template>
-	<div ref="menuBarRef" :class="[dockClass, 'menu-bar-container', expandClass]" :draggable="draggable" tabindex="0"
-		:style="menuBarStyle" @dragover="handleDragMove" @dragstart="handleDragStart" @dragend="handleDragEnd"
-		@touchstart="handleDragStart" @touchmove="handleDragMove" @touchend="handleDragEnd">
-		<ul :class="[dockClass, 'menu-bar-items']" draggable="true" @dragstart="handleDragCancel">
-			<li v-for="item of menuItems" :key="item.id" :class="[dockClass, 'v-dock-menu-bar-item-wrapper']">
-				<menu-bar-item :id="item.id" :dock="dockPosition" :menu-active="menuActive"
-					:menu-bar-dimensions="{ height: barHeight, width: barWidth }" :menu="item.menu" :name="item.name"
-					:menu-bar-active="menuBarActive" :show-menu="item.showMenu" :theme="theme"
-					:is-touch-device="isMobileDevice" :on-selected="handleSelected"
-					:highlight-first-element="highlightFirstElement" @deactivate="handleDeactivateMenu"
-					@activate="handleActivateMenu" @activate-next="handleActivateDir"
-					@activate-previous="handleActivateDir" @show="handleOnShowMenu">
+	<div
+		ref="menuBarRef"
+		:class="[dockClass, 'menu-bar-container', expandClass]"
+		:draggable="draggable"
+		tabindex="0"
+		:style="menuBarStyle"
+		@dragover="handleDragMove"
+		@dragstart="handleDragStart"
+		@dragend="handleDragEnd"
+		@touchstart="handleDragStart"
+		@touchmove="handleDragMove"
+		@touchend="handleDragEnd">
+		<ul
+			:class="[dockClass, 'menu-bar-items']"
+			draggable="true"
+			@dragstart="handleDragCancel">
+			<li
+				v-for="item of menuItems"
+				:key="item.id"
+				:class="[dockClass, 'v-dock-menu-bar-item-wrapper']">
+				<menu-bar-item
+					:id="item.id"
+					:dock="dockPosition"
+					:menu-active="menuActive"
+					:menu-bar-dimensions="{
+						height: barHeight,
+						width: barWidth,
+					}"
+					:menu="item.menu"
+					:name="item.name"
+					:menu-bar-active="menuBarActive"
+					:show-menu="item.showMenu"
+					:theme="theme"
+					:is-touch-device="isMobileDevice"
+					:on-selected="handleSelected"
+					:highlight-first-element="highlightFirstElement"
+					@deactivate="handleDeactivateMenu"
+					@activate="handleActivateMenu"
+					@activate-next="handleActivateDir"
+					@activate-previous="handleActivateDir"
+					@show="handleOnShowMenu">
 				</menu-bar-item>
 			</li>
 		</ul>
@@ -60,7 +89,17 @@ export default defineComponent({
 		onSelected: {
 			required: true,
 			type: Function as PropType<
-				({ anchor, name, checked, extra }: { anchor?: string; name: string; checked: boolean; extra: any }) => void
+				({
+					anchor,
+					name,
+					checked,
+					extra,
+				}: {
+					anchor?: string;
+					name: string;
+					checked: boolean;
+					extra: any;
+				}) => void
 			>,
 		},
 		draggable: {
@@ -120,8 +159,8 @@ export default defineComponent({
 			props.items.map((item) =>
 				Object.assign({}, item, {
 					id: Math.random().toString(16).slice(2),
-				})
-			)
+				}),
+			),
 		);
 
 		const activeMenuSelection = ref(-1);
@@ -143,7 +182,11 @@ export default defineComponent({
 			}
 		};
 
-		const handleMenuClosure = () => {
+		const handleMenuClosure = (event?: Event) => {
+			if (event && menuBarRef.value?.contains(event.target as Node)) {
+				return;
+			}
+
 			if (unref(menuActive) || unref(menuBarActive)) {
 				menuBarActive.value = false;
 				menuActive.value = false;
@@ -220,13 +263,14 @@ export default defineComponent({
 				return;
 			}
 
-			const dragEndResult = utils.handleDragEnd(event, unref(clientCoords));
+			const dragEndResult = utils.handleDragEnd(
+				event,
+				unref(clientCoords),
+			);
 
 			if (dragEndResult) {
-				const {
-					dragActive: dragActiveNew,
-					dockPosition: positionNew,
-				} = dragEndResult;
+				const { dragActive: dragActiveNew, dockPosition: positionNew } =
+					dragEndResult;
 
 				dragActive.value = dragActiveNew;
 				dockPosition.value = positionNew;
@@ -264,7 +308,7 @@ export default defineComponent({
 			menuItems.value = menuItems.value.map((item) =>
 				Object.assign({}, item, {
 					showMenu: item.id === id,
-				})
+				}),
 			);
 		};
 
@@ -274,13 +318,19 @@ export default defineComponent({
 				menuItems.value = menuItems.value.map((item) =>
 					Object.assign({}, item, {
 						showMenu: false,
-					})
+					}),
 				);
 			}
 		};
 
 		const handleOnShowMenu = (state: boolean, id: string) => {
 			menuActive.value = state;
+			menuItems.value = menuItems.value.map((item) =>
+				Object.assign({}, item, {
+					showMenu: state && item.id === id,
+				}),
+			);
+
 			if (state) {
 				activeMenuBarId.value = id;
 			} else {
@@ -318,7 +368,7 @@ export default defineComponent({
 				dir,
 				unref(menuItems),
 				unref(activeMenuSelection),
-				unref(activeMenuBarId)
+				unref(activeMenuBarId),
 			);
 
 			if ("navigateMenu" in result) {
