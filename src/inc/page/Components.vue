@@ -50,6 +50,7 @@
 							<v-checkbox
 								label="Checkbox 1"
 								color="primary"
+								descr="Checkbox description example"
 								v-model="exampleCheckbox1"></v-checkbox>
 							<v-checkbox
 								label="Checkbox 2"
