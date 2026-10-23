@@ -11,7 +11,7 @@
 		<v-container>
 			<v-row dense>
 				<v-col cols="12">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
 						<v-card-title>Buttons</v-card-title>
 						<v-card-text>
 							<v-row dense>
@@ -44,13 +44,13 @@
 				</v-col>
 
 				<v-col cols="6">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
 						<v-card-title>Checkboxes</v-card-title>
 						<v-card-text>
 							<v-checkbox
 								label="Checkbox 1"
 								color="primary"
-								descr="Checkbox description example"
+								description="Checkbox description example"
 								v-model="exampleCheckbox1"></v-checkbox>
 							<v-checkbox
 								label="Checkbox 2"
@@ -65,7 +65,7 @@
 				</v-col>
 
 				<v-col cols="6">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
 						<v-card-title>Radio Buttons</v-card-title>
 						<v-card-text>
 							<v-radio-group v-model="exampleRadio">
@@ -86,8 +86,80 @@
 					</v-card>
 				</v-col>
 
+				<v-col cols="6">
+					<v-card flat class="h-100 w-100">
+						<v-card-title>Switches</v-card-title>
+						<v-card-text>
+							<v-switch
+								label="Switch 1"
+								color="primary"
+								v-model="exampleSwitch1"></v-switch>
+							<v-switch
+								label="Switch 2"
+								color="primary"
+								v-model="exampleSwitch2"></v-switch>
+							<v-switch
+								label="Switch 3"
+								color="primary"
+								v-model="exampleSwitch3"></v-switch>
+						</v-card-text>
+					</v-card>
+				</v-col>
+
+				<v-col cols="6">
+					<v-card flat class="h-100 w-100">
+						<v-card-title>Pie chart</v-card-title>
+						<v-card-text class="content-center">
+							<v-pie
+								animation
+								legend
+								width="100%"
+								:tooltip="{ transition: false }"
+								:palette="piePalette"
+								:items="pieItems" />
+						</v-card-text>
+					</v-card>
+				</v-col>
+
 				<v-col cols="12">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
+						<v-card-title>Line chart</v-card-title>
+						<v-card-text class="content-center">
+							<v-sparkline
+								:gradient="lineChartGradient"
+								:model-value="lineChartValues"
+								:tooltip="{
+									class: 'sparkline-tooltip',
+									transition: false,
+								}"
+								height="60"
+								line-width="1"
+								marker-size="4"
+								marker-stroke="rgb(var(--v-theme-surface))"
+								min="0"
+								label-size="4"
+								auto-draw
+								inset
+								interactive
+								auto-line-width="1"
+								smooth>
+								<template v-slot:tooltip="{ index, value }">
+									<v-list-item density="compact">
+										<div class="text-body-medium">
+											${{ value.toLocaleString() }}
+										</div>
+									</v-list-item>
+								</template>
+								<template v-slot:label="item">
+									{{ item.value }}
+								</template>
+							</v-sparkline>
+						</v-card-text>
+					</v-card>
+				</v-col>
+
+				<v-col cols="12">
+					<v-card flat class="h-100 w-100">
 						<v-card-title>Alerts</v-card-title>
 						<v-card-text>
 							<v-row dense>
@@ -119,7 +191,7 @@
 					</v-card>
 				</v-col>
 				<v-col cols="12">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
 						<v-card-title>Login form</v-card-title>
 						<v-card-text>
 							<v-form>
@@ -163,7 +235,7 @@
 					</v-card>
 				</v-col>
 				<v-col cols="12">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
 						<v-card-title>Dialog example</v-card-title>
 						<v-card-text>
 							<v-row dense>
@@ -208,7 +280,7 @@
 					</v-card>
 				</v-col>
 				<v-col cols="12">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
 						<v-card-title>Selects</v-card-title>
 						<v-card-text>
 							<v-row dense>
@@ -246,7 +318,7 @@
 					</v-card>
 				</v-col>
 				<v-col cols="12">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
 						<v-card-title>Context menu</v-card-title>
 						<v-card-text>
 							<v-row dense>
@@ -318,7 +390,7 @@
 					</v-card>
 				</v-col>
 				<v-col cols="12">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
 						<v-card-title>Sliders</v-card-title>
 						<v-card-text>
 							<v-row>
@@ -348,7 +420,7 @@
 					</v-card>
 				</v-col>
 				<v-col cols="12">
-					<v-card flat>
+					<v-card flat class="h-100 w-100">
 						<v-card-text>
 							Other UI examples you can find in the
 							<a
@@ -366,12 +438,30 @@
 
 <script setup>
 import { ref } from "vue";
+import { VPie } from "vuetify/labs/VPie";
 
 const exampleCheckbox1 = ref(true);
 const exampleCheckbox2 = ref(true);
 const exampleCheckbox3 = ref(false);
 
+const exampleSwitch1 = ref(true);
+const exampleSwitch2 = ref(true);
+const exampleSwitch3 = ref(false);
+
+const lineChartValues = ref([
+	37, 82, 15, 64, 91, 28, 53, 76, 9, 44, 68, 100, 22, 59, 85, 12, 47, 73, 31,
+	96, 5, 61, 40, 88, 19, 70,
+]);
+const lineChartGradient = ref(["#BFE093", "#F45916"]);
+
 const exampleRadio = ref(1);
+
+const piePalette = ref(["#048BA8", "#99C24D", "#F18F01"]);
+const pieItems = ref([
+	{ key: 1, title: "Yes", value: 45 },
+	{ key: 2, title: "No", value: 40 },
+	{ key: 3, title: "Maybe", value: 15 },
+]);
 
 const contextMenuTest = function () {
 	alert("Test");
