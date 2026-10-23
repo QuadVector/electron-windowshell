@@ -85,9 +85,11 @@
 .v-navigation-drawer--mobile {
 	background: rgba(var(--v-theme-surface), 1) !important;
 	opacity: 0;
-	transition: all 350ms cubic-bezier(0, 0.995, 0.345, 1),
+	transition:
+		all 350ms cubic-bezier(0, 0.995, 0.345, 1),
 		background 0.3s ease-in-out !important;
-	transition-timing-function: cubic-bezier(0, 0.995, 0.345, 1),
+	transition-timing-function:
+		cubic-bezier(0, 0.995, 0.345, 1),
 		background 0.3s ease-in-out !important;
 }
 
@@ -112,6 +114,58 @@
 
 .v-checkbox .v-input__details:empty {
 	display: none;
+}
+
+.v-pie__legend .v-chip,
+.v-pie__legend .v-chip__content {
+	color: rgb(var(--v-theme-text)) !important;
+}
+
+.v-pie__legend .v-chip {
+	background-color: rgba(var(--v-theme-text), 0.04) !important;
+	border: 1px solid rgba(var(--v-theme-text), 0.05);
+}
+
+.v-pie__legend .v-chip__underlay {
+	opacity: 0;
+}
+
+.v-tooltip > .v-overlay__content.v-pie__tooltip-content {
+	background-color: rgb(var(--v-theme-surface)) !important;
+	border: 1px solid rgb(var(--v-theme-border));
+	border-radius: 4px;
+	box-shadow:
+		0 2px 4px rgba(0, 0, 0, 0.14),
+		0 0 2px rgba(0, 0, 0, 0.12);
+	color: rgb(var(--v-theme-text)) !important;
+	padding: 8px 12px;
+}
+
+.v-pie__tooltip-content .v-list-item,
+.v-pie__tooltip-content .v-list-item-title,
+.v-pie__tooltip-content .v-list-item-subtitle {
+	color: rgb(var(--v-theme-text)) !important;
+}
+
+.v-pie__tooltip-content .v-list-item {
+	min-height: 0 !important;
+	padding: 0 !important;
+}
+
+.v-tooltip > .v-overlay__content.sparkline-tooltip {
+	background-color: rgb(var(--v-theme-surface)) !important;
+	border: 1px solid rgb(var(--v-theme-border));
+	border-radius: 4px;
+	box-shadow:
+		0 2px 4px rgba(0, 0, 0, 0.14),
+		0 0 2px rgba(0, 0, 0, 0.12);
+	color: rgb(var(--v-theme-text)) !important;
+	padding: 6px 10px;
+}
+
+.sparkline-tooltip .v-list-item {
+	min-height: 0 !important;
+	padding: 0 !important;
 }
 
 .v-card {
@@ -491,7 +545,6 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 /* overlay */
 @media (prefers-color-scheme: dark) {
 	.v-overlay__scrim {
-		background: rgba(0, 0, 0, 0.6);
-		opacity: 1;
+		background: rgba(0, 0, 0, 1);
 	}
 }

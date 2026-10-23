@@ -1,13 +1,28 @@
 <template>
-	<div ref="menuBarItemRef" :class="[...menuBarStyle, 'menu-bar-item-container']" :style="{ background: bgColor }"
-		tabindex="0" @mouseenter="setMenuViewable(true)" @mouseleave="setMenuViewable(false)" @keyup="handleKeyUp">
-		<span :class="[...menuBarStyle, 'name-container']" :style="{ color: theme.textColor }">
+	<div
+		ref="menuBarItemRef"
+		:class="[...menuBarStyle, 'menu-bar-item-container']"
+		:style="{ background: bgColor }"
+		tabindex="0"
+		@pointerenter="handlePointerEnter"
+		@pointerleave="handlePointerLeave"
+		@keyup="handleKeyUp">
+		<span
+			:class="[...menuBarStyle, 'name-container']"
+			:style="{ color: theme.textColor }">
 			{{ getName }}
 		</span>
 		<span class="menu-container" :style="menuStyle">
 			<transition name="fade">
-				<DockMenu v-if="menuActive && showMenu" :items="menu" :dock="dock" :parent="name" :theme="theme"
-					:is-touch="isMobileDevice" :on-selected="onSelected" :initial-highlight-index="highlightIndex">
+				<DockMenu
+					v-if="menuActive && showMenu"
+					:items="menu"
+					:dock="dock"
+					:parent="name"
+					:theme="theme"
+					:is-touch="isMobileDevice"
+					:on-selected="onSelected"
+					:initial-highlight-index="highlightIndex">
 				</DockMenu>
 			</transition>
 		</span>
@@ -64,7 +79,7 @@ export default defineComponent({
 		},
 		menuBarDimensions: {
 			type: Object as PropType<{ height: number; width: number }>,
-			default: () => { },
+			default: () => {},
 			required: true,
 		},
 		dock: {
@@ -91,7 +106,17 @@ export default defineComponent({
 		onSelected: {
 			required: true,
 			type: Function as PropType<
-				({ anchor, name, checked, extra }: { anchor?: string; name: string; checked: boolean; extra: any }) => void
+				({
+					anchor,
+					name,
+					checked,
+					extra,
+				}: {
+					anchor?: string;
+					name: string;
+					checked: boolean;
+					extra: any;
+				}) => void
 			>,
 		},
 		highlightFirstElement: {
@@ -115,7 +140,6 @@ export default defineComponent({
 		const menuBarItemActive = ref(false);
 		const menuStyle = ref();
 		const isMobileRef = ref(isMobile());
-		const menuOpen = ref(false);
 
 		const getName = computed(() => {
 			if (
@@ -137,11 +161,23 @@ export default defineComponent({
 			}
 		};
 
+		const handlePointerEnter = (event: PointerEvent) => {
+			if (event.pointerType !== "touch") {
+				setMenuViewable(true);
+			}
+		};
+
+		const handlePointerLeave = (event: PointerEvent) => {
+			if (event.pointerType !== "touch") {
+				setMenuViewable(false);
+			}
+		};
+
 		// toggle menu
 		const toggleMenu = (event: MouseEvent | TouchEvent) => {
 			event.stopPropagation();
-			menuOpen.value = !menuOpen.value;
-			emit("show", menuOpen.value, props.id);
+			const isOpen = props.menuActive && props.showMenu;
+			emit("show", !isOpen, props.id);
 		};
 
 		const handleMenuSelection = ($event: any) => props.onSelected($event);
@@ -156,10 +192,8 @@ export default defineComponent({
 				bottom?: string;
 			} = {};
 
-			const {
-				clientHeight,
-				clientWidth,
-			} = menuBarItemRef.value as HTMLDivElement;
+			const { clientHeight, clientWidth } =
+				menuBarItemRef.value as HTMLDivElement;
 
 			if (props.dock === DockPosition.LEFT) {
 				newStyle.top = "0px";
@@ -191,10 +225,9 @@ export default defineComponent({
 			(newValue) => {
 				menuBarItemActive.value = newValue;
 				if (newValue) {
-					menuOpen.value = false;
 					nextTick(() => menuBarItemRef.value?.focus());
 				}
-			}
+			},
 		);
 
 		watch(
@@ -205,7 +238,7 @@ export default defineComponent({
 						computeMenuStyle();
 					}, 150);
 				});
-			}
+			},
 		);
 
 		watch(
@@ -216,7 +249,7 @@ export default defineComponent({
 				} else {
 					highlightIndex.value = -1;
 				}
-			}
+			},
 		);
 
 		onMounted(() => {
@@ -229,12 +262,7 @@ export default defineComponent({
 			}
 
 			if (mobile) {
-				menuBarItem.addEventListener("touchend", (ev) => {
-					setMenuViewable(false);
-					nextTick(() => {
-						toggleMenu(ev);
-					});
-				});
+				menuBarItem.addEventListener("touchend", toggleMenu);
 			} else {
 				menuBarItem.addEventListener("click", toggleMenu);
 			}
@@ -249,9 +277,9 @@ export default defineComponent({
 			}
 
 			if (mobile) {
-				menuBarItem.removeEventListener("touchstart", toggleMenu);
+				menuBarItem.removeEventListener("touchend", toggleMenu);
 			} else {
-				menuBarItem.removeEventListener("mousedown", toggleMenu);
+				menuBarItem.removeEventListener("click", toggleMenu);
 			}
 		});
 
@@ -308,6 +336,8 @@ export default defineComponent({
 			menuBarStyle,
 			menuStyle,
 			setMenuViewable,
+			handlePointerEnter,
+			handlePointerLeave,
 			toggleMenu,
 			handleMenuSelection,
 			computeMenuStyle,

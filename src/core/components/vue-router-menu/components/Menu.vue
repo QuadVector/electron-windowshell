@@ -1,69 +1,112 @@
 <template>
-	<div :class="[dockClass, 'menu-wrapper']" :style="{ background: theme.secondary }">
-		<ul ref="menuItemsRef" class="menu-items" tabindex="0" @keyup.up="handleKeyUp" @keyup.down="handleKeyDown"
+	<div
+		:class="[dockClass, 'menu-wrapper']"
+		:style="{ background: theme.secondary }">
+		<ul
+			ref="menuItemsRef"
+			class="menu-items"
+			tabindex="0"
+			@keyup.up="handleKeyUp"
+			@keyup.down="handleKeyDown"
 			@keyup.left="
-				dock === 'RIGHT' ? handleKeyRight($event) : handleKeyLeft($event)
-				" @keyup.right="
-					dock === 'RIGHT' ? handleKeyLeft($event) : handleKeyRight($event)
-					" @focus="onFocus" @blur="onBlur" @keyup.enter="handleKeySelection">
-			<li v-for="(item, index) of menuItems" :key="item.id" :class="[
-				dockClass,
-				'menu-item',
-				{
-					'is-parent': !!item.menu,
-					highlight: index === highlightedIndex,
-					divider: item.isDivider,
-					disable: item.disable,
-				},
-			]" :style="menuItemStyle" @mouseenter="
-				item.menu && !isMobile && toggleSubMenu(!!item.menu, item.id)
-				" @mouseleave="
-					item.menu && !isMobile && toggleSubMenu(!!item.menu, item.id)
-					" @click="
-						handleSelection({
-							event: $event,
-							id: item.id,
-							anchor: item.anchor,
-							checked: item.checked || false,
-							name: item.name,
-							extra: item.extra,
-							isParent: !!item.menu,
-							disable: item.disable,
-						})
-						" @touchend="
-							handleSelection({
-								event: $event,
-								id: item.id,
-								anchor: item.anchor,
-								checked: item.checked || false,
-								name: item.name,
-								extra: item.extra,
-								isParent: !!item.menu,
-								disable: item.disable,
-							})
-							">
+				dock === 'RIGHT'
+					? handleKeyRight($event)
+					: handleKeyLeft($event)
+			"
+			@keyup.right="
+				dock === 'RIGHT'
+					? handleKeyLeft($event)
+					: handleKeyRight($event)
+			"
+			@focus="onFocus"
+			@blur="onBlur"
+			@keyup.enter="handleKeySelection">
+			<li
+				v-for="(item, index) of menuItems"
+				:key="item.id"
+				:class="[
+					dockClass,
+					'menu-item',
+					{
+						'is-parent': !!item.menu,
+						highlight: index === highlightedIndex,
+						divider: item.isDivider,
+						disable: item.disable,
+					},
+				]"
+				:style="menuItemStyle"
+				@mouseenter="
+					item.menu &&
+					!isMobile &&
+					toggleSubMenu(!!item.menu, item.id)
+				"
+				@mouseleave="
+					item.menu &&
+					!isMobile &&
+					toggleSubMenu(!!item.menu, item.id)
+				"
+				@click="
+					handleSelection({
+						event: $event,
+						id: item.id,
+						anchor: item.anchor,
+						checked: item.checked || false,
+						name: item.name,
+						extra: item.extra,
+						isParent: !!item.menu,
+						disable: item.disable,
+					})
+				"
+				@touchend="
+					handleSelection({
+						event: $event,
+						id: item.id,
+						anchor: item.anchor,
+						checked: item.checked || false,
+						name: item.name,
+						extra: item.extra,
+						isParent: !!item.menu,
+						disable: item.disable,
+					})
+				">
 				<template v-if="!item.isDivider">
 					<span v-if="item.checked" class="menu-item-icon">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 448 512">
 							<path
 								d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
 						</svg>
 					</span>
-					<span v-if="item.icon && !item.checked" :innerHTML="item.icon" class="menu-item-icon"></span>
+					<span
+						v-if="item.icon && !item.checked"
+						:innerHTML="item.icon"
+						class="menu-item-icon"></span>
 					<span class="name">{{ item.name }}</span>
 					<span class="shortcut" v-if="item.shortcut">
-						{{
-							item.shortcut[0].replaceAll('$mod', 'Ctrl')
-						}}
+						{{ item.shortcut[0].replaceAll("$mod", "Ctrl") }}
 					</span>
-					<span :class="{ visible: !!item.menu }" v-if="!item.shortcut" class="menu-item-arrow">
+					<span
+						:class="{ visible: !!item.menu }"
+						v-if="!item.shortcut"
+						class="menu-item-arrow">
 						<ChevRight />
 					</span>
-					<div v-if="item.menu && showSubMenu && item.id === activeMenuId"
+					<div
+						v-if="
+							item.menu && showSubMenu && item.id === activeMenuId
+						"
 						:class="[dockClass, 'sub-menu-wrapper']">
-						<component :is="MenuComponent" :items="item.menu" :dock="dock"
-							:parent="`${parent}>${item.name}`" :theme="theme" :is-touch="isMobile" :nested="true"
-							:on-selected="onSelected" :initial-highlight-index="subMenuHighlightIndex"
+						<component
+							:is="MenuComponent"
+							:items="item.menu"
+							:dock="dock"
+							:parent="`${parent}>${item.name}`"
+							:theme="theme"
+							:is-touch="isMobile"
+							:nested="true"
+							:on-selected="onSelected"
+							:initial-highlight-index="subMenuHighlightIndex"
 							@close-menu="handleCloseMenu">
 						</component>
 					</div>
@@ -126,7 +169,17 @@ export default defineComponent({
 		onSelected: {
 			required: true,
 			type: Function as PropType<
-				({ anchor, name, checked, extra }: { anchor: string, name: string, checked: boolean, extra: any }) => void
+				({
+					anchor,
+					name,
+					checked,
+					extra,
+				}: {
+					anchor: string;
+					name: string;
+					checked: boolean;
+					extra: any;
+				}) => void
 			>,
 		},
 		initialHighlightIndex: {
@@ -171,7 +224,8 @@ export default defineComponent({
 			}
 
 			if (selectedItem.isParent) {
-				showSubMenu.value = !showSubMenu.value;
+				activeMenuId.value = selectedItem.id;
+				showSubMenu.value = true;
 				return;
 			}
 
@@ -181,7 +235,7 @@ export default defineComponent({
 				anchor,
 				name,
 				checked,
-				extra
+				extra,
 			});
 		};
 
@@ -196,8 +250,8 @@ export default defineComponent({
 				Object.assign({}, item, {
 					id: Math.random().toString(16).slice(2),
 					showSubMenu: false,
-				})
-			)
+				}),
+			),
 		);
 
 		const menuItemsLen = computed(() => menuItems.value.length);
@@ -210,7 +264,7 @@ export default defineComponent({
 
 		const focusMenuBar = () => {
 			const menuBarItems = (menuItemsRef.value as HTMLElement).closest(
-				".menu-bar-item-container"
+				".menu-bar-item-container",
 			);
 			if (menuBarItems) {
 				(menuBarItems as HTMLElement).focus();
@@ -295,7 +349,7 @@ export default defineComponent({
 						anchor: menuItem.anchor as string,
 						name: menuItem.name as string,
 						checked: menuItem.checked || false,
-						extra: menuItem.extra as any
+						extra: menuItem.extra as any,
 					});
 				}
 			}
