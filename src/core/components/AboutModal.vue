@@ -23,15 +23,9 @@
 				<div class="about__list" lines="one">
 					<v-list-item
 						v-for="(item, index) in listItems"
-						:key="index">
-						<v-list-item-content>
-							<v-list-item-title>{{
-								item.title
-							}}</v-list-item-title>
-							<v-list-item-subtitle>{{
-								item.subtitle
-							}}</v-list-item-subtitle>
-						</v-list-item-content>
+						:key="index"
+						:title="item.title"
+						:subtitle="item.subtitle">
 					</v-list-item>
 				</div>
 			</v-card-text>
@@ -44,107 +38,131 @@
 	</v-dialog>
 </template>
 
-<script setup>
+<script>
 import { ref, onMounted, watch } from "vue";
 import packageJson from "../../../package.json";
 import { useMainStore } from "../../inc/store/mainStore";
 
-/**
- * Component props
- */
-const props = defineProps({
-	isActive: {
-		type: Boolean,
-		default: false,
+export default {
+	/**
+	 * Controls visibility of the modal from the parent component.
+	 */
+	props: {
+		isActive: {
+			type: Boolean,
+			default: false,
+		},
 	},
-});
 
-/**
- * Current page favicon URL, used as the modal/app icon.
- */
-const windowIcon = ref(document.querySelector("link[rel*='icon']")?.href || ""); // Current page favicon URL, used as the modal/app icon.
-
-/**
- * Local mirror of the active state to allow internal close actions.
- */
-const localIsActive = ref(props.isActive);
-
-/**
- * Runtime/version information displayed in the UI.
- */
-const listItems = ref([]);
-
-/**
- * Application metadata loaded from package.json.
- */
-const programName = ref("");
-const version = ref("");
-const description = ref("");
-
-/**
- * Global store used to synchronize modal visibility with app state.
- */
-const mainStore = useMainStore();
-
-/**
- * Fetches runtime versions from the Electron preload API and builds the UI list.
- */
-const getListItems = async function () {
-	const {
-		electronVersion,
-		chromiumVersion,
-		nodejsVersion,
-		v8Version,
-		osInfo,
-	} = await CoreAPI.getVersions();
-
-	listItems.value = [
-		{ title: "Electron", subtitle: electronVersion },
-		{ title: "Chromium", subtitle: chromiumVersion },
-		{ title: "Node.js", subtitle: nodejsVersion },
-		{ title: "V8", subtitle: v8Version },
-		{ title: "OS", subtitle: osInfo },
-	];
-};
-
-/**
- * Loads app name/version/description from the packaged metadata.
- */
-const loadPackageJson = function () {
-	programName.value = packageJson.name;
-	version.value = packageJson.version;
-	description.value = packageJson.description;
-};
-
-/**
- * Closes the modal locally.
- */
-const closeModal = function () {
-	localIsActive.value = false;
-};
-
-/**
- * Keeps localIsActive in sync when the parent updates isActive.
- */
-watch(
-	() => props.isActive,
-	(newVal) => {
-		localIsActive.value = newVal;
+	data() {
+		return {
+			/**
+			 * Current page favicon URL, used as the modal/app icon.
+			 */
+			windowIcon: document.querySelector("link[rel*='icon']").href,
+		};
 	},
-);
 
-/**
- * Propagates local active state changes into the global store.
- */
-watch(localIsActive, (newVal) => {
-	mainStore.activeAboutModal = newVal;
-});
+	setup(props) {
+		/**
+		 * Local mirror of the active state to allow internal close actions.
+		 */
+		const localIsActive = ref(props.isActive);
 
-onMounted(function () {
-	getListItems();
-	loadPackageJson();
-});
+		/**
+		 * Runtime/version information displayed in the UI.
+		 */
+		const listItems = ref([]);
+
+		/**
+		 * Application metadata loaded from package.json.
+		 */
+		const programName = ref("");
+		const version = ref("");
+		const description = ref("");
+
+		/**
+		 * Global store used to synchronize modal visibility with app state.
+		 */
+		const mainStore = useMainStore();
+
+		/**
+		 * Fetches runtime versions from the Electron preload API and builds the UI list.
+		 */
+		const getListItems = async () => {
+			const {
+				electronVersion,
+				chromiumVersion,
+				nodejsVersion,
+				v8Version,
+				osInfo,
+			} = await CoreAPI.getVersions();
+
+			listItems.value = [
+				{ title: "Electron", subtitle: electronVersion },
+				{ title: "Chromium", subtitle: chromiumVersion },
+				{ title: "Node.js", subtitle: nodejsVersion },
+				{ title: "V8", subtitle: v8Version },
+				{ title: "OS", subtitle: osInfo },
+			];
+		};
+
+		/**
+		 * Loads app name/version/description from the packaged metadata.
+		 */
+		const loadPackageJson = () => {
+			programName.value = packageJson.name;
+			version.value = packageJson.version;
+			description.value = packageJson.description;
+		};
+
+		/**
+		 * Closes the modal locally (parent/store sync happens via watchers).
+		 */
+		const closeModal = () => {
+			localIsActive.value = false;
+		};
+
+		/**
+		 * Keeps localIsActive in sync when the parent updates isActive.
+		 */
+		watch(
+			() => props.isActive,
+			(newVal) => {
+				localIsActive.value = newVal;
+			},
+		);
+
+		/**
+		 * Propagates local active state changes into the global store.
+		 */
+		watch(
+			() => localIsActive.value,
+			(newVal) => {
+				mainStore.activeAboutModal = newVal;
+			},
+		);
+
+		onMounted(() => {
+			/**
+			 * Initializes modal content after mount.
+			 */
+			getListItems();
+			loadPackageJson();
+		});
+
+		return {
+			localIsActive,
+			listItems,
+			programName,
+			version,
+			description,
+			closeModal,
+		};
+	},
+};
 </script>
+
 <style scoped>
 :deep(.about__dialog .v-avatar) {
 	border-radius: 0px;
