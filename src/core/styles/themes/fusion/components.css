@@ -1,0 +1,1508 @@
+/* vuetify components */
+.v-ripple__container {
+	display: none !important;
+}
+
+.v-btn,
+.v-list-item,
+.v-selection-control,
+.v-alert {
+	cursor: default;
+}
+
+.v-overlay__content,
+.v-contextmenu {
+	font-family: var(--fluent-font-family);
+	font-size: var(--font-size-main);
+}
+
+.v-label,
+.v-input,
+.v-field,
+.v-table,
+.v-card-text {
+	font-size: var(--font-size-main);
+}
+
+.v-btn,
+.v-tab,
+.v-chip {
+	text-transform: none;
+	letter-spacing: normal;
+}
+
+:is(.v-btn, .v-list-item, .v-chip, .v-tab, .v-pagination__item):focus-visible,
+.v-contextmenu-item:focus-visible {
+	outline: var(--fluent-focus-width) solid var(--fluent-text) !important;
+	outline-offset: 2px;
+}
+
+.v-btn {
+	transition:
+		background-color var(--fluent-duration-fast) ease,
+		box-shadow var(--fluent-duration-fast) ease;
+	border-radius: var(--fluent-radius-control);
+	font-weight: 500;
+	text-decoration: none;
+}
+
+.v-btn--variant-elevated {
+	box-shadow: var(--fluent-shadow-card);
+}
+
+.v-btn.v-btn--disabled {
+	box-shadow: none;
+}
+
+.v-btn:not(.v-btn--disabled):not(.v-btn--loading):active > .v-btn__content {
+	opacity: 0.8;
+}
+
+.v-btn .v-btn__overlay {
+	transition: opacity var(--fluent-duration-fast) ease;
+}
+
+.v-btn.v-btn--rounded {
+	border-radius: 999px;
+}
+
+/* Menus only: no flex-column changes on virtual-scroll containers.
+   Dialog lists and ordinary lists retain their original layout. */
+
+.v-menu > .v-overlay__content {
+	border-radius: var(--fluent-radius-overlay) !important;
+	box-shadow: var(--fluent-shadow-flyout) !important;
+	overflow: visible;
+}
+
+.v-menu > .v-overlay__content > :is(.v-list, .v-sheet) {
+	border: 1px solid var(--fluent-border);
+	border-radius: var(--fluent-radius-overlay);
+	background: var(--fluent-surface);
+	color: var(--fluent-text);
+	box-shadow: none;
+}
+
+.v-menu > .v-overlay__content > .v-list {
+	padding: 4px;
+	animation: menuOpen 0.15s ease-in-out;
+	transform-origin: top center;
+}
+
+.v-menu .v-list-item {
+	min-height: 34px;
+	padding: 6px 12px;
+	margin-block: 1px;
+	border-radius: var(--fluent-radius-control) !important;
+	color: var(--fluent-text);
+	transition: background-color var(--fluent-duration-fast) ease;
+}
+
+.v-menu .v-list-item:has(.v-selection-control) {
+	padding-block: 0;
+	padding-inline-start: 2px;
+}
+
+.v-menu .v-list-item--active {
+	background: var(--fluent-selected);
+}
+
+/* Select option highlights stay square when hovered, focused or selected. */
+.v-menu
+	> :is(.v-select__content, .v-autocomplete__content, .v-combobox__content)
+	:is(.v-list-item, .v-list-item__overlay),
+.v-menu
+	> :is(.v-select__content, .v-autocomplete__content, .v-combobox__content)
+	.v-list-item::after {
+	border-radius: 0 !important;
+}
+
+.v-menu .v-list-item--active > .v-list-item__overlay {
+	opacity: 0;
+}
+
+.v-menu .v-list-item:focus-visible {
+	outline-offset: -2px;
+}
+
+.v-menu .v-list-item::after {
+	border-radius: inherit;
+}
+
+.v-menu > .v-overlay__content > .v-list > .v-list-item {
+	margin-inline: 0;
+}
+
+:is(.v-menu, .v-dialog) .v-list-item-title {
+	font-size: var(--font-size-main);
+	line-height: 1.45;
+}
+
+:is(.v-menu, .v-dialog) .v-list-item-subtitle {
+	font-size: var(--font-size-small);
+	line-height: 1.4;
+}
+
+.v-list-item__overlay {
+	transition: opacity var(--fluent-duration-fast) ease;
+	border-radius: inherit;
+}
+
+.v-divider {
+	border-color: var(--fluent-border);
+	opacity: 1;
+}
+
+.v-navigation-drawer .v-list {
+	padding: 0px 0px;
+	padding-left: var(--page-inner-padding);
+	padding-right: var(--page-inner-padding);
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.v-navigation-drawer .v-list-item {
+	min-height: 30px !important;
+	padding: 10px !important;
+	cursor: default !important;
+	border-radius: var(--base-radius) !important;
+}
+
+.v-navigation-drawer .v-list-item:active {
+	opacity: 0.8;
+}
+
+.v-navigation-drawer {
+	margin-top: calc(var(--windowbar-height) * -1) !important;
+	padding-top: calc(var(--windowbar-height)) !important;
+	height: calc(100vh + var(--windowbar-height)) !important;
+	background: none !important;
+}
+
+.v-navigation-drawer--mobile {
+	background: rgba(var(--v-theme-surface), 1) !important;
+	opacity: 0;
+	transition:
+		all 350ms cubic-bezier(0, 0.995, 0.345, 1),
+		background 0.3s ease-in-out !important;
+	transition-timing-function:
+		cubic-bezier(0, 0.995, 0.345, 1),
+		background 0.3s ease-in-out !important;
+}
+
+.v-navigation-drawer--active {
+	opacity: 1;
+}
+
+.v-navigation-drawer .v-list-item .v-icon {
+	font-size: 18px;
+}
+
+.v-list-item__prepend > .v-badge ~ .v-list-item__spacer,
+.v-list-item__prepend > .v-icon ~ .v-list-item__spacer,
+.v-list-item__prepend > .v-tooltip ~ .v-list-item__spacer {
+	width: 24px;
+}
+
+.v-navigation-drawer .v-list-item__overlay {
+	transition: none;
+}
+
+/* Checkbox / radio: native inputs still receive clicks, focus and keyboard
+   actions. Pseudo-elements replace only their Material icon appearance.
+   Add fluent-native-control on a checkbox/radio to keep a custom icon slot. */
+
+:is(.v-checkbox-btn, .v-radio):not(
+		.fluent-native-control,
+		.fluent-native-control *
+	)
+	.v-selection-control__input
+	> .v-icon {
+	opacity: 0;
+}
+
+:is(.v-checkbox-btn, .v-radio):not(
+		.fluent-native-control,
+		.fluent-native-control *
+	)
+	.v-selection-control__wrapper {
+	color: var(--fluent-accent);
+}
+
+:is(.v-checkbox-btn, .v-radio):not(
+		.fluent-native-control,
+		.fluent-native-control *
+	)
+	.v-selection-control__input::before {
+	content: "";
+	position: absolute;
+	inset: 50% auto auto 50%;
+	transform: translate(-50%, -50%);
+	width: var(--fluent-control-size);
+	height: var(--fluent-control-size);
+	border: 1px solid var(--fluent-border-strong);
+	border-radius: min(4px, var(--base-radius));
+	background: var(--fluent-control-fill);
+	opacity: 1;
+	pointer-events: none;
+	transition:
+		background-color var(--fluent-duration-fast) ease,
+		border-color var(--fluent-duration-fast) ease;
+}
+
+:is(.v-checkbox-btn, .v-radio):not(
+		.fluent-native-control,
+		.fluent-native-control *
+	)
+	.v-selection-control__input::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *)
+	.v-selection-control__input::after {
+	width: 6px;
+	height: 11px;
+	border: solid var(--fluent-on-accent);
+	border-width: 0 2px 2px 0;
+	transform: translate(-50%, -60%) rotate(45deg);
+}
+
+.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):is(
+		.v-selection-control--dirty,
+		:has(input:is(:indeterminate, [aria-checked="mixed"]))
+	)
+	.v-selection-control__input::before {
+	background: currentColor;
+	border-color: currentColor;
+}
+
+.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):is(
+		.v-selection-control--dirty,
+		:has(input:is(:indeterminate, [aria-checked="mixed"]))
+	)
+	.v-selection-control__input::after {
+	opacity: 1;
+}
+
+.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):has(
+		input:is(:indeterminate, [aria-checked="mixed"])
+	)
+	.v-selection-control__input::after {
+	width: 10px;
+	height: 2px;
+	border: 0;
+	border-radius: 1px;
+	background: var(--fluent-on-accent);
+	transform: translate(-50%, -50%);
+}
+
+.v-radio:not(.fluent-native-control, .fluent-native-control *)
+	.v-selection-control__input::before {
+	border-radius: 50%;
+}
+
+.v-radio:not(.fluent-native-control, .fluent-native-control *)
+	.v-selection-control__input::after {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: currentColor;
+	transform: translate(-50%, -50%);
+}
+
+.v-radio:not(
+		.fluent-native-control,
+		.fluent-native-control *
+	).v-selection-control--dirty
+	.v-selection-control__input::before {
+	border: 2px solid currentColor;
+}
+
+.v-radio:not(
+		.fluent-native-control,
+		.fluent-native-control *
+	).v-selection-control--dirty
+	.v-selection-control__input::after {
+	opacity: 1;
+}
+
+:is(.v-checkbox-btn, .v-radio):not(
+		.fluent-native-control,
+		.fluent-native-control *
+	).v-selection-control--focus-visible
+	.v-selection-control__input::before {
+	outline: var(--fluent-focus-width) solid var(--fluent-text);
+	outline-offset: 3px;
+}
+
+:is(.v-checkbox-btn, .v-radio):not(
+		.fluent-native-control,
+		.fluent-native-control *
+	).v-selection-control--error
+	.v-selection-control__wrapper {
+	color: rgb(var(--v-theme-error)) !important;
+}
+
+:is(.v-checkbox-btn, .v-radio):not(
+		.fluent-native-control,
+		.fluent-native-control *
+	).v-selection-control--error
+	.v-selection-control__input::before {
+	border-color: rgb(var(--v-theme-error));
+}
+
+.v-selection-control .v-label {
+	padding-inline-start: 4px;
+	line-height: 1.45;
+}
+
+/* Vuetify 4.3 description shares the label's text edge. */
+.v-selection-control__content {
+	min-width: 0;
+	flex: 1 1 auto;
+	padding-inline-start: 4px;
+	font-size: var(--font-size-main);
+	line-height: 1.45;
+	padding-block-end: max(
+		0px,
+		calc((var(--v-selection-control-size) - 1lh) / 2)
+	);
+}
+
+.v-selection-control__content > .v-label {
+	padding-inline-start: 0;
+	height: auto;
+	align-items: flex-start;
+	overflow: visible;
+	overflow-wrap: anywhere;
+}
+
+.v-selection-control__content > .v-selection-control__description {
+	padding-inline-start: 0;
+	font-size: var(--font-size-small);
+	line-height: 1.4;
+	color: var(--fluent-text-secondary);
+	opacity: 1;
+	overflow-wrap: anywhere;
+}
+
+.v-selection-control__content > .v-label + .v-selection-control__description {
+	margin-block-start: 2px;
+}
+
+/* The first text line and the space below each row follow one rhythm. */
+:is(.v-checkbox-btn, .v-radio, .v-switch .v-selection-control) {
+	align-items: flex-start;
+}
+
+.v-selection-control > .v-label {
+	height: auto;
+	padding-block: max(0px, calc((var(--v-selection-control-size) - 1lh) / 2));
+}
+
+:is(.v-checkbox, .v-switch):has(
+		.v-input__details > .v-messages:not(:empty),
+		.v-input__details > :not(.v-messages)
+	)
+	.v-selection-control__content {
+	padding-block-end: 0;
+}
+
+:is(.v-checkbox, .v-switch) .v-input__details {
+	min-height: 0;
+	padding-top: 2px;
+	padding-bottom: max(
+		0px,
+		calc(
+			(
+					var(
+							--fluent-selection-row-size,
+							var(--fluent-switch-row-size)
+						) -
+						var(--font-size-main) * 1.45
+				) /
+				2
+		)
+	);
+}
+
+:is(.v-checkbox, .v-switch):not(:has(.v-selection-control__content))
+	.v-input__details {
+	margin-block-start: min(
+		0px,
+		calc(
+			(
+					var(--font-size-main) * 1.45 -
+						var(
+							--fluent-selection-row-size,
+							var(--fluent-switch-row-size)
+						)
+				) /
+				2
+		)
+	);
+}
+
+:is(.v-checkbox, .v-switch, .v-radio-group)
+	.v-input__details
+	> .v-messages:empty {
+	display: none;
+}
+
+:is(.v-checkbox, .v-switch) .v-messages__message {
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+}
+
+/* A modest row height; validation/help rows remain natural-height siblings. */
+
+.v-checkbox,
+.v-radio-group {
+	--fluent-selection-row-size: 36px;
+}
+
+.v-checkbox.v-input--density-compact,
+.v-radio-group.v-input--density-compact {
+	--fluent-selection-row-size: 32px;
+}
+
+.v-checkbox .v-selection-control {
+	height: auto;
+	min-height: var(--fluent-selection-row-size);
+}
+
+.v-checkbox .v-checkbox-btn,
+.v-radio-group .v-radio {
+	--v-selection-control-size: var(--fluent-selection-row-size);
+}
+
+.v-checkbox .v-selection-control__wrapper,
+.v-checkbox .v-selection-control__input,
+.v-radio-group .v-radio .v-selection-control__wrapper,
+.v-radio-group .v-radio .v-selection-control__input {
+	width: var(--v-selection-control-size);
+	height: var(--v-selection-control-size);
+}
+
+.v-checkbox .v-input__details {
+	padding-inline-start: calc(var(--fluent-selection-row-size) + 4px);
+	padding-inline-end: 0;
+}
+
+.v-checkbox .v-messages__message {
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+}
+
+/* Hide only a genuinely empty standard message row, never hints/errors/slots. */
+
+:is(.v-checkbox, .v-switch, .v-radio-group)
+	.v-input__details:has(> .v-messages:empty):not(:has(> :not(.v-messages))) {
+	display: none;
+}
+
+.v-selection-control--disabled {
+	opacity: 0.45;
+}
+
+.v-checkbox .v-input__details:empty {
+	display: none;
+}
+
+/* Switch: 40 x 20 track, consistent for inset and standard variants.
+   Retain input bounds and Vuetify loading / icon slots. */
+
+.v-switch {
+	--fluent-switch-row-size: 36px;
+}
+
+.v-switch.v-input--density-compact {
+	--fluent-switch-row-size: 32px;
+}
+
+.v-switch .v-selection-control {
+	--v-selection-control-size: var(--fluent-switch-row-size);
+	min-height: var(--fluent-switch-row-size);
+}
+
+.v-switch .v-selection-control .v-label {
+	padding-inline-start: 10px;
+}
+
+.v-switch .v-selection-control__content {
+	padding-inline-start: 10px;
+}
+
+.v-switch .v-selection-control__content > .v-label {
+	padding-inline-start: 0;
+}
+
+.v-switch .v-input__details {
+	padding-inline-start: 54px;
+	padding-inline-end: 0;
+}
+
+.v-switch .v-selection-control__wrapper {
+	width: 44px;
+	color: var(--fluent-accent);
+}
+
+.v-switch.v-switch--inset .v-selection-control__wrapper {
+	width: 44px;
+}
+
+.v-switch .v-switch__track {
+	min-width: 40px;
+	height: 20px;
+	padding: 0 3px;
+	border: 1px solid var(--fluent-border-strong);
+	border-radius: 999px;
+	background: var(--fluent-control-fill);
+	opacity: 1;
+	transition:
+		background-color var(--fluent-duration-fast) ease,
+		border-color var(--fluent-duration-fast) ease;
+}
+
+.v-switch .v-selection-control__input {
+	width: 28px;
+	height: 28px;
+	transform: translateX(-10px);
+	transition: transform var(--fluent-duration-normal) var(--fluent-ease);
+}
+
+.v-switch .v-selection-control--dirty .v-selection-control__input {
+	transform: translateX(10px);
+}
+
+.v-switch.v-switch--inset .v-switch__thumb,
+.v-switch .v-switch__thumb {
+	width: 12px;
+	height: 12px;
+	background: var(--fluent-text-secondary) !important;
+	color: var(--fluent-surface) !important;
+	box-shadow: none;
+	transform: none;
+	transition: background-color var(--fluent-duration-fast) ease;
+}
+
+.v-switch .v-selection-control--dirty .v-switch__track {
+	background: var(--fluent-accent);
+	border-color: transparent;
+}
+
+.v-switch .v-selection-control--dirty .v-switch__thumb {
+	background: var(--fluent-on-accent) !important;
+	color: var(--fluent-accent) !important;
+}
+
+.v-switch .v-selection-control__input::before {
+	display: none;
+}
+
+.v-switch .v-selection-control--focus-visible .v-switch__track {
+	outline: var(--fluent-focus-width) solid var(--fluent-text);
+	outline-offset: 3px;
+}
+
+.v-switch .v-selection-control--error .v-switch__track {
+	border-color: rgb(var(--v-theme-error));
+}
+
+.v-switch
+	.v-selection-control--error.v-selection-control--dirty
+	.v-switch__track {
+	background: rgb(var(--v-theme-error));
+}
+
+.v-locale--is-rtl .v-switch .v-selection-control__input {
+	transform: translateX(10px);
+}
+
+.v-locale--is-rtl
+	.v-switch
+	.v-selection-control--dirty
+	.v-selection-control__input {
+	transform: translateX(-10px);
+}
+
+.v-switch.v-switch--indeterminate .v-selection-control__input {
+	transform: translateX(0);
+}
+
+.v-switch.v-switch--loading .v-switch__thumb {
+	width: 16px;
+	height: 16px;
+}
+
+.v-switch .v-switch__track-true,
+.v-switch .v-switch__track-false {
+	font-size: 8px;
+}
+
+.v-pie__legend .v-chip,
+.v-pie__legend .v-chip__content {
+	color: var(--fluent-text) !important;
+}
+
+.v-pie__legend .v-chip {
+	border: 1px solid var(--fluent-border);
+	background: var(--fluent-hover) !important;
+}
+
+.v-pie__legend .v-chip__underlay {
+	opacity: 0;
+}
+
+.v-tooltip
+	> .v-overlay__content:is(.v-pie__tooltip-content, .sparkline-tooltip) {
+	background: var(--fluent-surface) !important;
+	color: var(--fluent-text) !important;
+	padding: 8px 12px;
+}
+
+:is(.v-pie__tooltip-content, .sparkline-tooltip) .v-list-item {
+	min-height: 0;
+	padding: 0;
+}
+
+.v-pie__tooltip-content
+	:is(.v-list-item, .v-list-item-title, .v-list-item-subtitle) {
+	color: var(--fluent-text) !important;
+}
+
+.v-card {
+	border-radius: var(--base-radius);
+	border-color: var(--fluent-border);
+	border-width: 1px;
+}
+
+.v-card:not([class*="bg-"]):is(
+		.v-card--variant-elevated,
+		.v-card--variant-flat
+	) {
+	background: var(--fluent-surface);
+	color: var(--fluent-text);
+}
+
+.v-card--variant-elevated {
+	box-shadow: var(--fluent-shadow-card);
+	border-style: solid;
+}
+
+.v-card-actions {
+	gap: 8px;
+	padding: 12px 16px;
+}
+
+.v-dialog > .v-overlay__content > .v-card {
+	border: 1px solid var(--fluent-border);
+	border-radius: var(--fluent-radius-overlay);
+	box-shadow: var(--fluent-shadow-dialog);
+}
+
+.v-dialog .v-card-actions {
+	background: var(--fluent-hover);
+	border-top: 1px solid var(--fluent-border);
+}
+
+.v-alert {
+	border-radius: var(--base-radius);
+	font-size: var(--font-size-main);
+}
+
+.v-alert-title {
+	font-size: var(--font-size-main);
+	font-weight: 600;
+}
+
+.v-snackbar__wrapper {
+	border: 1px solid var(--fluent-border);
+	border-radius: var(--fluent-radius-overlay);
+	box-shadow: var(--fluent-shadow-flyout);
+}
+
+.v-tooltip > .v-overlay__content {
+	padding: 7px 10px;
+	border: 1px solid var(--fluent-border);
+	border-radius: var(--fluent-radius-control);
+	background: var(--fluent-surface);
+	color: var(--fluent-text);
+	box-shadow: var(--fluent-shadow-flyout);
+	font-size: var(--font-size-small);
+	line-height: 1.45;
+}
+
+.v-navigation-drawer__scrim {
+	opacity: 0;
+}
+
+/* Text fields, selects, autocomplete, combobox, textarea, file input.
+   Floating labels / outlined notches retain Vuetify's own geometry. */
+
+.v-field {
+	border-radius: var(--fluent-radius-control);
+	transition:
+		background-color var(--fluent-duration-fast) ease,
+		box-shadow var(--fluent-duration-fast) ease;
+}
+
+.v-field:is(
+	.v-field--variant-filled,
+	.v-field--variant-solo,
+	.v-field--variant-solo-filled,
+	.v-field--variant-solo-inverted
+) {
+	background: var(--fluent-control-fill);
+	color: var(--fluent-text);
+	box-shadow: none !important;
+	border: 1px solid var(--fluent-border);
+	background-clip: padding-box;
+	border-radius: var(--fluent-radius-control) !important;
+	overflow: hidden;
+}
+
+.v-field--variant-outlined {
+	background: var(--fluent-control-fill);
+}
+
+.v-field:is(
+		.v-field--variant-filled,
+		.v-field--variant-solo,
+		.v-field--variant-solo-filled,
+		.v-field--variant-solo-inverted
+	)
+	> .v-field__outline {
+	display: none !important;
+}
+
+.v-field:is(
+		.v-field--variant-filled,
+		.v-field--variant-solo,
+		.v-field--variant-solo-filled,
+		.v-field--variant-solo-inverted
+	)
+	> .v-field__overlay {
+	opacity: 0 !important;
+}
+
+.v-field--variant-outlined .v-field__outline {
+	--v-field-border-opacity: 0.65;
+}
+
+.v-field.v-field--focused:not(.v-field--error) {
+	background: var(--fluent-control-fill-focus);
+}
+
+.v-field.v-field--focused .v-field__outline {
+	--v-field-border-opacity: 1;
+}
+
+.v-field:not(.v-field--variant-plain)::after {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+	inset-inline: 1px;
+	bottom: 0;
+	height: 2px;
+	border-radius: 0 0 var(--fluent-radius-control) var(--fluent-radius-control);
+	background: var(--fluent-accent);
+	opacity: 0;
+	transition: opacity var(--fluent-duration-fast) ease;
+}
+
+.v-field.v-field--focused::after {
+	opacity: 1;
+}
+
+.v-field.v-field--error::after {
+	background: rgb(var(--v-theme-error));
+	opacity: 1;
+}
+
+.v-field.v-field--disabled::after {
+	opacity: 0;
+}
+
+.v-field--variant-plain,
+.v-field--variant-underlined {
+	border-radius: 0;
+}
+
+.v-field__overlay {
+	border-radius: inherit;
+}
+
+.v-field:not(.v-field--variant-plain):not(.v-field--variant-underlined)
+	> .v-field__overlay {
+	opacity: 0;
+}
+
+/* Field labels: keep the moving and floating copies at the same size.
+   Vuetify reads this scale for its own animation: 1 means translation only,
+   avoiding the glyph-size/rasterization jump when the label copies swap.
+   Text fields, selects, autocomplete and combobox share this animation. */
+
+.v-text-field .v-field .v-label.v-field-label {
+	font-size: var(--font-size-small);
+	font-family: inherit;
+	font-weight: inherit;
+	letter-spacing: inherit;
+	line-height: 1.5;
+}
+
+.v-text-field .v-field .v-label.v-field-label--floating {
+	--v-field-label-scale: 1em;
+}
+
+.v-field__input {
+	letter-spacing: normal;
+}
+
+.v-field__input::placeholder,
+.v-field__input input::placeholder {
+	color: var(--fluent-text-secondary);
+	opacity: 1;
+}
+
+.v-input__details {
+	padding-top: 5px;
+	font-size: var(--font-size-small);
+}
+
+/* Only label-free compact single-line fields become 32px; labelled fields and
+   textarea retain sufficient space for labels, chips and validation. */
+
+.v-input--density-compact:not(.v-textarea)
+	.v-field:is(.v-field--no-label, .v-field--single-line) {
+	--v-input-control-height: 32px;
+	--v-field-input-padding-top: 4px;
+	--v-field-input-padding-bottom: 4px;
+	--v-field-padding-bottom: 4px;
+}
+
+.v-select .v-field,
+.v-select .v-field__input {
+	cursor: default;
+}
+
+.v-autocomplete input,
+.v-combobox input,
+.v-text-field input,
+.v-textarea textarea {
+	cursor: text;
+}
+
+.v-select__menu-icon {
+	font-size: 20px;
+	transition: transform var(--fluent-duration-normal) var(--fluent-ease);
+}
+
+.v-select__selection-text {
+	line-height: 1.45;
+}
+
+.v-select .v-chip,
+.v-autocomplete .v-chip,
+.v-combobox .v-chip {
+	border-radius: var(--fluent-radius-control);
+}
+
+.v-card-title {
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.v-chip {
+	border-radius: var(--fluent-radius-control);
+	font-size: var(--font-size-small);
+}
+
+/* Original tab markup: v-tabs, v-divider, v-tabs-window, then py-3 sheet.
+   Restore the hidden divider and clear window spacing only for this layout.
+   Keep the actual tab geometry and the content's py-3 padding unchanged. */
+
+.v-sheet > .v-tabs + .v-divider {
+	display: none;
+}
+
+.v-sheet > .v-tabs + .v-divider + .v-tabs-window {
+	margin-block-start: 0 !important;
+	padding-block-start: 0 !important;
+}
+
+.v-expansion-panel {
+	border: 1px solid var(--fluent-border);
+	border-radius: var(--base-radius);
+}
+
+.v-expansion-panel::after {
+	border-color: var(--fluent-border);
+}
+
+.v-expansion-panel__shadow {
+	box-shadow: var(--fluent-shadow-card);
+}
+
+.v-expansion-panel-title {
+	min-height: 48px;
+	font-size: var(--font-size-main);
+}
+
+.v-table {
+	border-radius: var(--base-radius);
+	background: var(--fluent-surface);
+	color: var(--fluent-text);
+}
+
+.v-table > .v-table__wrapper > table > thead > tr > th {
+	font-size: var(--font-size-small);
+	font-weight: 600;
+	color: var(--fluent-text-secondary);
+}
+
+.v-table > .v-table__wrapper > table > :is(thead, tbody) > tr > :is(td, th) {
+	border-bottom-color: var(--fluent-border);
+}
+
+.v-data-table-footer {
+	border-top: 1px solid var(--fluent-border);
+	font-size: var(--font-size-small);
+}
+
+.v-pagination .v-btn {
+	border-radius: var(--fluent-radius-control);
+}
+
+.v-pagination__item--is-active .v-btn {
+	background: var(--fluent-selected);
+	color: var(--fluent-accent);
+}
+
+/* Slider: keep Vuetify dimensions, orientation and hit targets. */
+
+.v-slider-track__background {
+	opacity: 0.18;
+}
+
+.v-slider-track__background,
+.v-slider-track__fill {
+	border-radius: 999px;
+}
+
+.v-slider-thumb__surface {
+	border: 3px solid var(--fluent-surface);
+	box-shadow:
+		0 0 0 1px var(--fluent-border),
+		0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.v-slider-thumb .v-slider-thumb__surface::before {
+	display: none;
+}
+
+.v-slider-thumb.v-slider-thumb--focused .v-slider-thumb__surface {
+	outline: none;
+}
+
+.v-slider-thumb:has(input:focus-visible) .v-slider-thumb__surface,
+.v-slider-thumb:focus-visible .v-slider-thumb__surface {
+	outline: 1px solid var(--fluent-text);
+	outline-offset: 2px;
+}
+
+.v-slider-thumb__label {
+	border-radius: var(--fluent-radius-control);
+	font-size: var(--font-size-small);
+}
+
+.v-progress-linear {
+	border-radius: 999px;
+}
+
+/* windowbar menu */
+
+.component__WindowBar-menu
+	.v-dock-menu-bar-item-wrapper:has(.active)
+	.menu-wrapper {
+	animation: menuOpen 0.15s ease-in-out;
+	transform-origin: top center;
+}
+
+.component__WindowBar-menu {
+	position: relative !important;
+	background: none !important;
+	width: auto !important;
+}
+
+.component__WindowBar-menu ul li {
+	background: none;
+}
+
+.component__WindowBar-menu .menu-wrapper {
+	border-radius: var(--base-radius);
+	padding: 3px;
+}
+
+.component__WindowBar-menu .menu-wrapper li:not(.divider) {
+	transition: none;
+	color: rgba(var(--v-theme-text), 1);
+	border-radius: var(--base-radius);
+	text-transform: none;
+}
+
+.component__WindowBar-menu .menu-item-icon {
+	color: rgba(var(--v-theme-text), 1);
+}
+
+.component__WindowBar-menu .menu-item-icon svg {
+	transition: none;
+	fill: rgba(var(--v-theme-text), 1);
+	position: relative;
+	top: 2px;
+}
+
+.component__WindowBar-menu .menu-item {
+	cursor: default !important;
+	font-size: 14px;
+}
+
+.component__WindowBar-menu .menu-item.disable {
+	opacity: 0.4;
+	background: none !important;
+}
+
+.v-theme--DarkMode .component__WindowBar-menu .menu-wrapper {
+	background: rgba(var(--v-theme-surface), 1) !important;
+	border: rgba(var(--v-theme-border), 1) 1px solid;
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 9px 0px;
+}
+
+.v-theme--DarkMode .component__WindowBar-menu .menu-wrapper li:hover,
+.v-theme--DarkMode .component__WindowBar-menu .menu-wrapper .highlight {
+	background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.v-theme--DarkMode .component__WindowBar-menu .menu-wrapper li:active,
+.v-theme--DarkMode .component__WindowBar-menu .menu-wrapper .highlight:active {
+	background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.v-theme--DarkMode
+	.component__WindowBar-menu
+	.menu-bar-item-container:focus-visible {
+	outline-color: rgba(255, 255, 255, 0) !important;
+}
+
+.v-theme--DarkMode .component__WindowBar-menu .menu-bar-item-container.active {
+	background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.v-theme--DarkMode .component__WindowBar-menu .menu-item-divider {
+	height: 0px;
+	border-bottom: rgba(var(--v-theme-border), 1) 1.5px solid;
+	filter: brightness(2.1);
+}
+
+.v-theme--LightMode .component__WindowBar-menu .menu-item-divider {
+	height: 0px;
+	border-bottom: rgba(var(--v-theme-border), 1) 1.5px solid;
+	filter: brightness(1);
+}
+
+.v-theme--LightMode .component__WindowBar-menu .menu-wrapper {
+	background: rgba(var(--v-theme-surface), 1) !important;
+	border: rgba(var(--v-theme-border), 1) 1px solid;
+	box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 9px 0px;
+}
+
+.v-theme--LightMode .component__WindowBar-menu .menu-wrapper li:hover,
+.v-theme--LightMode .component__WindowBar-menu .menu-wrapper .highlight {
+	background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.v-theme--LightMode .component__WindowBar-menu .menu-wrapper li:active,
+.v-theme--LightMode .component__WindowBar-menu .menu-wrapper .highlight:active {
+	background: rgba(0, 0, 0, 0.03) !important;
+}
+
+.component__WindowBar-menu .menu-bar-item-container {
+	border-radius: calc(var(--base-radius));
+	border: 0px;
+	transition: none;
+	outline: transparent 2px solid !important;
+	cursor: default !important;
+}
+
+.v-theme--LightMode
+	.component__WindowBar-menu
+	.menu-bar-item-container:focus-visible {
+	outline-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.v-theme--LightMode .component__WindowBar-menu .menu-bar-item-container.active {
+	background: rgba(0, 0, 0, 0.06) !important;
+}
+
+.component__WindowBar-menu .menu-bar-item-container:active .name-container {
+	opacity: 0.8;
+}
+
+.component__WindowBar-menu .name-container {
+	color: rgba(var(--v-theme-text), 1) !important;
+}
+
+.component__WindowBar-menu .divider {
+	pointer-events: none;
+	margin: -3px -14px;
+	width: calc(100% + 28px);
+	border: 0px !important;
+}
+
+/* context menu */
+
+.v-contextmenu {
+	animation: fadeIn 0.15s ease-in-out;
+	transform-origin: top center;
+	border-radius: calc(var(--base-radius));
+	background: var(--fluent-surface) !important;
+	color: var(--fluent-text) !important;
+	border: 1px solid var(--fluent-border);
+	box-shadow: var(--fluent-shadow-flyout);
+}
+
+.v-contextmenu-inner {
+	padding: 3px;
+}
+
+.v-contextmenu-item {
+	cursor: default !important;
+	font-size: 14px;
+	transition: none;
+	border-radius: var(--base-radius);
+	text-transform: none;
+	color: var(--fluent-text) !important;
+	padding: 5px 10px;
+	min-height: 30px !important;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+}
+
+.v-contextmenu-item .v-icon {
+	width: 14px;
+	height: 14px;
+	font-size: 16px;
+}
+
+.v-contextmenu-item--disabled {
+	opacity: 0.4;
+	pointer-events: none;
+}
+
+.v-contextmenu-divider {
+	margin: 3px -3px 3px -3px;
+	width: calc(100% + 6px);
+}
+
+.v-contextmenu-item:has(.v-contextmenu-submenu__arrow) {
+	padding-right: 30px !important;
+}
+
+.v-contextmenu-group__menus {
+	padding: 0px;
+	display: flex;
+	gap: 2px;
+}
+
+.v-contextmenu-group__menus i {
+	font-size: 18px;
+}
+
+html:has(.v-application.v-theme--LightMode) .v-contextmenu {
+	background: var(--fluent-surface) !important;
+	border: var(--fluent-border) 1px solid;
+	box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 9px 0px;
+}
+
+html:has(.v-application.v-theme--LightMode) .v-contextmenu-item--hover {
+	background: rgba(0, 0, 0, 0.06) !important;
+}
+
+html:has(.v-application.v-theme--LightMode) .v-contextmenu-item:active {
+	background: rgba(0, 0, 0, 0.03) !important;
+}
+
+html:has(.v-application.v-theme--LightMode) .v-contextmenu-divider {
+	height: 0px;
+	border-bottom: var(--fluent-border) 1.5px solid;
+	filter: brightness(1);
+}
+
+html:has(.v-application.v-theme--DarkMode) .v-contextmenu {
+	background: var(--fluent-surface) !important;
+	border: var(--fluent-border) 1px solid;
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 9px 0px;
+}
+
+html:has(.v-application.v-theme--DarkMode) .v-contextmenu-item--hover {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+html:has(.v-application.v-theme--DarkMode) .v-contextmenu-item:active {
+	background: rgba(255, 255, 255, 0.03) !important;
+}
+
+html:has(.v-application.v-theme--DarkMode) .v-contextmenu-divider {
+	border-bottom: var(--fluent-border) 1.5px solid;
+	filter: brightness(2.1);
+}
+
+/* windowbar */
+
+.component__WindowBar {
+	position: relative;
+	height: var(--windowbar-height);
+}
+
+.component__WindowBar .component__WindowBar__bar {
+	-webkit-app-region: drag;
+	box-shadow: none !important;
+	background: rgb(var(--v-theme-background)) !important;
+	overflow: visible;
+	height: 10px;
+}
+
+.component__WindowBar .no-drag {
+	-webkit-app-region: no-drag;
+}
+
+/* Press feedback includes icon-only and prepend-icon buttons. */
+.component__WindowBar
+	:is(
+		.v-btn,
+		.component__WindowBar-buttons-btn,
+		.component__WindowBar-btn__menu
+	):not(
+		.v-btn--disabled,
+		.v-btn--loading,
+		:disabled,
+		[aria-disabled="true"]
+	):active {
+	opacity: 0.65;
+}
+
+.component__WindowBar .v-toolbar {
+	height: inherit;
+	background: none !important;
+}
+
+.component__WindowBar .component__WindowBar-title {
+	user-select: none;
+	font-size: 16px;
+	margin-left: 10px;
+	color: rgb(var(--v-theme-text));
+	margin-right: 140px;
+}
+
+.component__WindowBar .v-toolbar__content {
+	overflow: visible !important;
+	height: var(--windowbar-height) !important;
+	padding: 0px var(--page-inner-padding) !important;
+	gap: 5px;
+}
+
+.component__WindowBar .component__WindowBar-icon {
+	height: 18px;
+	width: 18px;
+}
+
+.window-material-type-default .component__WindowBar .component__WindowBar-icon {
+	display: none;
+}
+
+.component__WindowBar .component__WindowBar-buttons {
+	-webkit-app-region: no-drag;
+	display: flex;
+	align-items: center;
+}
+
+.component__WindowBar .component__WindowBar-buttons-btn {
+	min-width: 42px;
+	min-height: 0px;
+	margin: 0px;
+	border-radius: var(--base-radius);
+	padding: 0px 10px;
+	line-height: 43px !important;
+}
+
+.component__WindowBar .component__WindowBar-buttons-btn .v-btn__prepend {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	justify-content: center;
+}
+
+.component__WindowBar .v-toolbar__prepend {
+	gap: 5px;
+}
+
+.component__WindowBar .component__WindowBar-btn__menu {
+	display: none;
+}
+
+body:not(.window-material-type-fluent) .component__WindowBar-title {
+	display: none;
+}
+
+.v-card-item .v-card-title {
+	margin: 0px;
+}
+
+@media screen and (max-width: 799px) {
+	.component__WindowBar .component__WindowBar-btn__menu {
+		display: block;
+	}
+
+	html:has(.v-application.v-theme--LightMode) .v-navigation-drawer {
+		box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 9px 0px;
+	}
+
+	html:has(.v-application.v-theme--DarkMode) .v-navigation-drawer {
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 9px 0px;
+	}
+}
+
+/* overlay */
+
+.v-overlay__scrim {
+	background: #000;
+}
+
+/* Hover only on devices with a real hover pointer. */
+
+@media (hover: hover) {
+	.v-field:not(.v-field--disabled):not(.v-field--focused):not(
+			.v-field--variant-plain
+		):hover {
+		background: var(--fluent-control-fill-hover);
+	}
+	:is(.v-checkbox-btn, .v-radio):not(
+			.fluent-native-control,
+			.fluent-native-control *
+		):not(.v-selection-control--disabled):not(
+			.v-selection-control--dirty
+		):not(:has(input:is(:indeterminate, [aria-checked="mixed"]))):hover
+		.v-selection-control__input::before {
+		background: var(--fluent-control-fill-hover);
+		border-color: var(--fluent-text-secondary);
+	}
+	.v-menu .v-list-item:not(.v-list-item--disabled):hover {
+		background: var(--fluent-hover);
+	}
+	.v-table--hover > .v-table__wrapper > table > tbody > tr:hover > td {
+		background: var(--fluent-hover);
+	}
+}
+
+@media (pointer: coarse) {
+	.v-checkbox,
+	.v-checkbox.v-input--density-compact,
+	.v-radio-group,
+	.v-radio-group.v-input--density-compact {
+		--fluent-selection-row-size: 44px;
+	}
+
+	.v-switch,
+	.v-switch.v-input--density-compact {
+		--fluent-switch-row-size: 44px;
+	}
+
+	.v-menu .v-list-item {
+		min-height: 44px;
+	}
+	.v-selection-control {
+		--v-selection-control-size: 44px;
+	}
+}
+
+/* Windows contrast themes: system colors keep the custom controls visible. */
+
+@media (forced-colors: active) {
+	:is(.v-checkbox-btn, .v-radio):not(
+			.fluent-native-control,
+			.fluent-native-control *
+		)
+		.v-selection-control__input::before {
+		forced-color-adjust: none;
+		border-color: ButtonText;
+		background: Canvas;
+	}
+	.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):is(
+			.v-selection-control--dirty,
+			:has(input:is(:indeterminate, [aria-checked="mixed"]))
+		)
+		.v-selection-control__input::before {
+		background: Highlight;
+		border-color: Highlight;
+	}
+	.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *)
+		.v-selection-control__input::after {
+		forced-color-adjust: none;
+		border-color: HighlightText;
+	}
+	.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):has(
+			input:is(:indeterminate, [aria-checked="mixed"])
+		)
+		.v-selection-control__input::after {
+		background: HighlightText;
+	}
+	.v-radio:not(
+			.fluent-native-control,
+			.fluent-native-control *
+		).v-selection-control--dirty
+		.v-selection-control__input::before {
+		border-color: Highlight;
+	}
+	.v-radio:not(
+			.fluent-native-control,
+			.fluent-native-control *
+		).v-selection-control--dirty
+		.v-selection-control__input::after {
+		forced-color-adjust: none;
+		background: Highlight;
+	}
+	.v-switch .v-switch__track {
+		forced-color-adjust: none;
+		background: Canvas;
+		border-color: ButtonText;
+	}
+	.v-switch .v-selection-control--dirty .v-switch__track {
+		background: Highlight;
+		border-color: Highlight;
+	}
+	.v-switch .v-switch__thumb {
+		forced-color-adjust: none;
+		background: ButtonText !important;
+	}
+	.v-switch .v-selection-control--dirty .v-switch__thumb {
+		background: HighlightText !important;
+	}
+	.v-selection-control--disabled {
+		opacity: 1;
+	}
+	.v-selection-control--disabled .v-selection-control__input::before {
+		border-color: GrayText !important;
+	}
+	.v-field::after {
+		background: Highlight;
+	}
+}
