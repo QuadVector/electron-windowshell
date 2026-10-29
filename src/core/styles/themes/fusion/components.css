@@ -12,7 +12,7 @@
 
 .v-overlay__content,
 .v-contextmenu {
-	font-family: var(--fluent-font-family);
+	font-family: var(--fusion-font-family);
 	font-size: var(--font-size-main);
 }
 
@@ -33,21 +33,98 @@
 
 :is(.v-btn, .v-list-item, .v-chip, .v-tab, .v-pagination__item):focus-visible,
 .v-contextmenu-item:focus-visible {
-	outline: var(--fluent-focus-width) solid var(--fluent-text) !important;
+	outline: var(--fusion-focus-width) solid var(--fusion-text) !important;
 	outline-offset: 2px;
 }
 
 .v-btn {
 	transition:
-		background-color var(--fluent-duration-fast) ease,
-		box-shadow var(--fluent-duration-fast) ease;
-	border-radius: var(--fluent-radius-control);
-	font-weight: 500;
+		background-color var(--fusion-duration-fast) ease,
+		border-color var(--fusion-duration-fast) ease,
+		box-shadow var(--fusion-duration-fast) ease;
+	border-radius: var(--fusion-radius-control);
+	font-weight: 400;
 	text-decoration: none;
+	border: 1px solid transparent;
+	box-shadow: none;
 }
 
 .v-btn--variant-elevated {
-	box-shadow: var(--fluent-shadow-card);
+	box-shadow:
+		inset 0 1px 0 var(--fusion-inner-light),
+		0 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+/* Fusion push buttons: a shallow bevel, a frame and a sunken pressed state. */
+.v-btn:is(.v-btn--variant-elevated, .v-btn--variant-flat):not([class*="bg-"]) {
+	background: var(--fusion-button-gradient);
+	border-color: var(--fusion-border-strong);
+	color: var(--fusion-text);
+	box-shadow:
+		inset 0 1px 0 var(--fusion-inner-light),
+		0 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+.v-btn:not(.v-btn--disabled):not(.v-btn--loading):active {
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.22);
+}
+
+.v-btn.v-btn--disabled:not([class*="bg-"]) {
+	background: var(--fusion-button-gradient) !important;
+	color: var(--fusion-text-secondary) !important;
+	border-color: var(--fusion-border);
+	box-shadow: none;
+	opacity: 0.55;
+}
+
+.v-btn:is(.v-btn--variant-elevated, .v-btn--variant-flat):not(
+		[class*="bg-"]
+	):not(.v-btn--disabled):active {
+	background: var(--fusion-button-pressed);
+	border-color: var(--fusion-accent);
+}
+
+/* Back and other standard action buttons use the same Fusion face. */
+.v-btn:not(.v-tab):not(.v-btn--variant-plain):not(.v-btn--disabled) {
+	border-color: var(--fusion-border-strong);
+	box-shadow:
+		inset 0 1px 0 var(--fusion-inner-light),
+		0 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+/* Keep Vuetify's semantic button colors beneath the same shallow bevel. */
+.v-btn:not(.v-tab):is(
+		.v-btn--variant-elevated,
+		.v-btn--variant-flat
+	)[class*="bg-"] {
+	background-image: linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 0.08),
+		rgba(0, 0, 0, 0.06)
+	);
+}
+
+.v-btn:is(
+		.v-btn--variant-text,
+		.v-btn--variant-tonal,
+		.v-btn--variant-outlined
+	):not(.v-tab):not([class*="bg-"]) {
+	background: var(--fusion-button-gradient);
+	color: var(--fusion-text);
+}
+
+.v-btn:not(.v-tab):not(.v-btn--variant-plain):not([class*="bg-"]):not(
+		.v-btn--disabled
+	):hover {
+	background: var(--fusion-button-hover);
+	border-color: var(--fusion-accent);
+}
+
+.v-btn:not(.v-tab):not(.v-btn--variant-plain):not([class*="bg-"]):not(
+		.v-btn--disabled
+	):active {
+	background: var(--fusion-button-pressed);
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .v-btn.v-btn--disabled {
@@ -59,43 +136,70 @@
 }
 
 .v-btn .v-btn__overlay {
-	transition: opacity var(--fluent-duration-fast) ease;
+	transition: opacity var(--fusion-duration-fast) ease;
 }
 
 .v-btn.v-btn--rounded {
-	border-radius: 999px;
+	border-radius: var(--base-radius);
 }
 
 /* Menus only: no flex-column changes on virtual-scroll containers.
    Dialog lists and ordinary lists retain their original layout. */
 
 .v-menu > .v-overlay__content {
-	border-radius: var(--fluent-radius-overlay) !important;
-	box-shadow: var(--fluent-shadow-flyout) !important;
-	overflow: visible;
+	border-radius: var(--fusion-radius-overlay) !important;
+	box-shadow: var(--fusion-shadow-flyout) !important;
+	overflow: hidden;
 }
 
 .v-menu > .v-overlay__content > :is(.v-list, .v-sheet) {
-	border: 1px solid var(--fluent-border);
-	border-radius: var(--fluent-radius-overlay);
-	background: var(--fluent-surface);
-	color: var(--fluent-text);
+	border: 1px solid var(--fusion-border);
+	border-radius: var(--fusion-radius-overlay);
+	background: var(--fusion-surface);
+	color: var(--fusion-text);
 	box-shadow: none;
 }
 
 .v-menu > .v-overlay__content > .v-list {
-	padding: 4px;
-	animation: menuOpen 0.15s ease-in-out;
+	padding: 3px;
+	animation: none;
 	transform-origin: top center;
 }
 
 .v-menu .v-list-item {
-	min-height: 34px;
-	padding: 6px 12px;
-	margin-block: 1px;
-	border-radius: var(--fluent-radius-control) !important;
-	color: var(--fluent-text);
-	transition: background-color var(--fluent-duration-fast) ease;
+	min-height: var(--fusion-menu-row-height);
+	padding: 4px 10px;
+	margin-block: 0;
+	border-radius: var(--fusion-menu-item-radius) !important;
+	color: var(--fusion-text);
+	transition: background-color var(--fusion-duration-fast) ease;
+	font-size: 13px;
+	line-height: 18px;
+}
+
+.v-menu .v-list-item__prepend > .v-list-item__spacer {
+	width: 8px;
+}
+
+.v-menu .v-list-item .v-icon {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.v-menu .v-list > .v-divider {
+	margin: 4px 6px;
+	border: 0;
+	border-top: 1px solid var(--fusion-separator);
+	opacity: 1;
+}
+
+/* Selection feedback is immediate; popup opening animation remains native. */
+.v-menu
+	> :is(.v-select__content, .v-autocomplete__content, .v-combobox__content)
+	:is(.v-list-item, .v-list-item__overlay) {
+	transition: none !important;
+	border-radius: 0 !important;
 }
 
 .v-menu .v-list-item:has(.v-selection-control) {
@@ -104,7 +208,19 @@
 }
 
 .v-menu .v-list-item--active {
-	background: var(--fluent-selected);
+	background: var(--fusion-selected);
+	color: var(--fusion-on-accent);
+}
+
+.v-menu .v-list-item:focus-visible {
+	background: var(--fusion-selected);
+	color: var(--fusion-on-accent);
+}
+
+.v-menu
+	.v-list-item:is(.v-list-item--active, :focus-visible)
+	.v-list-item-subtitle {
+	color: inherit;
 }
 
 /* Select option highlights stay square when hovered, focused or selected. */
@@ -134,8 +250,8 @@
 }
 
 :is(.v-menu, .v-dialog) .v-list-item-title {
-	font-size: var(--font-size-main);
-	line-height: 1.45;
+	font-size: 13px;
+	line-height: 18px;
 }
 
 :is(.v-menu, .v-dialog) .v-list-item-subtitle {
@@ -144,19 +260,17 @@
 }
 
 .v-list-item__overlay {
-	transition: opacity var(--fluent-duration-fast) ease;
+	transition: opacity var(--fusion-duration-fast) ease;
 	border-radius: inherit;
 }
 
 .v-divider {
-	border-color: var(--fluent-border);
+	border-color: var(--fusion-separator);
 	opacity: 1;
 }
 
 .v-navigation-drawer .v-list {
-	padding: 0px 0px;
-	padding-left: var(--page-inner-padding);
-	padding-right: var(--page-inner-padding);
+	padding: 0 var(--page-inner-padding);
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
@@ -164,31 +278,167 @@
 
 .v-navigation-drawer .v-list-item {
 	min-height: 30px !important;
-	padding: 10px !important;
+	padding: 4px 8px !important;
 	cursor: default !important;
 	border-radius: var(--base-radius) !important;
+	border: 1px solid var(--fusion-border-strong);
+	background: var(--fusion-button-gradient);
+	box-shadow: inset 0 1px 0 var(--fusion-inner-light);
+	color: var(--fusion-text);
+	box-sizing: border-box;
+	transition:
+		background-color var(--fusion-duration-fast) ease,
+		border-color var(--fusion-duration-fast) ease,
+		box-shadow var(--fusion-duration-fast) ease;
+}
+
+.v-navigation-drawer:not(.v-navigation-drawer--active) {
+	box-shadow: none !important;
+}
+
+@media screen and (max-width: 799px) {
+	.v-navigation-drawer.v-navigation-drawer--active {
+		box-shadow: var(--fusion-shadow-navigation) !important;
+	}
+}
+
+.v-navigation-drawer .v-list-item:is(.v-list-item--active, :active) {
+	background: var(--fusion-button-pressed);
+	border-color: var(--fusion-accent);
+	box-shadow: inset 0 1px 0 var(--fusion-inner-light);
+	color: var(--fusion-text);
+}
+
+.v-navigation-drawer
+	.v-list-item:not(.v-list-item--disabled):not(.v-list-item--active):hover {
+	background: var(--fusion-button-hover);
+	border-color: var(--fusion-accent);
+}
+
+.v-navigation-drawer .v-list-item__overlay {
+	opacity: 0;
+}
+
+.v-navigation-drawer .v-list-item::after {
+	display: none;
+}
+
+.v-navigation-drawer .v-list-item:focus-visible {
+	outline: 1px dotted var(--fusion-text) !important;
+	outline-offset: -4px;
+}
+
+.v-navigation-drawer .v-list-item .v-list-item__prepend > .v-list-item__spacer {
+	width: 8px;
+}
+
+.v-navigation-drawer .v-list-item-title {
+	font-size: 13px;
+	line-height: 20px;
+}
+
+.v-navigation-drawer .v-list-subheader {
+	min-height: 24px;
+	padding: 4px 8px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--fusion-text-secondary);
+}
+
+.v-navigation-drawer .v-list-group__items .v-list-item {
+	padding-inline-start: calc(8px + var(--indent-padding, 16px)) !important;
+}
+
+.v-navigation-drawer--rail .v-list-item {
+	padding-inline: 4px !important;
+	justify-content: center;
+}
+
+.component__WindowBar .v-btn:not(.v-btn--disabled):not(.v-btn--loading) {
+	--v-btn-height: 28px;
+	min-width: 28px;
+	padding-inline: 8px;
+	border: 1px solid var(--fusion-border-strong);
+	border-radius: var(--base-radius);
+	background: var(--fusion-button-gradient);
+	box-shadow: inset 0 1px 0 var(--fusion-inner-light);
+	color: var(--fusion-text);
+}
+
+.component__WindowBar .v-btn:not(.v-btn--disabled):hover {
+	background: var(--fusion-button-hover);
+	border-color: var(--fusion-accent);
+}
+
+.component__WindowBar .v-btn:not(.v-btn--disabled):active {
+	background: var(--fusion-button-pressed);
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.component__WindowBar .v-btn .v-icon {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.component__WindowBar
+	.v-btn:is(
+		.v-btn--icon,
+		.component__WindowBar-btn__menu,
+		.component__WindowBar-btn__back
+	),
+.component__WindowBar .v-btn:has(> .v-btn__content > .v-icon:only-child),
+.component__WindowBar .v-toolbar__prepend .v-btn,
+.component__WindowBar .no-drag > .v-btn {
+	--v-btn-height: 28px;
+	width: 30px !important;
+	min-width: 30px !important;
+	max-width: 30px !important;
+	height: 28px !important;
+	min-height: 28px !important;
+	max-height: 28px !important;
+	padding: 0;
+	flex: 0 0 30px;
+	box-sizing: border-box;
+	border-width: 1px !important;
+}
+
+.component__WindowBar .v-btn::after {
+	display: none;
+}
+
+.component__WindowBar .v-btn:focus-visible {
+	outline: none !important;
+	box-shadow: inset 0 0 0 1px var(--fusion-accent);
 }
 
 .v-navigation-drawer .v-list-item:active {
-	opacity: 0.8;
+	opacity: 1;
+	background: var(--fusion-button-pressed);
 }
 
 .v-navigation-drawer {
 	margin-top: calc(var(--windowbar-height) * -1) !important;
 	padding-top: calc(var(--windowbar-height)) !important;
 	height: calc(100vh + var(--windowbar-height)) !important;
-	background: none !important;
+	background: var(--fusion-surface) !important;
+	border-inline-end: 0 !important;
+	box-shadow: none !important;
+	transition:
+		transform 180ms var(--fusion-ease),
+		opacity 120ms ease,
+		box-shadow 120ms ease,
+		background-color var(--fusion-duration-slow) ease-in-out;
 }
 
 .v-navigation-drawer--mobile {
 	background: rgba(var(--v-theme-surface), 1) !important;
 	opacity: 0;
 	transition:
-		all 350ms cubic-bezier(0, 0.995, 0.345, 1),
-		background 0.3s ease-in-out !important;
-	transition-timing-function:
-		cubic-bezier(0, 0.995, 0.345, 1),
-		background 0.3s ease-in-out !important;
+		transform 180ms var(--fusion-ease),
+		opacity 120ms ease,
+		box-shadow 120ms ease,
+		background-color var(--fusion-duration-slow) ease-in-out;
 }
 
 .v-navigation-drawer--active {
@@ -215,7 +465,9 @@
 
 :is(.v-checkbox-btn, .v-radio):not(
 		.fluent-native-control,
-		.fluent-native-control *
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
 	)
 	.v-selection-control__input
 	> .v-icon {
@@ -224,36 +476,43 @@
 
 :is(.v-checkbox-btn, .v-radio):not(
 		.fluent-native-control,
-		.fluent-native-control *
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
 	)
 	.v-selection-control__wrapper {
-	color: var(--fluent-accent);
+	color: var(--fusion-accent);
 }
 
 :is(.v-checkbox-btn, .v-radio):not(
 		.fluent-native-control,
-		.fluent-native-control *
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
 	)
 	.v-selection-control__input::before {
 	content: "";
 	position: absolute;
 	inset: 50% auto auto 50%;
 	transform: translate(-50%, -50%);
-	width: var(--fluent-control-size);
-	height: var(--fluent-control-size);
-	border: 1px solid var(--fluent-border-strong);
-	border-radius: min(4px, var(--base-radius));
-	background: var(--fluent-control-fill);
+	width: var(--fusion-control-size);
+	height: var(--fusion-control-size);
+	border: 1px solid var(--fusion-border-strong);
+	border-radius: min(2px, var(--base-radius));
+	background: var(--fusion-indicator-fill);
 	opacity: 1;
 	pointer-events: none;
 	transition:
-		background-color var(--fluent-duration-fast) ease,
-		border-color var(--fluent-duration-fast) ease;
+		background-color var(--fusion-duration-fast) ease,
+		border-color var(--fusion-duration-fast) ease;
+	box-shadow: inset 0 1px 0 var(--fusion-inner-light);
 }
 
 :is(.v-checkbox-btn, .v-radio):not(
 		.fluent-native-control,
-		.fluent-native-control *
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
 	)
 	.v-selection-control__input::after {
 	content: "";
@@ -264,25 +523,40 @@
 	pointer-events: none;
 }
 
-.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *)
+.v-checkbox-btn:not(
+		.fluent-native-control,
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
+	)
 	.v-selection-control__input::after {
 	width: 6px;
 	height: 11px;
-	border: solid var(--fluent-on-accent);
+	border: solid var(--fusion-text);
 	border-width: 0 2px 2px 0;
 	transform: translate(-50%, -60%) rotate(45deg);
 }
 
-.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):is(
+.v-checkbox-btn:not(
+		.fluent-native-control,
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
+	):is(
 		.v-selection-control--dirty,
 		:has(input:is(:indeterminate, [aria-checked="mixed"]))
 	)
 	.v-selection-control__input::before {
-	background: currentColor;
-	border-color: currentColor;
+	background: var(--fusion-indicator-fill);
+	border-color: var(--fusion-border-strong);
 }
 
-.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):is(
+.v-checkbox-btn:not(
+		.fluent-native-control,
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
+	):is(
 		.v-selection-control--dirty,
 		:has(input:is(:indeterminate, [aria-checked="mixed"]))
 	)
@@ -290,43 +564,60 @@
 	opacity: 1;
 }
 
-.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):has(
-		input:is(:indeterminate, [aria-checked="mixed"])
-	)
+.v-checkbox-btn:not(
+		.fluent-native-control,
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
+	):has(input:is(:indeterminate, [aria-checked="mixed"]))
 	.v-selection-control__input::after {
 	width: 10px;
 	height: 2px;
 	border: 0;
 	border-radius: 1px;
-	background: var(--fluent-on-accent);
+	background: var(--fusion-text);
 	transform: translate(-50%, -50%);
 }
 
-.v-radio:not(.fluent-native-control, .fluent-native-control *)
+.v-radio:not(
+		.fluent-native-control,
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
+	)
 	.v-selection-control__input::before {
 	border-radius: 50%;
 }
 
-.v-radio:not(.fluent-native-control, .fluent-native-control *)
+.v-radio:not(
+		.fluent-native-control,
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
+	)
 	.v-selection-control__input::after {
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
-	background: currentColor;
+	background: var(--fusion-text);
 	transform: translate(-50%, -50%);
 }
 
 .v-radio:not(
 		.fluent-native-control,
-		.fluent-native-control *
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
 	).v-selection-control--dirty
 	.v-selection-control__input::before {
-	border: 2px solid currentColor;
+	border: 1px solid var(--fusion-border-strong);
 }
 
 .v-radio:not(
 		.fluent-native-control,
-		.fluent-native-control *
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
 	).v-selection-control--dirty
 	.v-selection-control__input::after {
 	opacity: 1;
@@ -334,16 +625,20 @@
 
 :is(.v-checkbox-btn, .v-radio):not(
 		.fluent-native-control,
-		.fluent-native-control *
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
 	).v-selection-control--focus-visible
 	.v-selection-control__input::before {
-	outline: var(--fluent-focus-width) solid var(--fluent-text);
+	outline: var(--fusion-focus-width) solid var(--fusion-text);
 	outline-offset: 3px;
 }
 
 :is(.v-checkbox-btn, .v-radio):not(
 		.fluent-native-control,
-		.fluent-native-control *
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
 	).v-selection-control--error
 	.v-selection-control__wrapper {
 	color: rgb(var(--v-theme-error)) !important;
@@ -351,7 +646,9 @@
 
 :is(.v-checkbox-btn, .v-radio):not(
 		.fluent-native-control,
-		.fluent-native-control *
+		.fusion-native-control,
+		.fluent-native-control *,
+		.fusion-native-control *
 	).v-selection-control--error
 	.v-selection-control__input::before {
 	border-color: rgb(var(--v-theme-error));
@@ -387,7 +684,7 @@
 	padding-inline-start: 0;
 	font-size: var(--font-size-small);
 	line-height: 1.4;
-	color: var(--fluent-text-secondary);
+	color: var(--fusion-text-secondary);
 	opacity: 1;
 	overflow-wrap: anywhere;
 }
@@ -422,8 +719,8 @@
 		calc(
 			(
 					var(
-							--fluent-selection-row-size,
-							var(--fluent-switch-row-size)
+							--fusion-selection-row-size,
+							var(--fusion-switch-row-size)
 						) -
 						var(--font-size-main) * 1.45
 				) /
@@ -440,8 +737,8 @@
 			(
 					var(--font-size-main) * 1.45 -
 						var(
-							--fluent-selection-row-size,
-							var(--fluent-switch-row-size)
+							--fusion-selection-row-size,
+							var(--fusion-switch-row-size)
 						)
 				) /
 				2
@@ -464,22 +761,22 @@
 
 .v-checkbox,
 .v-radio-group {
-	--fluent-selection-row-size: 36px;
+	--fusion-selection-row-size: 36px;
 }
 
 .v-checkbox.v-input--density-compact,
 .v-radio-group.v-input--density-compact {
-	--fluent-selection-row-size: 32px;
+	--fusion-selection-row-size: 32px;
 }
 
 .v-checkbox .v-selection-control {
 	height: auto;
-	min-height: var(--fluent-selection-row-size);
+	min-height: var(--fusion-selection-row-size);
 }
 
 .v-checkbox .v-checkbox-btn,
 .v-radio-group .v-radio {
-	--v-selection-control-size: var(--fluent-selection-row-size);
+	--v-selection-control-size: var(--fusion-selection-row-size);
 }
 
 .v-checkbox .v-selection-control__wrapper,
@@ -491,7 +788,7 @@
 }
 
 .v-checkbox .v-input__details {
-	padding-inline-start: calc(var(--fluent-selection-row-size) + 4px);
+	padding-inline-start: calc(var(--fusion-selection-row-size) + 4px);
 	padding-inline-end: 0;
 }
 
@@ -519,16 +816,16 @@
    Retain input bounds and Vuetify loading / icon slots. */
 
 .v-switch {
-	--fluent-switch-row-size: 36px;
+	--fusion-switch-row-size: 36px;
 }
 
 .v-switch.v-input--density-compact {
-	--fluent-switch-row-size: 32px;
+	--fusion-switch-row-size: 32px;
 }
 
 .v-switch .v-selection-control {
-	--v-selection-control-size: var(--fluent-switch-row-size);
-	min-height: var(--fluent-switch-row-size);
+	--v-selection-control-size: var(--fusion-switch-row-size);
+	min-height: var(--fusion-switch-row-size);
 }
 
 .v-switch .v-selection-control .v-label {
@@ -550,7 +847,7 @@
 
 .v-switch .v-selection-control__wrapper {
 	width: 44px;
-	color: var(--fluent-accent);
+	color: var(--fusion-accent);
 }
 
 .v-switch.v-switch--inset .v-selection-control__wrapper {
@@ -561,20 +858,21 @@
 	min-width: 40px;
 	height: 20px;
 	padding: 0 3px;
-	border: 1px solid var(--fluent-border-strong);
+	border: 1px solid var(--fusion-border-strong);
 	border-radius: 999px;
-	background: var(--fluent-control-fill);
+	background: var(--fusion-control-fill-pressed);
 	opacity: 1;
 	transition:
-		background-color var(--fluent-duration-fast) ease,
-		border-color var(--fluent-duration-fast) ease;
+		background-color var(--fusion-duration-fast) ease,
+		border-color var(--fusion-duration-fast) ease;
+	box-shadow: var(--fusion-inset-shadow);
 }
 
 .v-switch .v-selection-control__input {
 	width: 28px;
 	height: 28px;
 	transform: translateX(-10px);
-	transition: transform var(--fluent-duration-normal) var(--fluent-ease);
+	transition: transform var(--fusion-duration-normal) var(--fusion-ease);
 }
 
 .v-switch .v-selection-control--dirty .v-selection-control__input {
@@ -583,23 +881,26 @@
 
 .v-switch.v-switch--inset .v-switch__thumb,
 .v-switch .v-switch__thumb {
-	width: 12px;
-	height: 12px;
-	background: var(--fluent-text-secondary) !important;
-	color: var(--fluent-surface) !important;
-	box-shadow: none;
+	width: 18px;
+	height: 18px;
+	background: var(--fusion-button-gradient) !important;
+	color: var(--fusion-text) !important;
+	box-shadow:
+		inset 0 1px 0 var(--fusion-inner-light),
+		0 1px 2px rgba(0, 0, 0, 0.2);
 	transform: none;
-	transition: background-color var(--fluent-duration-fast) ease;
+	transition: background-color var(--fusion-duration-fast) ease;
+	border: 1px solid var(--fusion-border-strong);
 }
 
 .v-switch .v-selection-control--dirty .v-switch__track {
-	background: var(--fluent-accent);
+	background: var(--fusion-accent);
 	border-color: transparent;
 }
 
 .v-switch .v-selection-control--dirty .v-switch__thumb {
-	background: var(--fluent-on-accent) !important;
-	color: var(--fluent-accent) !important;
+	background: var(--fusion-button-gradient) !important;
+	color: var(--fusion-text) !important;
 }
 
 .v-switch .v-selection-control__input::before {
@@ -607,7 +908,7 @@
 }
 
 .v-switch .v-selection-control--focus-visible .v-switch__track {
-	outline: var(--fluent-focus-width) solid var(--fluent-text);
+	outline: var(--fusion-focus-width) solid var(--fusion-text);
 	outline-offset: 3px;
 }
 
@@ -648,12 +949,12 @@
 
 .v-pie__legend .v-chip,
 .v-pie__legend .v-chip__content {
-	color: var(--fluent-text) !important;
+	color: var(--fusion-text) !important;
 }
 
 .v-pie__legend .v-chip {
-	border: 1px solid var(--fluent-border);
-	background: var(--fluent-hover) !important;
+	border: 1px solid var(--fusion-border);
+	background: var(--fusion-hover) !important;
 }
 
 .v-pie__legend .v-chip__underlay {
@@ -662,8 +963,8 @@
 
 .v-tooltip
 	> .v-overlay__content:is(.v-pie__tooltip-content, .sparkline-tooltip) {
-	background: var(--fluent-surface) !important;
-	color: var(--fluent-text) !important;
+	background: var(--fusion-surface) !important;
+	color: var(--fusion-text) !important;
 	padding: 8px 12px;
 }
 
@@ -674,47 +975,74 @@
 
 .v-pie__tooltip-content
 	:is(.v-list-item, .v-list-item-title, .v-list-item-subtitle) {
-	color: var(--fluent-text) !important;
+	color: var(--fusion-text) !important;
 }
 
 .v-card {
-	border-radius: var(--base-radius);
-	border-color: var(--fluent-border);
+	border-radius: var(--base-radius) !important;
+	border-color: var(--fusion-border);
 	border-width: 1px;
+	border: 1px solid var(--fusion-border);
+	box-shadow: var(--fusion-panel-shadow) !important;
+}
+
+.v-card::before,
+.v-card::after,
+.v-expansion-panel__shadow {
+	box-shadow: none !important;
+}
+
+.v-sheet--border,
+.v-table,
+.v-expansion-panel {
+	border: 1px solid var(--fusion-border);
+	box-shadow: var(--fusion-panel-shadow);
+	border-radius: var(--base-radius) !important;
 }
 
 .v-card:not([class*="bg-"]):is(
 		.v-card--variant-elevated,
 		.v-card--variant-flat
 	) {
-	background: var(--fluent-surface);
-	color: var(--fluent-text);
+	background: var(--fusion-panel-gradient) var(--fusion-surface);
+	color: var(--fusion-text);
 }
 
 .v-card--variant-elevated {
-	box-shadow: var(--fluent-shadow-card);
+	box-shadow: var(--fusion-shadow-card);
 	border-style: solid;
 }
 
 .v-card-actions {
 	gap: 8px;
-	padding: 12px 16px;
+	padding: 10px 12px;
 }
 
 .v-dialog > .v-overlay__content > .v-card {
-	border: 1px solid var(--fluent-border);
-	border-radius: var(--fluent-radius-overlay);
-	box-shadow: var(--fluent-shadow-dialog);
+	border: 1px solid var(--fusion-border);
+	border-radius: var(--base-radius) !important;
+	box-shadow:
+		var(--fusion-panel-shadow), var(--fusion-shadow-dialog) !important;
+	--v-elevation-overlay: transparent;
+	overflow: hidden;
 }
 
 .v-dialog .v-card-actions {
-	background: var(--fluent-hover);
-	border-top: 1px solid var(--fluent-border);
+	background: var(--fusion-surface) !important;
+	border-top: 1px solid var(--fusion-separator);
+	color: var(--fusion-text) !important;
 }
 
 .v-alert {
 	border-radius: var(--base-radius);
 	font-size: var(--font-size-main);
+	border: 1px solid var(--fusion-border-strong);
+	background-image: linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 0.06),
+		rgba(0, 0, 0, 0.04)
+	);
+	box-shadow: inset 0 1px 0 var(--fusion-inner-light);
 }
 
 .v-alert-title {
@@ -723,18 +1051,18 @@
 }
 
 .v-snackbar__wrapper {
-	border: 1px solid var(--fluent-border);
-	border-radius: var(--fluent-radius-overlay);
-	box-shadow: var(--fluent-shadow-flyout);
+	border: 1px solid var(--fusion-border);
+	border-radius: var(--fusion-radius-overlay);
+	box-shadow: var(--fusion-shadow-flyout);
 }
 
 .v-tooltip > .v-overlay__content {
 	padding: 7px 10px;
-	border: 1px solid var(--fluent-border);
-	border-radius: var(--fluent-radius-control);
-	background: var(--fluent-surface);
-	color: var(--fluent-text);
-	box-shadow: var(--fluent-shadow-flyout);
+	border: 1px solid var(--fusion-border);
+	border-radius: var(--fusion-radius-control);
+	background: var(--fusion-tooltip-fill);
+	color: var(--fusion-tooltip-text);
+	box-shadow: var(--fusion-shadow-flyout);
 	font-size: var(--font-size-small);
 	line-height: 1.45;
 }
@@ -747,10 +1075,136 @@
    Floating labels / outlined notches retain Vuetify's own geometry. */
 
 .v-field {
-	border-radius: var(--fluent-radius-control);
+	border-radius: var(--fusion-radius-control);
 	transition:
-		background-color var(--fluent-duration-fast) ease,
-		box-shadow var(--fluent-duration-fast) ease;
+		background-color var(--fusion-duration-fast) ease,
+		box-shadow var(--fusion-duration-fast) ease;
+	border: 1px solid var(--fusion-border-strong);
+	background: var(--fusion-control-fill);
+	box-shadow: none !important;
+	--v-field-padding-start: 12px;
+	--v-field-padding-end: 12px;
+	color: var(--fusion-text);
+}
+
+/* Compact desktop fields; floating labels keep a separate text line. */
+.v-text-field:not(.v-textarea) {
+	--fusion-field-height: 40px;
+	--fusion-field-label-top: 3px;
+	--fusion-field-label-size: 12px;
+	--fusion-field-label-line: 14px;
+	--fusion-field-value-top: 18px;
+	--fusion-field-value-bottom: 2px;
+}
+
+.v-text-field.v-input--density-comfortable:not(.v-textarea) {
+	--fusion-field-height: 38px;
+	--fusion-field-label-top: 2px;
+	--fusion-field-value-top: 17px;
+	--fusion-field-value-bottom: 1px;
+}
+
+.v-text-field.v-input--density-compact:not(.v-textarea) {
+	--fusion-field-height: 36px;
+	--fusion-field-label-top: 1px;
+	--fusion-field-label-size: 11px;
+	--fusion-field-label-line: 12px;
+	--fusion-field-value-top: 15px;
+	--fusion-field-value-bottom: 1px;
+}
+
+.v-text-field:not(.v-textarea) .v-field {
+	--v-input-control-height: var(--fusion-field-height);
+	--v-field-input-padding-top: var(--fusion-field-value-top);
+	--v-field-input-padding-bottom: var(--fusion-field-value-bottom);
+	min-height: var(--fusion-field-height);
+}
+
+.v-text-field:not(.v-textarea) .v-field .v-field__input {
+	min-height: calc(var(--fusion-field-height) - 2px);
+	line-height: 18px;
+}
+
+.v-text-field:not(.v-textarea)
+	.v-field:is(
+		.v-field--variant-filled,
+		.v-field--variant-solo,
+		.v-field--variant-solo-filled,
+		.v-field--variant-solo-inverted
+	)
+	.v-field-label--floating {
+	top: var(--fusion-field-label-top);
+}
+
+.v-text-field:not(.v-textarea)
+	.v-field
+	:is(.v-field__append-inner, .v-field__prepend-inner, .v-field__clearable) {
+	padding-block: 0;
+	align-self: stretch;
+	align-items: center;
+}
+
+:is(.v-autocomplete__selection, .v-combobox__selection) {
+	height: auto;
+	min-height: 18px;
+	line-height: 18px;
+}
+
+.v-select .v-select__selection-text {
+	line-height: 18px;
+}
+
+/* One-row chip selections have exactly the same height as plain selections. */
+:is(.v-select, .v-autocomplete, .v-combobox) .v-field__input .v-chip {
+	height: 18px;
+	min-height: 18px;
+	--v-chip-height: 18px;
+	padding-inline: 6px;
+	margin-block: 0;
+	font-size: 11px;
+	line-height: 16px;
+}
+
+:is(.v-select, .v-autocomplete, .v-combobox) .v-field__input .v-chip__content {
+	line-height: 16px;
+}
+
+:is(.v-select--chips, .v-autocomplete--chips, .v-combobox--chips)
+	.v-field__input {
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	scrollbar-width: none;
+	row-gap: 0;
+}
+
+:is(.v-select--chips, .v-autocomplete--chips, .v-combobox--chips)
+	.v-field__input::-webkit-scrollbar {
+	display: none;
+}
+
+:is(.v-select--chips, .v-autocomplete--chips, .v-combobox--chips)
+	:is(
+		.v-select__selection,
+		.v-autocomplete__selection,
+		.v-combobox__selection
+	) {
+	flex: 0 0 auto;
+	margin-block: 0;
+}
+
+.v-text-field:not(.v-textarea):has(.v-field--no-label, .v-field--single-line) {
+	--fusion-field-height: 32px;
+	--fusion-field-value-top: 6px;
+	--fusion-field-value-bottom: 6px;
+}
+
+.v-text-field.v-input--density-compact:not(.v-textarea):has(
+		.v-field--no-label,
+		.v-field--single-line
+	) {
+	--fusion-field-height: 28px;
+	--fusion-field-value-top: 4px;
+	--fusion-field-value-bottom: 4px;
 }
 
 .v-field:is(
@@ -759,17 +1213,17 @@
 	.v-field--variant-solo-filled,
 	.v-field--variant-solo-inverted
 ) {
-	background: var(--fluent-control-fill);
-	color: var(--fluent-text);
+	background: var(--fusion-control-fill);
+	color: var(--fusion-text);
 	box-shadow: none !important;
-	border: 1px solid var(--fluent-border);
+	border: 1px solid var(--fusion-border-strong);
 	background-clip: padding-box;
-	border-radius: var(--fluent-radius-control) !important;
+	border-radius: var(--fusion-radius-control) !important;
 	overflow: hidden;
 }
 
 .v-field--variant-outlined {
-	background: var(--fluent-control-fill);
+	background: var(--fusion-control-fill);
 }
 
 .v-field:is(
@@ -793,46 +1247,122 @@
 }
 
 .v-field--variant-outlined .v-field__outline {
-	--v-field-border-opacity: 0.65;
+	--v-field-border-opacity: 1;
+	color: var(--fusion-border-strong);
 }
 
 .v-field.v-field--focused:not(.v-field--error) {
-	background: var(--fluent-control-fill-focus);
+	background: var(--fusion-control-fill-focus);
+	border-color: var(--fusion-accent);
+	box-shadow: none !important;
 }
 
 .v-field.v-field--focused .v-field__outline {
 	--v-field-border-opacity: 1;
+	--v-field-border-width: 1px;
 }
 
-.v-field:not(.v-field--variant-plain)::after {
-	content: "";
+.v-field.v-field--focused:not(.v-field--error) .v-field__outline {
+	color: var(--fusion-accent);
+}
+
+/* One physical frame; native outline parts never paint a second edge. */
+.v-field__outline,
+.v-field__outline__start,
+.v-field__outline__notch,
+.v-field__outline__end {
+	border: 0 !important;
+}
+
+.v-field__outline::before,
+.v-field__outline::after,
+.v-field__outline__notch::before,
+.v-field__outline__notch::after {
+	display: none !important;
+}
+
+.v-field:is(
+		.v-field--variant-outlined,
+		.v-field--variant-plain,
+		.v-field--variant-underlined
+	)
+	> .v-field__outline,
+.v-field__outline__notch {
+	display: block;
 	position: absolute;
+	inset: 0;
+	width: auto;
+	max-width: none;
+	padding: 0;
+	overflow: visible;
 	pointer-events: none;
-	inset-inline: 1px;
-	bottom: 0;
-	height: 2px;
-	border-radius: 0 0 var(--fluent-radius-control) var(--fluent-radius-control);
-	background: var(--fluent-accent);
-	opacity: 0;
-	transition: opacity var(--fluent-duration-fast) ease;
 }
 
-.v-field.v-field--focused::after {
+.v-field__outline__start,
+.v-field__outline__end {
+	display: none;
+}
+
+.v-field .v-field__outline .v-label.v-field-label--floating {
+	position: absolute;
+	top: var(--fusion-field-label-top, 3px);
+	inset-inline-start: var(--v-field-padding-start);
+	margin: 0;
+	transform: none;
+	max-width: calc(
+		100% - var(--v-field-padding-start) - var(--v-field-padding-end)
+	);
+}
+
+.v-field .v-label.v-field-label:not(.v-field-label--floating) {
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.v-field--variant-outlined:not(.v-field--error)
+	.v-label.v-field-label--floating {
+	color: var(--fusion-text-secondary);
+}
+
+.v-field--variant-outlined.v-field--focused:not(.v-field--error)
+	.v-label.v-field-label--floating {
+	color: var(--fusion-accent);
+}
+
+.v-field.v-field--error {
+	border-color: rgb(var(--v-theme-error));
+}
+
+.v-field.v-field--error .v-field__outline {
+	color: rgb(var(--v-theme-error));
+}
+
+/* Fusion combo boxes use a button-like face and a separated arrow area. */
+.v-select:not(.v-autocomplete):not(.v-combobox)
+	.v-field:not(.v-field--variant-plain):not(.v-field--variant-underlined) {
+	background: var(--fusion-button-gradient);
+	box-shadow: none !important;
+}
+
+.v-select:not(.v-autocomplete):not(.v-combobox)
+	.v-field--focused:not(.v-field--error) {
+	box-shadow: none !important;
+}
+
+:is(.v-select, .v-autocomplete, .v-combobox) .v-field__append-inner {
+	border-inline-start: 1px solid var(--fusion-border);
+	padding-inline-start: 8px;
+	margin-inline-start: 4px;
+}
+
+.v-select .v-select__menu-icon {
 	opacity: 1;
-}
-
-.v-field.v-field--error::after {
-	background: rgb(var(--v-theme-error));
-	opacity: 1;
-}
-
-.v-field.v-field--disabled::after {
-	opacity: 0;
+	color: var(--fusion-text);
 }
 
 .v-field--variant-plain,
 .v-field--variant-underlined {
-	border-radius: 0;
+	border-radius: var(--base-radius);
 }
 
 .v-field__overlay {
@@ -850,11 +1380,11 @@
    Text fields, selects, autocomplete and combobox share this animation. */
 
 .v-text-field .v-field .v-label.v-field-label {
-	font-size: var(--font-size-small);
+	font-size: var(--fusion-field-label-size, 12px);
 	font-family: inherit;
 	font-weight: inherit;
 	letter-spacing: inherit;
-	line-height: 1.5;
+	line-height: var(--fusion-field-label-line, 14px);
 }
 
 .v-text-field .v-field .v-label.v-field-label--floating {
@@ -867,7 +1397,7 @@
 
 .v-field__input::placeholder,
 .v-field__input input::placeholder {
-	color: var(--fluent-text-secondary);
+	color: var(--fusion-text-secondary);
 	opacity: 1;
 }
 
@@ -901,7 +1431,7 @@
 
 .v-select__menu-icon {
 	font-size: 20px;
-	transition: transform var(--fluent-duration-normal) var(--fluent-ease);
+	transition: transform var(--fusion-duration-normal) var(--fusion-ease);
 }
 
 .v-select__selection-text {
@@ -911,18 +1441,48 @@
 .v-select .v-chip,
 .v-autocomplete .v-chip,
 .v-combobox .v-chip {
-	border-radius: var(--fluent-radius-control);
+	border-radius: var(--fusion-radius-control);
 }
 
 .v-card-title {
-	font-size: 18px;
+	font-size: 15px;
 	font-weight: 600;
 	line-height: 1.4;
 }
 
 .v-chip {
-	border-radius: var(--fluent-radius-control);
+	border-radius: var(--fusion-radius-control);
 	font-size: var(--font-size-small);
+}
+
+/* Fusion tabs and table headers share the raised button surface. */
+.v-tabs {
+	--v-tabs-height: 34px;
+	border-bottom: 1px solid var(--fusion-border);
+}
+
+.v-tabs .v-tab {
+	min-width: 72px;
+	padding: 0 14px;
+	margin-inline-end: 2px;
+	border: 1px solid var(--fusion-border);
+	border-radius: var(--base-radius) var(--base-radius) 0 0;
+	background: var(--fusion-button-gradient);
+	color: var(--fusion-text);
+}
+
+.v-tabs .v-tab--selected {
+	background: var(--fusion-surface);
+	border-top-color: var(--fusion-accent);
+	border-bottom-color: var(--fusion-surface);
+}
+
+.v-tabs .v-tab__slider {
+	display: none;
+}
+
+.v-table > .v-table__wrapper > table > thead {
+	background: var(--fusion-button-gradient);
 }
 
 /* Original tab markup: v-tabs, v-divider, v-tabs-window, then py-3 sheet.
@@ -939,16 +1499,16 @@
 }
 
 .v-expansion-panel {
-	border: 1px solid var(--fluent-border);
+	border: 1px solid var(--fusion-border);
 	border-radius: var(--base-radius);
 }
 
 .v-expansion-panel::after {
-	border-color: var(--fluent-border);
+	border-color: var(--fusion-border);
 }
 
 .v-expansion-panel__shadow {
-	box-shadow: var(--fluent-shadow-card);
+	box-shadow: var(--fusion-shadow-card);
 }
 
 .v-expansion-panel-title {
@@ -958,32 +1518,143 @@
 
 .v-table {
 	border-radius: var(--base-radius);
-	background: var(--fluent-surface);
-	color: var(--fluent-text);
+	background: var(--fusion-surface);
+	color: var(--fusion-text);
 }
 
 .v-table > .v-table__wrapper > table > thead > tr > th {
 	font-size: var(--font-size-small);
 	font-weight: 600;
-	color: var(--fluent-text-secondary);
+	color: var(--fusion-text-secondary);
+	background: var(--fusion-button-gradient);
 }
 
 .v-table > .v-table__wrapper > table > :is(thead, tbody) > tr > :is(td, th) {
-	border-bottom-color: var(--fluent-border);
+	border-bottom-color: var(--fusion-border);
 }
 
 .v-data-table-footer {
-	border-top: 1px solid var(--fluent-border);
+	border-top: 1px solid var(--fusion-separator);
 	font-size: var(--font-size-small);
+	gap: 8px;
+	padding: 8px;
+}
+
+/* The pagination combo reserves space for the full number and its arrow. */
+.v-data-table-footer__items-per-page > .v-select {
+	width: 84px;
+	min-width: 84px;
+	flex: 0 0 84px;
+}
+
+.v-data-table-footer__items-per-page .v-select .v-field {
+	--v-field-padding-start: 8px;
+	--v-field-padding-end: 0px;
+	padding-inline-end: 0;
+}
+
+.v-data-table-footer__items-per-page .v-select .v-field__input {
+	padding-inline-end: 4px;
+	column-gap: 0;
+}
+
+.v-data-table-footer__items-per-page .v-select .v-select__selection {
+	max-width: none;
+}
+
+.v-data-table-footer__items-per-page .v-select .v-select__selection-text {
+	text-overflow: clip;
+	white-space: nowrap;
+}
+
+.v-data-table-footer__items-per-page .v-select .v-field__append-inner {
+	flex: 0 0 20px;
+	width: 20px;
+	min-width: 20px;
+	max-width: 20px;
+	padding-inline: 0;
+	margin-inline-start: 4px;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	align-self: stretch;
+}
+
+.v-data-table-footer__items-per-page .v-select .v-select__menu-icon {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 1;
+	margin: 0;
+	align-self: center;
+	flex: 0 0 18px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.v-data-table-footer__items-per-page .v-select .v-select__menu-icon::before {
+	font-size: inherit;
+	line-height: 1;
+}
+
+.v-data-table-footer__info {
+	min-width: auto;
+	padding-inline: 8px;
+}
+
+.v-data-table-footer
+	:is(.v-data-table-footer__pagination, .v-data-table-footer__paginationz) {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+/* Pagination actions use the same button face in enabled and disabled states. */
+.v-data-table-footer .v-btn {
+	--v-btn-height: 28px;
+	width: 28px;
+	min-width: 28px;
+	height: 28px;
+	padding: 0;
+	margin: 0;
+	border: 1px solid var(--fusion-border-strong);
+	border-radius: var(--base-radius);
+	background: var(--fusion-button-gradient) !important;
+	color: var(--fusion-text);
+	box-shadow: inset 0 1px 0 var(--fusion-inner-light);
+	opacity: 1;
+}
+
+.v-data-table-footer .v-btn.v-btn--disabled {
+	border-color: var(--fusion-border-strong);
+	box-shadow: inset 0 1px 0 var(--fusion-inner-light);
+	opacity: 0.55;
+}
+
+.v-data-table-footer .v-btn:not(.v-btn--disabled):hover {
+	background: var(--fusion-button-hover) !important;
+	border-color: var(--fusion-accent);
+}
+
+.v-data-table-footer .v-btn:not(.v-btn--disabled):active {
+	background: var(--fusion-button-pressed) !important;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.v-data-table-footer .v-btn .v-icon {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
 }
 
 .v-pagination .v-btn {
-	border-radius: var(--fluent-radius-control);
+	border-radius: var(--fusion-radius-control);
 }
 
 .v-pagination__item--is-active .v-btn {
-	background: var(--fluent-selected);
-	color: var(--fluent-accent);
+	background: var(--fusion-selected);
+	color: var(--fusion-accent);
 }
 
 /* Slider: keep Vuetify dimensions, orientation and hit targets. */
@@ -998,10 +1669,12 @@
 }
 
 .v-slider-thumb__surface {
-	border: 3px solid var(--fluent-surface);
+	border: 1px solid var(--fusion-border-strong);
 	box-shadow:
-		0 0 0 1px var(--fluent-border),
-		0 1px 3px rgba(0, 0, 0, 0.15);
+		inset 0 1px 0 var(--fusion-inner-light),
+		0 1px 2px rgba(0, 0, 0, 0.18);
+	border-radius: var(--base-radius);
+	background: var(--fusion-button-gradient);
 }
 
 .v-slider-thumb .v-slider-thumb__surface::before {
@@ -1014,17 +1687,36 @@
 
 .v-slider-thumb:has(input:focus-visible) .v-slider-thumb__surface,
 .v-slider-thumb:focus-visible .v-slider-thumb__surface {
-	outline: 1px solid var(--fluent-text);
+	outline: 1px solid var(--fusion-text);
 	outline-offset: 2px;
 }
 
 .v-slider-thumb__label {
-	border-radius: var(--fluent-radius-control);
+	border-radius: var(--fusion-radius-control);
 	font-size: var(--font-size-small);
 }
 
 .v-progress-linear {
-	border-radius: 999px;
+	border-radius: var(--base-radius);
+	border: 0;
+}
+
+/* Hidden component loaders must not leave a framed line at zero height. */
+.v-progress-linear--active:not(
+	.v-field__loader *,
+	.v-card__loader *,
+	.v-data-table-progress__loader *,
+	.v-file-upload__loader *
+) {
+	border: 1px solid var(--fusion-border-strong);
+}
+
+.v-progress-linear__determinate {
+	background-image: linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 0.2),
+		rgba(0, 0, 0, 0.08)
+	);
 }
 
 /* windowbar menu */
@@ -1038,8 +1730,16 @@
 
 .component__WindowBar-menu {
 	position: relative !important;
-	background: none !important;
+	background: var(--fusion-button-gradient) !important;
 	width: auto !important;
+	padding: 2px;
+	height: 30px !important;
+	display: inline-flex;
+	align-items: center;
+	border-radius: var(--base-radius);
+	box-shadow:
+		inset 0 0 0 1px var(--fusion-border-strong),
+		inset 0 1px 0 var(--fusion-inner-light);
 }
 
 .component__WindowBar-menu ul li {
@@ -1049,12 +1749,108 @@
 .component__WindowBar-menu .menu-wrapper {
 	border-radius: var(--base-radius);
 	padding: 3px;
+	min-width: 0;
+	width: max-content;
+	max-width: calc(100vw - 12px);
+	--background-color-hover: var(--fusion-selected);
+	--text-hover-color: var(--fusion-on-accent);
+	--fore-color: var(--fusion-text);
+}
+
+.component__WindowBar-menu .menu-wrapper .menu-item:not(.divider) {
+	padding: 4px 10px !important;
+	min-height: var(--fusion-menu-row-height);
+	line-height: 18px;
+	border-radius: var(--fusion-menu-item-radius);
+	gap: 8px;
+	display: flex !important;
+	box-sizing: border-box;
+	align-items: center;
+}
+
+.component__WindowBar-menu
+	.menu-wrapper
+	.menu-item:not(.disable):is(:hover, .highlight) {
+	background: var(--fusion-selected) !important;
+	color: var(--fusion-on-accent) !important;
+}
+
+.component__WindowBar-menu
+	.menu-wrapper
+	.menu-item:not(.divider):not(:has(> .menu-item-icon))::before {
+	content: "";
+	flex: 0 0 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.component__WindowBar-menu .menu-item-divider {
+	width: 100%;
+	height: 0;
+	margin: 0;
+	border: 0;
+	border-top: 1px solid var(--fusion-separator);
+	background: none;
+	filter: none;
+}
+
+.component__WindowBar-menu .menu-wrapper .menu-item .name {
+	padding: 0 !important;
+	text-transform: none;
+	flex: 1 1 auto;
+	min-width: 0;
+	text-align: start !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.component__WindowBar-menu .menu-wrapper .menu-item .menu-item-icon {
+	color: inherit;
+	flex: 0 0 18px;
+	position: static !important;
+	width: 18px !important;
+	min-width: 18px;
+	height: 18px;
+	margin: 0 !important;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.component__WindowBar-menu .menu-item-icon :is(svg, .v-icon) {
+	position: static !important;
+	top: auto !important;
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	display: block;
+}
+
+.component__WindowBar-menu .menu-wrapper .menu-item .icon-wrap {
+	flex: 0 0 14px;
+	width: 14px !important;
+	height: 18px;
+	margin: 0 !important;
+}
+
+.component__WindowBar-menu .menu-item > :is([class*="shortcut"], kbd) {
+	flex: 0 0 auto;
+	margin-inline-start: auto;
+	font-size: 11px;
+	line-height: 18px;
+	white-space: nowrap;
+}
+
+.component__WindowBar-menu .menu-wrapper .divider {
+	align-self: stretch;
+	flex: 0 0 1px;
 }
 
 .component__WindowBar-menu .menu-wrapper li:not(.divider) {
 	transition: none;
 	color: rgba(var(--v-theme-text), 1);
-	border-radius: var(--base-radius);
+	border-radius: var(--fusion-menu-item-radius);
 	text-transform: none;
 }
 
@@ -1071,84 +1867,113 @@
 
 .component__WindowBar-menu .menu-item {
 	cursor: default !important;
-	font-size: 14px;
+	font-size: 13px;
+	line-height: 18px;
+	min-height: var(--fusion-menu-row-height);
+	padding: 4px 10px;
 }
 
 .component__WindowBar-menu .menu-item.disable {
 	opacity: 0.4;
 	background: none !important;
+	filter: none !important;
 }
 
 .v-theme--DarkMode .component__WindowBar-menu .menu-wrapper {
 	background: rgba(var(--v-theme-surface), 1) !important;
 	border: rgba(var(--v-theme-border), 1) 1px solid;
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 9px 0px;
+	box-shadow: var(--fusion-shadow-flyout);
 }
 
 .v-theme--DarkMode .component__WindowBar-menu .menu-wrapper li:hover,
 .v-theme--DarkMode .component__WindowBar-menu .menu-wrapper .highlight {
-	background: rgba(255, 255, 255, 0.05) !important;
+	background: var(--fusion-selected) !important;
+	color: var(--fusion-on-accent);
 }
 
 .v-theme--DarkMode .component__WindowBar-menu .menu-wrapper li:active,
 .v-theme--DarkMode .component__WindowBar-menu .menu-wrapper .highlight:active {
-	background: rgba(255, 255, 255, 0.03) !important;
+	background: var(--fusion-selected) !important;
+	color: var(--fusion-on-accent);
 }
 
 .v-theme--DarkMode
 	.component__WindowBar-menu
 	.menu-bar-item-container:focus-visible {
-	outline-color: rgba(255, 255, 255, 0) !important;
+	outline-color: var(--fusion-accent) !important;
 }
 
 .v-theme--DarkMode .component__WindowBar-menu .menu-bar-item-container.active {
-	background: rgba(255, 255, 255, 0.08) !important;
-}
-
-.v-theme--DarkMode .component__WindowBar-menu .menu-item-divider {
-	height: 0px;
-	border-bottom: rgba(var(--v-theme-border), 1) 1.5px solid;
-	filter: brightness(2.1);
-}
-
-.v-theme--LightMode .component__WindowBar-menu .menu-item-divider {
-	height: 0px;
-	border-bottom: rgba(var(--v-theme-border), 1) 1.5px solid;
-	filter: brightness(1);
+	background: var(--fusion-selected) !important;
+	border-color: var(--fusion-accent);
 }
 
 .v-theme--LightMode .component__WindowBar-menu .menu-wrapper {
 	background: rgba(var(--v-theme-surface), 1) !important;
 	border: rgba(var(--v-theme-border), 1) 1px solid;
-	box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 9px 0px;
+	box-shadow: var(--fusion-shadow-flyout);
 }
 
 .v-theme--LightMode .component__WindowBar-menu .menu-wrapper li:hover,
 .v-theme--LightMode .component__WindowBar-menu .menu-wrapper .highlight {
-	background: rgba(0, 0, 0, 0.05) !important;
+	background: var(--fusion-selected) !important;
+	color: var(--fusion-on-accent);
 }
 
 .v-theme--LightMode .component__WindowBar-menu .menu-wrapper li:active,
 .v-theme--LightMode .component__WindowBar-menu .menu-wrapper .highlight:active {
-	background: rgba(0, 0, 0, 0.03) !important;
+	background: var(--fusion-selected) !important;
+	color: var(--fusion-on-accent);
 }
 
 .component__WindowBar-menu .menu-bar-item-container {
-	border-radius: calc(var(--base-radius));
-	border: 0px;
-	transition: none;
-	outline: transparent 2px solid !important;
+	border-radius: var(--fusion-menu-item-radius);
+	border: 0 !important;
+	transition: background-color var(--fusion-duration-fast) ease;
+	outline: none !important;
 	cursor: default !important;
+	background: transparent !important;
+	min-height: 26px;
+	height: 26px !important;
+	padding: 0 10px;
+	margin-inline-end: 0;
+	display: inline-flex;
+	align-items: center;
+	box-shadow: none !important;
+}
+
+.component__WindowBar-menu .menu-bar-item-container:hover {
+	background: var(--fusion-selected) !important;
+}
+
+.component__WindowBar-menu .menu-bar-item-container:active {
+	background: var(--fusion-selected) !important;
+}
+
+.component__WindowBar-menu .menu-bar-item-container:focus-visible {
+	outline: none !important;
+	background: var(--fusion-selected) !important;
+}
+
+.component__WindowBar-menu
+	.menu-bar-item-container:is(:hover, :focus-visible, :active, .active)
+	.name-container {
+	color: var(--fusion-on-accent) !important;
+}
+
+.component__WindowBar-menu .menu-bar-item-container.top > .menu-container {
+	top: calc(100% + 3px) !important;
 }
 
 .v-theme--LightMode
 	.component__WindowBar-menu
 	.menu-bar-item-container:focus-visible {
-	outline-color: rgba(255, 255, 255, 0.1) !important;
+	outline-color: var(--fusion-accent) !important;
 }
 
 .v-theme--LightMode .component__WindowBar-menu .menu-bar-item-container.active {
-	background: rgba(0, 0, 0, 0.06) !important;
+	background: var(--fusion-selected) !important;
+	border-color: var(--fusion-accent);
 }
 
 .component__WindowBar-menu .menu-bar-item-container:active .name-container {
@@ -1157,25 +1982,30 @@
 
 .component__WindowBar-menu .name-container {
 	color: rgba(var(--v-theme-text), 1) !important;
+	font-size: 13px;
+	line-height: 20px;
 }
 
 .component__WindowBar-menu .divider {
 	pointer-events: none;
-	margin: -3px -14px;
-	width: calc(100% + 28px);
+	margin: 4px 6px;
+	width: auto;
 	border: 0px !important;
+	height: 1px;
+	min-height: 1px !important;
+	padding: 0 !important;
 }
 
 /* context menu */
 
 .v-contextmenu {
-	animation: fadeIn 0.15s ease-in-out;
+	animation: fadeIn 0.12s ease-out;
 	transform-origin: top center;
-	border-radius: calc(var(--base-radius));
-	background: var(--fluent-surface) !important;
-	color: var(--fluent-text) !important;
-	border: 1px solid var(--fluent-border);
-	box-shadow: var(--fluent-shadow-flyout);
+	border-radius: var(--base-radius);
+	background: var(--fusion-surface) !important;
+	color: var(--fusion-text) !important;
+	border: 1px solid var(--fusion-border);
+	box-shadow: var(--fusion-shadow-flyout);
 }
 
 .v-contextmenu-inner {
@@ -1184,23 +2014,69 @@
 
 .v-contextmenu-item {
 	cursor: default !important;
-	font-size: 14px;
+	font-size: 13px;
 	transition: none;
-	border-radius: var(--base-radius);
+	border-radius: var(--fusion-menu-item-radius);
 	text-transform: none;
-	color: var(--fluent-text) !important;
-	padding: 5px 10px;
-	min-height: 30px !important;
+	color: var(--fusion-text) !important;
+	padding: 4px 10px;
+	min-height: var(--fusion-menu-row-height) !important;
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	gap: 10px;
+	gap: 8px;
+	line-height: 18px;
+}
+
+.v-contextmenu .v-contextmenu-submenu__menus--top {
+	top: -4px;
+}
+
+.v-contextmenu .v-contextmenu-submenu__menus--bottom {
+	bottom: -4px;
+}
+
+.v-contextmenu-item:not(.v-contextmenu-item--disabled):is(
+		:hover,
+		:focus-visible,
+		:active,
+		.v-contextmenu-item--hover
+	) {
+	background: var(--fusion-selected) !important;
+	color: var(--fusion-on-accent) !important;
+}
+
+.v-menu .v-list-item--disabled {
+	opacity: 0.4;
 }
 
 .v-contextmenu-item .v-icon {
-	width: 14px;
-	height: 14px;
-	font-size: 16px;
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+}
+
+/* Reserve the same icon column for every menu row, including submenus.
+   Icon-only action groups retain their compact toolbar spacing. */
+:is(.v-contextmenu-inner > .v-contextmenu-item, .v-contextmenu-submenu__title)
+	> :is(.v-icon, svg, img, i:not(.v-contextmenu-submenu__arrow)) {
+	width: 18px;
+	min-width: 18px;
+	height: 18px;
+	flex: 0 0 18px;
+	margin: 0;
+}
+
+:is(
+		.v-contextmenu-inner > .v-contextmenu-item,
+		.v-contextmenu-submenu__title
+	):not(
+		:has(> :is(.v-icon, svg, img, i:not(.v-contextmenu-submenu__arrow)))
+	)::before {
+	content: "";
+	width: 18px;
+	height: 18px;
+	flex: 0 0 18px;
 }
 
 .v-contextmenu-item--disabled {
@@ -1209,8 +2085,12 @@
 }
 
 .v-contextmenu-divider {
-	margin: 3px -3px 3px -3px;
-	width: calc(100% + 6px);
+	margin: 4px 6px;
+	width: auto;
+	height: 0;
+	border: 0;
+	border-top: 1px solid var(--fusion-separator);
+	filter: none;
 }
 
 .v-contextmenu-item:has(.v-contextmenu-submenu__arrow) {
@@ -1225,45 +2105,6 @@
 
 .v-contextmenu-group__menus i {
 	font-size: 18px;
-}
-
-html:has(.v-application.v-theme--LightMode) .v-contextmenu {
-	background: var(--fluent-surface) !important;
-	border: var(--fluent-border) 1px solid;
-	box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 9px 0px;
-}
-
-html:has(.v-application.v-theme--LightMode) .v-contextmenu-item--hover {
-	background: rgba(0, 0, 0, 0.06) !important;
-}
-
-html:has(.v-application.v-theme--LightMode) .v-contextmenu-item:active {
-	background: rgba(0, 0, 0, 0.03) !important;
-}
-
-html:has(.v-application.v-theme--LightMode) .v-contextmenu-divider {
-	height: 0px;
-	border-bottom: var(--fluent-border) 1.5px solid;
-	filter: brightness(1);
-}
-
-html:has(.v-application.v-theme--DarkMode) .v-contextmenu {
-	background: var(--fluent-surface) !important;
-	border: var(--fluent-border) 1px solid;
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 9px 0px;
-}
-
-html:has(.v-application.v-theme--DarkMode) .v-contextmenu-item--hover {
-	background: rgba(255, 255, 255, 0.05);
-}
-
-html:has(.v-application.v-theme--DarkMode) .v-contextmenu-item:active {
-	background: rgba(255, 255, 255, 0.03) !important;
-}
-
-html:has(.v-application.v-theme--DarkMode) .v-contextmenu-divider {
-	border-bottom: var(--fluent-border) 1.5px solid;
-	filter: brightness(2.1);
 }
 
 /* windowbar */
@@ -1317,12 +2158,14 @@ html:has(.v-application.v-theme--DarkMode) .v-contextmenu-divider {
 	overflow: visible !important;
 	height: var(--windowbar-height) !important;
 	padding: 0px var(--page-inner-padding) !important;
-	gap: 5px;
+	gap: 6px;
 }
 
 .component__WindowBar .component__WindowBar-icon {
 	height: 18px;
 	width: 18px;
+	margin-inline-end: 6px;
+	flex-shrink: 0;
 }
 
 .window-material-type-default .component__WindowBar .component__WindowBar-icon {
@@ -1333,6 +2176,7 @@ html:has(.v-application.v-theme--DarkMode) .v-contextmenu-divider {
 	-webkit-app-region: no-drag;
 	display: flex;
 	align-items: center;
+	gap: 6px;
 }
 
 .component__WindowBar .component__WindowBar-buttons-btn {
@@ -1341,7 +2185,7 @@ html:has(.v-application.v-theme--DarkMode) .v-contextmenu-divider {
 	margin: 0px;
 	border-radius: var(--base-radius);
 	padding: 0px 10px;
-	line-height: 43px !important;
+	line-height: 20px !important;
 }
 
 .component__WindowBar .component__WindowBar-buttons-btn .v-btn__prepend {
@@ -1352,7 +2196,30 @@ html:has(.v-application.v-theme--DarkMode) .v-contextmenu-divider {
 }
 
 .component__WindowBar .v-toolbar__prepend {
-	gap: 5px;
+	gap: 6px;
+}
+
+.component__WindowBar .no-drag:has(> .v-btn),
+.component__WindowBar .v-toolbar__append {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.component__WindowBar .v-btn {
+	margin-inline-end: 4px;
+}
+
+.component__WindowBar
+	:is(
+		.v-toolbar__content,
+		.v-toolbar__prepend,
+		.v-toolbar__append,
+		.component__WindowBar-buttons,
+		.no-drag
+	)
+	> .v-btn {
+	margin-inline-end: 0;
 }
 
 .component__WindowBar .component__WindowBar-btn__menu {
@@ -1373,11 +2240,11 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 	}
 
 	html:has(.v-application.v-theme--LightMode) .v-navigation-drawer {
-		box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 9px 0px;
+		box-shadow: var(--fusion-shadow-flyout);
 	}
 
 	html:has(.v-application.v-theme--DarkMode) .v-navigation-drawer {
-		box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 9px 0px;
+		box-shadow: var(--fusion-shadow-flyout);
 	}
 }
 
@@ -1390,26 +2257,36 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 /* Hover only on devices with a real hover pointer. */
 
 @media (hover: hover) {
+	.v-btn:is(.v-btn--variant-elevated, .v-btn--variant-flat):not(
+			[class*="bg-"]
+		):not(.v-btn--disabled):not(:active):hover {
+		background: var(--fusion-button-hover);
+		border-color: var(--fusion-accent);
+	}
+
 	.v-field:not(.v-field--disabled):not(.v-field--focused):not(
 			.v-field--variant-plain
 		):hover {
-		background: var(--fluent-control-fill-hover);
+		background: var(--fusion-control-fill-hover);
 	}
 	:is(.v-checkbox-btn, .v-radio):not(
 			.fluent-native-control,
-			.fluent-native-control *
+			.fusion-native-control,
+			.fluent-native-control *,
+			.fusion-native-control *
 		):not(.v-selection-control--disabled):not(
 			.v-selection-control--dirty
 		):not(:has(input:is(:indeterminate, [aria-checked="mixed"]))):hover
 		.v-selection-control__input::before {
-		background: var(--fluent-control-fill-hover);
-		border-color: var(--fluent-text-secondary);
+		background: var(--fusion-control-fill-hover);
+		border-color: var(--fusion-text-secondary);
 	}
 	.v-menu .v-list-item:not(.v-list-item--disabled):hover {
-		background: var(--fluent-hover);
+		background: var(--fusion-selected);
+		color: var(--fusion-on-accent);
 	}
 	.v-table--hover > .v-table__wrapper > table > tbody > tr:hover > td {
-		background: var(--fluent-hover);
+		background: var(--fusion-hover);
 	}
 }
 
@@ -1418,12 +2295,12 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 	.v-checkbox.v-input--density-compact,
 	.v-radio-group,
 	.v-radio-group.v-input--density-compact {
-		--fluent-selection-row-size: 44px;
+		--fusion-selection-row-size: 44px;
 	}
 
 	.v-switch,
 	.v-switch.v-input--density-compact {
-		--fluent-switch-row-size: 44px;
+		--fusion-switch-row-size: 44px;
 	}
 
 	.v-menu .v-list-item {
@@ -1434,19 +2311,26 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 	}
 }
 
-/* Windows contrast themes: system colors keep the custom controls visible. */
+/* System contrast themes: system colors keep the custom controls visible. */
 
 @media (forced-colors: active) {
 	:is(.v-checkbox-btn, .v-radio):not(
 			.fluent-native-control,
-			.fluent-native-control *
+			.fusion-native-control,
+			.fluent-native-control *,
+			.fusion-native-control *
 		)
 		.v-selection-control__input::before {
 		forced-color-adjust: none;
 		border-color: ButtonText;
 		background: Canvas;
 	}
-	.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):is(
+	.v-checkbox-btn:not(
+			.fluent-native-control,
+			.fusion-native-control,
+			.fluent-native-control *,
+			.fusion-native-control *
+		):is(
 			.v-selection-control--dirty,
 			:has(input:is(:indeterminate, [aria-checked="mixed"]))
 		)
@@ -1454,27 +2338,39 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		background: Highlight;
 		border-color: Highlight;
 	}
-	.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *)
+	.v-checkbox-btn:not(
+			.fluent-native-control,
+			.fusion-native-control,
+			.fluent-native-control *,
+			.fusion-native-control *
+		)
 		.v-selection-control__input::after {
 		forced-color-adjust: none;
 		border-color: HighlightText;
 	}
-	.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):has(
-			input:is(:indeterminate, [aria-checked="mixed"])
-		)
+	.v-checkbox-btn:not(
+			.fluent-native-control,
+			.fusion-native-control,
+			.fluent-native-control *,
+			.fusion-native-control *
+		):has(input:is(:indeterminate, [aria-checked="mixed"]))
 		.v-selection-control__input::after {
 		background: HighlightText;
 	}
 	.v-radio:not(
 			.fluent-native-control,
-			.fluent-native-control *
+			.fusion-native-control,
+			.fluent-native-control *,
+			.fusion-native-control *
 		).v-selection-control--dirty
 		.v-selection-control__input::before {
 		border-color: Highlight;
 	}
 	.v-radio:not(
 			.fluent-native-control,
-			.fluent-native-control *
+			.fusion-native-control,
+			.fluent-native-control *,
+			.fusion-native-control *
 		).v-selection-control--dirty
 		.v-selection-control__input::after {
 		forced-color-adjust: none;
@@ -1502,7 +2398,8 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 	.v-selection-control--disabled .v-selection-control__input::before {
 		border-color: GrayText !important;
 	}
-	.v-field::after {
-		background: Highlight;
+	.v-field.v-field--focused {
+		outline: 1px solid Highlight;
+		outline-offset: 1px;
 	}
 }

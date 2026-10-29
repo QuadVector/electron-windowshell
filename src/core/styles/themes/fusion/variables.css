@@ -15,41 +15,69 @@
 	--v-theme-success,
 	--v-theme-warning
 
-	The colors defined in the src/core/scripts/themes.ts file
-	Use them for maximazing native look
+	Qt Fusion-inspired palette for Vuetify 4.3+.
+	LightMode / light and DarkMode / dark select the palettes.
+	Load after Vuetify: variables.css, animations.css, app.css, components.css.
 */
 
 :root {
-	--base-radius: 8px;
+	--base-radius: 4px;
 	--windowbar-height: 48px;
 	--page-inner-padding: 10px;
 	--app-height: calc(100vh - var(--windowbar-height));
 	--font-size-main: 14px;
 	--font-size-small: 12px;
-	--fluent-font-family:
-		"Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
-	--fluent-radius-control: var(--base-radius);
-	--fluent-radius-overlay: var(--base-radius);
-	--fluent-duration-fast: 120ms;
-	--fluent-duration-normal: 180ms;
-	--fluent-duration-slow: 250ms;
-	--fluent-ease: cubic-bezier(0.2, 0, 0, 1);
-	--fluent-control-size: 20px;
-	--fluent-focus-width: 2px;
-	--fluent-fallback-text: 26, 26, 26;
-	--fluent-fallback-surface: 249, 249, 249;
-	--fluent-fallback-border: 224, 224, 224;
-	--fluent-fallback-primary: 0, 95, 184;
-	--fluent-control-fill: rgba(255, 255, 255, 0.72);
-	--fluent-control-fill-hover: rgba(255, 255, 255, 0.88);
-	--fluent-control-fill-pressed: rgba(0, 0, 0, 0.035);
-	--fluent-control-fill-focus: #fff;
-	--fluent-fallback-on-accent: 255, 255, 255;
-	--fluent-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
-	--fluent-shadow-flyout:
-		0 8px 24px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.08);
-	--fluent-shadow-dialog:
-		0 24px 64px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.08);
+	--fusion-font-family: "Segoe UI", Tahoma, sans-serif;
+	--fusion-radius-control: var(--base-radius);
+	--fusion-radius-overlay: var(--base-radius);
+	--fusion-duration-fast: 120ms;
+	--fusion-duration-normal: 180ms;
+	--fusion-duration-slow: 200ms;
+	--fusion-ease: cubic-bezier(0.2, 0, 0, 1);
+	--fusion-control-size: 18px;
+	--fusion-focus-width: 1px;
+	--fusion-fallback-text: 32, 32, 32;
+	--fusion-fallback-surface: 239, 239, 239;
+	--fusion-fallback-border: 171, 171, 171;
+	--fusion-fallback-primary: 48, 140, 198;
+	--fusion-control-fill: #fff;
+	--fusion-control-fill-hover: #fff;
+	--fusion-control-fill-pressed: #e2e2e2;
+	--fusion-control-fill-focus: #fff;
+	--fusion-fallback-on-accent: 255, 255, 255;
+	--fusion-shadow-card: none;
+	--fusion-shadow-flyout: 0 1px 3px rgba(0, 0, 0, 0.3);
+	--fusion-shadow-dialog: 0 2px 6px rgba(0, 0, 0, 0.3);
+	--fusion-menu-row-height: 26px;
+	--fusion-scrollbar-size: 8px;
+	--fusion-menu-item-radius: 2px;
+	--v-theme-background: 239, 239, 239;
+	--v-theme-surface: 239, 239, 239;
+	--v-theme-surface-light: 250, 250, 250;
+	--v-theme-text: 32, 32, 32;
+	--v-theme-on-surface: 32, 32, 32;
+	--v-theme-on-background: 32, 32, 32;
+	--v-theme-text-reverse: 255, 255, 255;
+	--v-theme-border: 171, 171, 171;
+	--v-theme-primary: 48, 140, 198;
+	--v-theme-on-primary: 255, 255, 255;
+	--fusion-button-gradient: linear-gradient(to bottom, #f4f4f4, #e1e1e1);
+	--fusion-button-hover: linear-gradient(to bottom, #fff, #e8f2f9);
+	--fusion-button-pressed: linear-gradient(to bottom, #d5e5f0, #e1edf5);
+	--fusion-inner-light: rgba(255, 255, 255, 0.22);
+	--fusion-panel-top: #f3f3f3;
+	--fusion-panel-light: rgba(255, 255, 255, 0.25);
+	--fusion-inset-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+	--fusion-indicator-fill: linear-gradient(to bottom, #fff, #ededed);
+	--fusion-tooltip-fill: #ffffdc;
+	--fusion-tooltip-text: #202020;
+	--fusion-focus-halo: rgba(48, 140, 198, 0.28);
+	--fusion-separator: #b8b8b8;
+	--fusion-shadow-navigation: 2px 0 6px rgba(0, 0, 0, 0.14);
+	--fusion-border-strong: #929292;
+	--fusion-hover: rgba(48, 140, 198, 0.12);
+	--fusion-pressed: rgba(48, 140, 198, 0.2);
+	--fusion-selected: rgb(48, 140, 198);
 }
 
 /* Also set tokens on theme roots: teleported Vuetify overlays carry a theme class.
@@ -58,108 +86,161 @@
 :root,
 [class*="v-theme--"],
 .v-contextmenu {
-	--fluent-on-accent: rgb(
-		var(--v-theme-on-primary, var(--fluent-fallback-on-accent))
+	--fusion-on-accent: rgb(
+		var(--v-theme-on-primary, var(--fusion-fallback-on-accent))
 	);
-	--fluent-text: rgb(
+	--fusion-text: rgb(
 		var(
 			--v-theme-text,
-			var(--v-theme-on-surface, var(--fluent-fallback-text))
+			var(--v-theme-on-surface, var(--fusion-fallback-text))
 		)
 	);
-	--fluent-surface: rgb(
-		var(--v-theme-surface, var(--fluent-fallback-surface))
+	--fusion-surface: rgb(
+		var(--v-theme-surface, var(--fusion-fallback-surface))
 	);
-	--fluent-border: rgb(var(--v-theme-border, var(--fluent-fallback-border)));
-	--fluent-accent: rgb(
-		var(--v-theme-primary, var(--fluent-fallback-primary))
+	--fusion-border: rgb(var(--v-theme-border, var(--fusion-fallback-border)));
+	--fusion-accent: rgb(
+		var(--v-theme-primary, var(--fusion-fallback-primary))
 	);
-	--fluent-text-secondary: rgba(
+	--fusion-text-secondary: rgba(
 		var(
 			--v-theme-text,
-			var(--v-theme-on-surface, var(--fluent-fallback-text))
+			var(--v-theme-on-surface, var(--fusion-fallback-text))
 		),
 		0.68
 	);
-	--fluent-border-strong: rgba(
+	--fusion-border-strong: rgba(
 		var(
 			--v-theme-text,
-			var(--v-theme-on-surface, var(--fluent-fallback-text))
+			var(--v-theme-on-surface, var(--fusion-fallback-text))
 		),
 		0.42
 	);
-	--fluent-hover: rgba(
+	--fusion-hover: rgba(
 		var(
 			--v-theme-text,
-			var(--v-theme-on-surface, var(--fluent-fallback-text))
+			var(--v-theme-on-surface, var(--fusion-fallback-text))
 		),
 		0.045
 	);
-	--fluent-pressed: rgba(
+	--fusion-pressed: rgba(
 		var(
 			--v-theme-text,
-			var(--v-theme-on-surface, var(--fluent-fallback-text))
+			var(--v-theme-on-surface, var(--fusion-fallback-text))
 		),
 		0.075
 	);
-	--fluent-selected: rgba(
-		var(--v-theme-primary, var(--fluent-fallback-primary)),
-		0.1
+	--fusion-selected: var(--fusion-accent);
+	--fusion-panel-gradient: linear-gradient(
+		to bottom,
+		var(--fusion-panel-top),
+		var(--fusion-surface) 24px
 	);
+	--fusion-panel-shadow: inset 0 1px 0 var(--fusion-panel-light);
 }
 
 /* Custom theme names from the supplied stylesheet, plus standard Vuetify names.
    For another dark theme name, add it to these two selector groups. */
 
 html:has(.v-application:is(.v-theme--DarkMode, .v-theme--dark)),
-.v-theme--DarkMode,
-.v-theme--dark {
+:root .v-theme--DarkMode,
+:root .v-theme--dark {
 	color-scheme: dark;
-	--fluent-fallback-text: 245, 245, 245;
-	--fluent-fallback-surface: 44, 44, 44;
-	--fluent-fallback-border: 65, 65, 65;
-	--fluent-fallback-primary: 96, 205, 255;
-	--fluent-control-fill: rgba(255, 255, 255, 0.055);
-	--fluent-control-fill-hover: rgba(255, 255, 255, 0.08);
-	--fluent-control-fill-pressed: rgba(255, 255, 255, 0.035);
-	--fluent-control-fill-focus: rgba(0, 0, 0, 0.22);
-	--fluent-fallback-on-accent: 20, 20, 20;
-	--fluent-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.12);
-	--fluent-shadow-flyout:
-		0 8px 24px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2);
-	--fluent-shadow-dialog:
-		0 24px 64px rgba(0, 0, 0, 0.48), 0 2px 8px rgba(0, 0, 0, 0.2);
+	--fusion-fallback-text: 220, 220, 220;
+	--fusion-fallback-surface: 53, 53, 53;
+	--fusion-fallback-border: 32, 32, 32;
+	--fusion-fallback-primary: 42, 130, 218;
+	--fusion-control-fill: #232323;
+	--fusion-control-fill-hover: #272727;
+	--fusion-control-fill-pressed: #303030;
+	--fusion-control-fill-focus: #252525;
+	--fusion-fallback-on-accent: 255, 255, 255;
+	--fusion-shadow-card: none;
+	--fusion-shadow-flyout: 0 1px 3px rgba(0, 0, 0, 0.3);
+	--fusion-shadow-dialog: 0 2px 6px rgba(0, 0, 0, 0.3);
+	--v-theme-background: 53, 53, 53;
+	--v-theme-surface: 53, 53, 53;
+	--v-theme-surface-light: 64, 64, 64;
+	--v-theme-text: 220, 220, 220;
+	--v-theme-on-surface: 220, 220, 220;
+	--v-theme-on-background: 220, 220, 220;
+	--v-theme-text-reverse: 32, 32, 32;
+	--v-theme-border: 32, 32, 32;
+	--v-theme-primary: 42, 130, 218;
+	--v-theme-on-primary: 255, 255, 255;
+	--fusion-button-gradient: linear-gradient(to bottom, #535353, #414141);
+	--fusion-button-hover: linear-gradient(to bottom, #60666c, #484e54);
+	--fusion-button-pressed: linear-gradient(to bottom, #303d4a, #3b4b5b);
+	--fusion-inner-light: rgba(255, 255, 255, 0.13);
+	--fusion-panel-top: #393939;
+	--fusion-panel-light: rgba(255, 255, 255, 0.07);
+	--fusion-inset-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.26);
+	--fusion-indicator-fill: linear-gradient(to bottom, #494949, #353535);
+	--fusion-tooltip-fill: #353535;
+	--fusion-tooltip-text: #dcdcdc;
+	--fusion-focus-halo: rgba(42, 130, 218, 0.35);
+	--fusion-separator: #505050;
+	--fusion-shadow-navigation: 3px 0 8px rgba(0, 0, 0, 0.3);
+	--fusion-border-strong: #1d1d1d;
+	--fusion-hover: rgba(42, 130, 218, 0.18);
+	--fusion-pressed: rgba(42, 130, 218, 0.28);
+	--fusion-selected: rgb(42, 130, 218);
 }
 
-.v-theme--LightMode,
-.v-theme--light {
+:root .v-theme--LightMode,
+:root .v-theme--light {
 	color-scheme: light;
-	--fluent-fallback-text: 26, 26, 26;
-	--fluent-fallback-surface: 249, 249, 249;
-	--fluent-fallback-border: 224, 224, 224;
-	--fluent-fallback-primary: 0, 95, 184;
-	--fluent-control-fill: rgba(255, 255, 255, 0.72);
-	--fluent-control-fill-hover: rgba(255, 255, 255, 0.88);
-	--fluent-control-fill-pressed: rgba(0, 0, 0, 0.035);
-	--fluent-control-fill-focus: #fff;
-	--fluent-fallback-on-accent: 255, 255, 255;
-	--fluent-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
-	--fluent-shadow-flyout:
-		0 8px 24px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.08);
-	--fluent-shadow-dialog:
-		0 24px 64px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.08);
+	--fusion-fallback-text: 32, 32, 32;
+	--fusion-fallback-surface: 239, 239, 239;
+	--fusion-fallback-border: 171, 171, 171;
+	--fusion-fallback-primary: 48, 140, 198;
+	--fusion-control-fill: #fff;
+	--fusion-control-fill-hover: #fff;
+	--fusion-control-fill-pressed: #e2e2e2;
+	--fusion-control-fill-focus: #fff;
+	--fusion-fallback-on-accent: 255, 255, 255;
+	--fusion-shadow-card: none;
+	--fusion-shadow-flyout: 0 1px 3px rgba(0, 0, 0, 0.3);
+	--fusion-shadow-dialog: 0 2px 6px rgba(0, 0, 0, 0.3);
+	--v-theme-background: 239, 239, 239;
+	--v-theme-surface: 239, 239, 239;
+	--v-theme-surface-light: 250, 250, 250;
+	--v-theme-text: 32, 32, 32;
+	--v-theme-on-surface: 32, 32, 32;
+	--v-theme-on-background: 32, 32, 32;
+	--v-theme-text-reverse: 255, 255, 255;
+	--v-theme-border: 171, 171, 171;
+	--v-theme-primary: 48, 140, 198;
+	--v-theme-on-primary: 255, 255, 255;
+	--fusion-button-gradient: linear-gradient(to bottom, #f4f4f4, #e1e1e1);
+	--fusion-button-hover: linear-gradient(to bottom, #fff, #e8f2f9);
+	--fusion-button-pressed: linear-gradient(to bottom, #d5e5f0, #e1edf5);
+	--fusion-inner-light: rgba(255, 255, 255, 0.22);
+	--fusion-panel-top: #f3f3f3;
+	--fusion-panel-light: rgba(255, 255, 255, 0.25);
+	--fusion-inset-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+	--fusion-indicator-fill: linear-gradient(to bottom, #fff, #ededed);
+	--fusion-tooltip-fill: #ffffdc;
+	--fusion-tooltip-text: #202020;
+	--fusion-focus-halo: rgba(48, 140, 198, 0.28);
+	--fusion-separator: #b8b8b8;
+	--fusion-shadow-navigation: 2px 0 6px rgba(0, 0, 0, 0.14);
+	--fusion-border-strong: #929292;
+	--fusion-hover: rgba(48, 140, 198, 0.12);
+	--fusion-pressed: rgba(48, 140, 198, 0.2);
+	--fusion-selected: rgb(48, 140, 198);
 }
 
 @media (pointer: coarse) {
 	:root {
-		--fluent-control-size: 22px;
+		--fusion-control-size: 20px;
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
 	:root {
-		--fluent-duration-fast: 0ms;
-		--fluent-duration-normal: 0ms;
-		--fluent-duration-slow: 0ms;
+		--fusion-duration-fast: 0ms;
+		--fusion-duration-normal: 0ms;
+		--fusion-duration-slow: 0ms;
 	}
 }
