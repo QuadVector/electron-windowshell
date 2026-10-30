@@ -143,9 +143,6 @@
 	border-radius: var(--base-radius);
 }
 
-/* Menus only: no flex-column changes on virtual-scroll containers.
-   Dialog lists and ordinary lists retain their original layout. */
-
 .v-menu > .v-overlay__content {
 	border-radius: var(--fusion-radius-overlay) !important;
 	box-shadow: var(--fusion-shadow-flyout) !important;
@@ -175,6 +172,69 @@
 	transition: background-color var(--fusion-duration-fast) ease;
 	font-size: 13px;
 	line-height: 18px;
+}
+
+.v-menu
+	> .v-overlay__content:not(
+		.v-select__content,
+		.v-autocomplete__content,
+		.v-combobox__content
+	)
+	:is(.v-list, .v-list-group__items) {
+	--fusion-menu-icon-column: 0px;
+	--indent-padding: 0px;
+}
+
+.v-menu
+	> .v-overlay__content:not(
+		.v-select__content,
+		.v-autocomplete__content,
+		.v-combobox__content
+	)
+	:is(.v-list, .v-list-group__items):has(
+		> .v-list-item
+			> .v-list-item__prepend
+			:is(.v-icon, svg, img, .v-avatar, .v-badge),
+		> .v-list-group
+			> .v-list-item
+			> .v-list-item__prepend
+			:is(.v-icon, svg, img, .v-avatar, .v-badge)
+	) {
+	--fusion-menu-icon-column: 26px;
+}
+
+.v-menu
+	> .v-overlay__content:not(
+		.v-select__content,
+		.v-autocomplete__content,
+		.v-combobox__content
+	)
+	.v-list-item {
+	grid-template-columns:
+		var(--fusion-menu-icon-column, 0px) minmax(0, 1fr)
+		auto;
+}
+
+.v-menu
+	> .v-overlay__content:not(
+		.v-select__content,
+		.v-autocomplete__content,
+		.v-combobox__content
+	)
+	.v-list-item
+	> .v-list-item__content {
+	padding-inline-start: 0;
+}
+
+.v-menu
+	> .v-overlay__content:not(
+		.v-select__content,
+		.v-autocomplete__content,
+		.v-combobox__content
+	)
+	.v-list-item
+	> .v-list-item__prepend {
+	margin-inline: 0;
 }
 
 .v-menu .v-list-item__prepend > .v-list-item__spacer {
@@ -458,10 +518,6 @@
 .v-navigation-drawer .v-list-item__overlay {
 	transition: none;
 }
-
-/* Checkbox / radio: native inputs still receive clicks, focus and keyboard
-   actions. Pseudo-elements replace only their Material icon appearance.
-   Add fluent-native-control on a checkbox/radio to keep a custom icon slot. */
 
 :is(.v-checkbox-btn, .v-radio):not(
 		.fluent-native-control,
@@ -758,7 +814,6 @@
 }
 
 /* A modest row height; validation/help rows remain natural-height siblings. */
-
 .v-checkbox,
 .v-radio-group {
 	--fusion-selection-row-size: 36px;
@@ -798,7 +853,6 @@
 }
 
 /* Hide only a genuinely empty standard message row, never hints/errors/slots. */
-
 :is(.v-checkbox, .v-switch, .v-radio-group)
 	.v-input__details:has(> .v-messages:empty):not(:has(> :not(.v-messages))) {
 	display: none;
@@ -811,9 +865,6 @@
 .v-checkbox .v-input__details:empty {
 	display: none;
 }
-
-/* Switch: 40 x 20 track, consistent for inset and standard variants.
-   Retain input bounds and Vuetify loading / icon slots. */
 
 .v-switch {
 	--fusion-switch-row-size: 36px;
@@ -1070,9 +1121,6 @@
 .v-navigation-drawer__scrim {
 	opacity: 0;
 }
-
-/* Text fields, selects, autocomplete, combobox, textarea, file input.
-   Floating labels / outlined notches retain Vuetify's own geometry. */
 
 .v-field {
 	border-radius: var(--fusion-radius-control);
@@ -1374,11 +1422,6 @@
 	opacity: 0;
 }
 
-/* Field labels: keep the moving and floating copies at the same size.
-   Vuetify reads this scale for its own animation: 1 means translation only,
-   avoiding the glyph-size/rasterization jump when the label copies swap.
-   Text fields, selects, autocomplete and combobox share this animation. */
-
 .v-text-field .v-field .v-label.v-field-label {
 	font-size: var(--fusion-field-label-size, 12px);
 	font-family: inherit;
@@ -1405,9 +1448,6 @@
 	padding-top: 5px;
 	font-size: var(--font-size-small);
 }
-
-/* Only label-free compact single-line fields become 32px; labelled fields and
-   textarea retain sufficient space for labels, chips and validation. */
 
 .v-input--density-compact:not(.v-textarea)
 	.v-field:is(.v-field--no-label, .v-field--single-line) {
@@ -1484,10 +1524,6 @@
 .v-table > .v-table__wrapper > table > thead {
 	background: var(--fusion-button-gradient);
 }
-
-/* Original tab markup: v-tabs, v-divider, v-tabs-window, then py-3 sheet.
-   Restore the hidden divider and clear window spacing only for this layout.
-   Keep the actual tab geometry and the content's py-3 padding unchanged. */
 
 .v-sheet > .v-tabs + .v-divider {
 	display: none;
@@ -1658,7 +1694,6 @@
 }
 
 /* Slider: keep Vuetify dimensions, orientation and hit targets. */
-
 .v-slider-track__background {
 	opacity: 0.18;
 }
@@ -1720,7 +1755,6 @@
 }
 
 /* windowbar menu */
-
 .component__WindowBar-menu
 	.v-dock-menu-bar-item-wrapper:has(.active)
 	.menu-wrapper {
@@ -1737,9 +1771,8 @@
 	display: inline-flex;
 	align-items: center;
 	border-radius: var(--base-radius);
-	box-shadow:
-		inset 0 0 0 1px var(--fusion-border-strong),
-		inset 0 1px 0 var(--fusion-inner-light);
+	border: 1px solid var(--fusion-border-strong);
+	box-shadow: inset 0 1px 0 var(--fusion-inner-light);
 }
 
 .component__WindowBar-menu ul li {
@@ -1775,10 +1808,21 @@
 	color: var(--fusion-on-accent) !important;
 }
 
+.component__WindowBar-menu :is(.menu-wrapper, .menu-wrapper ul) {
+	--fusion-dock-menu-icon-placeholder: none;
+}
+
+.component__WindowBar-menu
+	:is(.menu-wrapper, .menu-wrapper ul):has(
+		> .menu-item:not(.divider) > .menu-item-icon
+	) {
+	--fusion-dock-menu-icon-placeholder: "";
+}
+
 .component__WindowBar-menu
 	.menu-wrapper
 	.menu-item:not(.divider):not(:has(> .menu-item-icon))::before {
-	content: "";
+	content: var(--fusion-dock-menu-icon-placeholder, none);
 	flex: 0 0 18px;
 	width: 18px;
 	height: 18px;
@@ -1929,7 +1973,6 @@
 .component__WindowBar-menu .menu-bar-item-container {
 	border-radius: var(--fusion-menu-item-radius);
 	border: 0 !important;
-	transition: background-color var(--fusion-duration-fast) ease;
 	outline: none !important;
 	cursor: default !important;
 	background: transparent !important;
@@ -1997,7 +2040,6 @@
 }
 
 /* context menu */
-
 .v-contextmenu {
 	animation: fadeIn 0.12s ease-out;
 	transform-origin: top center;
@@ -2056,10 +2098,28 @@
 	font-size: 18px;
 }
 
-/* Reserve the same icon column for every menu row, including submenus.
-   Icon-only action groups retain their compact toolbar spacing. */
-:is(.v-contextmenu-inner > .v-contextmenu-item, .v-contextmenu-submenu__title)
-	> :is(.v-icon, svg, img, i:not(.v-contextmenu-submenu__arrow)) {
+:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus) {
+	--fusion-contextmenu-icon-placeholder: none;
+}
+
+:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus):has(
+	> .v-contextmenu-item:not(.v-contextmenu-submenu)
+		> :is(.v-icon, svg, img, i):not(.v-contextmenu-submenu__arrow),
+	> .v-contextmenu-submenu
+		> .v-contextmenu-submenu__title
+		> :is(.v-icon, svg, img, i):not(.v-contextmenu-submenu__arrow)
+) {
+	--fusion-contextmenu-icon-placeholder: "";
+}
+
+:is(
+		:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus)
+			> .v-contextmenu-item:not(.v-contextmenu-submenu),
+		:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus)
+			> .v-contextmenu-submenu
+			> .v-contextmenu-submenu__title
+	)
+	> :is(.v-icon, svg, img, i):not(.v-contextmenu-submenu__arrow) {
 	width: 18px;
 	min-width: 18px;
 	height: 18px;
@@ -2068,12 +2128,15 @@
 }
 
 :is(
-		.v-contextmenu-inner > .v-contextmenu-item,
-		.v-contextmenu-submenu__title
+		:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus)
+			> .v-contextmenu-item:not(.v-contextmenu-submenu),
+		:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus)
+			> .v-contextmenu-submenu
+			> .v-contextmenu-submenu__title
 	):not(
-		:has(> :is(.v-icon, svg, img, i:not(.v-contextmenu-submenu__arrow)))
+		:has(> :is(.v-icon, svg, img, i):not(.v-contextmenu-submenu__arrow))
 	)::before {
-	content: "";
+	content: var(--fusion-contextmenu-icon-placeholder, none);
 	width: 18px;
 	height: 18px;
 	flex: 0 0 18px;
@@ -2108,7 +2171,6 @@
 }
 
 /* windowbar */
-
 .component__WindowBar {
 	position: relative;
 	height: var(--windowbar-height);
@@ -2249,13 +2311,11 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 }
 
 /* overlay */
-
 .v-overlay__scrim {
 	background: #000;
 }
 
 /* Hover only on devices with a real hover pointer. */
-
 @media (hover: hover) {
 	.v-btn:is(.v-btn--variant-elevated, .v-btn--variant-flat):not(
 			[class*="bg-"]
@@ -2269,6 +2329,7 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		):hover {
 		background: var(--fusion-control-fill-hover);
 	}
+
 	:is(.v-checkbox-btn, .v-radio):not(
 			.fluent-native-control,
 			.fusion-native-control,
@@ -2281,10 +2342,12 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		background: var(--fusion-control-fill-hover);
 		border-color: var(--fusion-text-secondary);
 	}
+
 	.v-menu .v-list-item:not(.v-list-item--disabled):hover {
 		background: var(--fusion-selected);
 		color: var(--fusion-on-accent);
 	}
+
 	.v-table--hover > .v-table__wrapper > table > tbody > tr:hover > td {
 		background: var(--fusion-hover);
 	}
@@ -2306,13 +2369,13 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 	.v-menu .v-list-item {
 		min-height: 44px;
 	}
+
 	.v-selection-control {
 		--v-selection-control-size: 44px;
 	}
 }
 
 /* System contrast themes: system colors keep the custom controls visible. */
-
 @media (forced-colors: active) {
 	:is(.v-checkbox-btn, .v-radio):not(
 			.fluent-native-control,
@@ -2325,6 +2388,7 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		border-color: ButtonText;
 		background: Canvas;
 	}
+
 	.v-checkbox-btn:not(
 			.fluent-native-control,
 			.fusion-native-control,
@@ -2338,6 +2402,7 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		background: Highlight;
 		border-color: Highlight;
 	}
+
 	.v-checkbox-btn:not(
 			.fluent-native-control,
 			.fusion-native-control,
@@ -2348,6 +2413,7 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		forced-color-adjust: none;
 		border-color: HighlightText;
 	}
+
 	.v-checkbox-btn:not(
 			.fluent-native-control,
 			.fusion-native-control,
@@ -2357,6 +2423,7 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		.v-selection-control__input::after {
 		background: HighlightText;
 	}
+
 	.v-radio:not(
 			.fluent-native-control,
 			.fusion-native-control,
@@ -2366,6 +2433,7 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		.v-selection-control__input::before {
 		border-color: Highlight;
 	}
+
 	.v-radio:not(
 			.fluent-native-control,
 			.fusion-native-control,
@@ -2376,28 +2444,35 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		forced-color-adjust: none;
 		background: Highlight;
 	}
+
 	.v-switch .v-switch__track {
 		forced-color-adjust: none;
 		background: Canvas;
 		border-color: ButtonText;
 	}
+
 	.v-switch .v-selection-control--dirty .v-switch__track {
 		background: Highlight;
 		border-color: Highlight;
 	}
+
 	.v-switch .v-switch__thumb {
 		forced-color-adjust: none;
 		background: ButtonText !important;
 	}
+
 	.v-switch .v-selection-control--dirty .v-switch__thumb {
 		background: HighlightText !important;
 	}
+
 	.v-selection-control--disabled {
 		opacity: 1;
 	}
+
 	.v-selection-control--disabled .v-selection-control__input::before {
 		border-color: GrayText !important;
 	}
+
 	.v-field.v-field--focused {
 		outline: 1px solid Highlight;
 		outline-offset: 1px;

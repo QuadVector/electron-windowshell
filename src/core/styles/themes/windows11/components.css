@@ -66,9 +66,6 @@
 	border-radius: 999px;
 }
 
-/* Menus only: no flex-column changes on virtual-scroll containers.
-   Dialog lists and ordinary lists retain their original layout. */
-
 .v-menu > .v-overlay__content {
 	border-radius: var(--fluent-radius-overlay) !important;
 	box-shadow: var(--fluent-shadow-flyout) !important;
@@ -107,7 +104,6 @@
 	background: var(--fluent-selected);
 }
 
-/* Select option highlights stay square when hovered, focused or selected. */
 .v-menu
 	> :is(.v-select__content, .v-autocomplete__content, .v-combobox__content)
 	:is(.v-list-item, .v-list-item__overlay),
@@ -208,10 +204,6 @@
 .v-navigation-drawer .v-list-item__overlay {
 	transition: none;
 }
-
-/* Checkbox / radio: native inputs still receive clicks, focus and keyboard
-   actions. Pseudo-elements replace only their Material icon appearance.
-   Add fluent-native-control on a checkbox/radio to keep a custom icon slot. */
 
 :is(.v-checkbox-btn, .v-radio):not(
 		.fluent-native-control,
@@ -461,7 +453,6 @@
 }
 
 /* A modest row height; validation/help rows remain natural-height siblings. */
-
 .v-checkbox,
 .v-radio-group {
 	--fluent-selection-row-size: 36px;
@@ -501,7 +492,6 @@
 }
 
 /* Hide only a genuinely empty standard message row, never hints/errors/slots. */
-
 :is(.v-checkbox, .v-switch, .v-radio-group)
 	.v-input__details:has(> .v-messages:empty):not(:has(> :not(.v-messages))) {
 	display: none;
@@ -514,9 +504,6 @@
 .v-checkbox .v-input__details:empty {
 	display: none;
 }
-
-/* Switch: 40 x 20 track, consistent for inset and standard variants.
-   Retain input bounds and Vuetify loading / icon slots. */
 
 .v-switch {
 	--fluent-switch-row-size: 36px;
@@ -743,9 +730,6 @@
 	opacity: 0;
 }
 
-/* Text fields, selects, autocomplete, combobox, textarea, file input.
-   Floating labels / outlined notches retain Vuetify's own geometry. */
-
 .v-field {
 	border-radius: var(--fluent-radius-control);
 	transition:
@@ -844,11 +828,6 @@
 	opacity: 0;
 }
 
-/* Field labels: keep the moving and floating copies at the same size.
-   Vuetify reads this scale for its own animation: 1 means translation only,
-   avoiding the glyph-size/rasterization jump when the label copies swap.
-   Text fields, selects, autocomplete and combobox share this animation. */
-
 .v-text-field .v-field .v-label.v-field-label {
 	font-size: var(--font-size-small);
 	font-family: inherit;
@@ -875,9 +854,6 @@
 	padding-top: 5px;
 	font-size: var(--font-size-small);
 }
-
-/* Only label-free compact single-line fields become 32px; labelled fields and
-   textarea retain sufficient space for labels, chips and validation. */
 
 .v-input--density-compact:not(.v-textarea)
 	.v-field:is(.v-field--no-label, .v-field--single-line) {
@@ -924,10 +900,6 @@
 	border-radius: var(--fluent-radius-control);
 	font-size: var(--font-size-small);
 }
-
-/* Original tab markup: v-tabs, v-divider, v-tabs-window, then py-3 sheet.
-   Restore the hidden divider and clear window spacing only for this layout.
-   Keep the actual tab geometry and the content's py-3 padding unchanged. */
 
 .v-sheet > .v-tabs + .v-divider {
 	display: none;
@@ -987,7 +959,6 @@
 }
 
 /* Slider: keep Vuetify dimensions, orientation and hit targets. */
-
 .v-slider-track__background {
 	opacity: 0.18;
 }
@@ -1028,7 +999,6 @@
 }
 
 /* windowbar menu */
-
 .component__WindowBar-menu
 	.v-dock-menu-bar-item-wrapper:has(.active)
 	.menu-wrapper {
@@ -1167,7 +1137,6 @@
 }
 
 /* context menu */
-
 .v-contextmenu {
 	animation: fadeIn 0.15s ease-in-out;
 	transform-origin: top center;
@@ -1267,7 +1236,6 @@ html:has(.v-application.v-theme--DarkMode) .v-contextmenu-divider {
 }
 
 /* windowbar */
-
 .component__WindowBar {
 	position: relative;
 	height: var(--windowbar-height);
@@ -1382,19 +1350,18 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 }
 
 /* overlay */
-
 .v-overlay__scrim {
 	background: #000;
 }
 
 /* Hover only on devices with a real hover pointer. */
-
 @media (hover: hover) {
 	.v-field:not(.v-field--disabled):not(.v-field--focused):not(
 			.v-field--variant-plain
 		):hover {
 		background: var(--fluent-control-fill-hover);
 	}
+
 	:is(.v-checkbox-btn, .v-radio):not(
 			.fluent-native-control,
 			.fluent-native-control *
@@ -1405,9 +1372,11 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		background: var(--fluent-control-fill-hover);
 		border-color: var(--fluent-text-secondary);
 	}
+
 	.v-menu .v-list-item:not(.v-list-item--disabled):hover {
 		background: var(--fluent-hover);
 	}
+
 	.v-table--hover > .v-table__wrapper > table > tbody > tr:hover > td {
 		background: var(--fluent-hover);
 	}
@@ -1429,13 +1398,13 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 	.v-menu .v-list-item {
 		min-height: 44px;
 	}
+
 	.v-selection-control {
 		--v-selection-control-size: 44px;
 	}
 }
 
 /* Windows contrast themes: system colors keep the custom controls visible. */
-
 @media (forced-colors: active) {
 	:is(.v-checkbox-btn, .v-radio):not(
 			.fluent-native-control,
@@ -1446,6 +1415,7 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		border-color: ButtonText;
 		background: Canvas;
 	}
+
 	.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):is(
 			.v-selection-control--dirty,
 			:has(input:is(:indeterminate, [aria-checked="mixed"]))
@@ -1454,17 +1424,20 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		background: Highlight;
 		border-color: Highlight;
 	}
+
 	.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *)
 		.v-selection-control__input::after {
 		forced-color-adjust: none;
 		border-color: HighlightText;
 	}
+
 	.v-checkbox-btn:not(.fluent-native-control, .fluent-native-control *):has(
 			input:is(:indeterminate, [aria-checked="mixed"])
 		)
 		.v-selection-control__input::after {
 		background: HighlightText;
 	}
+
 	.v-radio:not(
 			.fluent-native-control,
 			.fluent-native-control *
@@ -1472,6 +1445,7 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		.v-selection-control__input::before {
 		border-color: Highlight;
 	}
+
 	.v-radio:not(
 			.fluent-native-control,
 			.fluent-native-control *
@@ -1480,29 +1454,173 @@ body:not(.window-material-type-fluent) .component__WindowBar-title {
 		forced-color-adjust: none;
 		background: Highlight;
 	}
+
 	.v-switch .v-switch__track {
 		forced-color-adjust: none;
 		background: Canvas;
 		border-color: ButtonText;
 	}
+
 	.v-switch .v-selection-control--dirty .v-switch__track {
 		background: Highlight;
 		border-color: Highlight;
 	}
+
 	.v-switch .v-switch__thumb {
 		forced-color-adjust: none;
 		background: ButtonText !important;
 	}
+
 	.v-switch .v-selection-control--dirty .v-switch__thumb {
 		background: HighlightText !important;
 	}
+
 	.v-selection-control--disabled {
 		opacity: 1;
 	}
+
 	.v-selection-control--disabled .v-selection-control__input::before {
 		border-color: GrayText !important;
 	}
+
 	.v-field::after {
 		background: Highlight;
 	}
+}
+
+/* Menu layout: reserve leading-icon space separately in each panel. */
+.component__WindowBar-menu .menu-wrapper {
+	min-width: 0;
+	width: max-content;
+	max-width: calc(100vw - 12px);
+}
+
+.component__WindowBar-menu :is(.menu-wrapper, .menu-wrapper ul) {
+	--fluent-menu-icon-placeholder: none;
+}
+
+.component__WindowBar-menu
+	:is(.menu-wrapper, .menu-wrapper ul):has(
+		> .menu-item:not(.divider) > .menu-item-icon
+	) {
+	--fluent-menu-icon-placeholder: "";
+}
+
+.component__WindowBar-menu .menu-wrapper .menu-item:not(.divider) {
+	display: flex !important;
+	align-items: center;
+	box-sizing: border-box;
+	padding-inline: 10px !important;
+	gap: 10px;
+}
+
+.component__WindowBar-menu
+	.menu-wrapper
+	.menu-item:not(.divider):not(:has(> .menu-item-icon))::before {
+	content: var(--fluent-menu-icon-placeholder, none);
+	flex: 0 0 18px;
+	width: 18px;
+}
+
+.component__WindowBar-menu .menu-wrapper .menu-item > .menu-item-icon {
+	position: static !important;
+	flex: 0 0 18px;
+	width: 18px !important;
+	margin: 0 !important;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.component__WindowBar-menu .menu-wrapper .menu-item > .menu-item-icon svg {
+	position: static;
+	top: auto;
+}
+
+.component__WindowBar-menu .menu-wrapper .menu-item > .name {
+	padding: 0 !important;
+	flex: 1 1 auto;
+	width: auto;
+	min-width: 0;
+	text-align: start !important;
+	white-space: nowrap;
+}
+
+.component__WindowBar-menu .menu-wrapper .menu-item > .icon-wrap {
+	flex: 0 0 14px;
+	width: 14px !important;
+	margin: 0 !important;
+}
+
+.component__WindowBar-menu
+	.menu-wrapper
+	.menu-item
+	> :is([class*="shortcut"], kbd) {
+	position: static !important;
+	flex: 0 0 auto;
+	margin-inline-start: auto;
+	white-space: nowrap;
+}
+
+/* Submenu arrows and action groups do not create a leading-icon column. */
+:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus) {
+	--fluent-context-icon-placeholder: none;
+}
+
+:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus):has(
+	> .v-contextmenu-item:not(.v-contextmenu-submenu)
+		> :is(.v-icon, svg, img, i):not(.v-contextmenu-submenu__arrow),
+	> .v-contextmenu-submenu
+		> .v-contextmenu-submenu__title
+		> :is(.v-icon, svg, img, i):not(.v-contextmenu-submenu__arrow)
+) {
+	--fluent-context-icon-placeholder: "";
+}
+
+:is(
+		:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus)
+			> .v-contextmenu-item:not(.v-contextmenu-submenu),
+		:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus)
+			> .v-contextmenu-submenu
+			> .v-contextmenu-submenu__title
+	)
+	> :is(.v-icon, svg, img, i):not(.v-contextmenu-submenu__arrow) {
+	flex: 0 0 14px;
+	width: 14px;
+	margin: 0;
+}
+
+:is(
+		:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus)
+			> .v-contextmenu-item:not(.v-contextmenu-submenu),
+		:is(.v-contextmenu-inner, .v-contextmenu-submenu__menus)
+			> .v-contextmenu-submenu
+			> .v-contextmenu-submenu__title
+	):not(
+		:has(> :is(.v-icon, svg, img, i):not(.v-contextmenu-submenu__arrow))
+	)::before {
+	content: var(--fluent-context-icon-placeholder, none);
+	flex: 0 0 14px;
+	width: 14px;
+}
+
+.v-contextmenu,
+.v-contextmenu-submenu__menus {
+	min-width: 0;
+	width: max-content;
+	max-width: calc(100vw - 12px);
+}
+
+.v-contextmenu-submenu__title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+:is(.v-contextmenu-item, .v-contextmenu-submenu__title)
+	> :is([class*="shortcut"], kbd) {
+	position: static;
+	flex: 0 0 auto;
+	margin-inline-start: auto;
+	white-space: nowrap;
 }
